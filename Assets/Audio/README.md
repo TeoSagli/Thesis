@@ -1,0 +1,2 @@
+# Important Audio Information
+All the SFX or Music in this directory is licensed by [Soundstripe](https://app.soundstripe.com) which means that Learn XR has a comercial license, however a [license](https://www.soundstripe.com/?fpr=signup#pricing) is required if you like to use any of these tracks on your own experience, thank you.
