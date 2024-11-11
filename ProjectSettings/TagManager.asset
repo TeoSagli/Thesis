@@ -7,6 +7,7 @@ TagManager:
   - Door
   - Sun
   - VentilationGrid
+  - Portal
   layers:
   - Default
   - TransparentFX

@@ -19,6 +19,12 @@ public class PuzzleSolverFeature : Singleton<PuzzleSolverFeature>
         {
             onPuzzleSolved?.Invoke(GameState.PuzzleSolved);
             puzzleSolvedDetected = true;
+            ActivatePortal();
         }
+    }
+    private void ActivatePortal()
+    {
+        PortalFeature script = GameObject.Find("Portal").GetComponent<PortalFeature>();
+        script.ToggleParticle(script.GetParticleSystemIn());
     }
 }
