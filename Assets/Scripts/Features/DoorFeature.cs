@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class DoorFeature : BaseFeature
@@ -23,7 +24,8 @@ public class DoorFeature : BaseFeature
 
     [SerializeField]
     private bool makeItKinematicOnceOpened = false;
-
+    [SerializeField]
+    private UnityEvent onOpenDoor;
     [Header("Interaction Configuration")]
     [SerializeField]
     private UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor socketInteractor;
@@ -67,6 +69,7 @@ public class DoorFeature : BaseFeature
             currCoroutine = ProcessMotion();
             StartCoroutine(currCoroutine);
             StopInteractions();
+            onOpenDoor?.Invoke();
         }
     }
     private IEnumerator ProcessMotion()

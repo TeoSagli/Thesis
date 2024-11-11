@@ -57,6 +57,8 @@ MonoBehaviour:
   rotX: 0
   rotY: 0
   rotZ: 0
+  particleSystemIn: {fileID: 0}
+  particleSystemOut: {fileID: 0}
   socketInteractor: {fileID: 1495128350870359653}
 --- !u!1 &1761558296550369750
 GameObject:
@@ -184,7 +186,7 @@ Transform:
   m_GameObject: {fileID: 2342733830416114449}
   serializedVersion: 2
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
-  m_LocalPosition: {x: 0.0015, y: 0, z: 0.13}
+  m_LocalPosition: {x: 0.002, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -207,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2134717829271795116
 Transform:
   m_ObjectHideFlags: 0

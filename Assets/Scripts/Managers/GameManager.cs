@@ -49,7 +49,7 @@ public class GameManager : Singleton<GameManager>
                 InvokeActionSetTimeAndCullingMask(GameState.Paused, ref onGamePaused, 0, LayerMask.GetMask("UI"));
                 break;
             case GameState.PuzzleSolved:
-                /* InvokeActionSetTimeAndCullingMask(GameState.PuzzleSolved, ref onGameSolved, 0, LayerMask.GetMask("UI"));*/
+                InvokeActionSetTimeAndCullingMask(GameState.PuzzleSolved, ref onGameSolved, 0, LayerMask.GetMask("UI"));
                 break;
             default:
                 InvokeActionSetTimeAndCullingMask(GameState.Playing, ref onGameResumed, 1, cachedCameraCullingMask);
