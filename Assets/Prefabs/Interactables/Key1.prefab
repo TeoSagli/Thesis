@@ -425,7 +425,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4331872c9d4a610458296cd8ad6b5acf, type: 2}
+  - {fileID: 2100000, guid: be949247c0ead0c4da3de7a8a9bb3283, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -758,9 +758,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 579119401399024693}
     m_Modifications:
     - target: {fileID: 2489836559761890320, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
+      propertyPath: m_ColorPropertyName
+      value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 2489836559761890320, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
       propertyPath: m_AffordanceThemeDatum.m_Variable
       value: 
       objectReference: {fileID: 11400000, guid: f9697a1c82a23c240aa648e034fddaee, type: 2}
+    - target: {fileID: 2489836559761890320, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
+      propertyPath: m_ReplaceIdleStateValueWithInitialValue
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3774509235512974894, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
       propertyPath: m_Name
       value: Highlight Interaction Affordance
@@ -841,7 +849,8 @@ PrefabInstance:
       propertyPath: m_InteractableSource
       value: 
       objectReference: {fileID: 1067049122628258705}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5298392244203567607, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5258331117553129771, guid: 6b12f432fa58c224baf0d659706362be, type: 3}
