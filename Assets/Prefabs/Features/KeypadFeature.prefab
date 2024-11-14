@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7255647809590847931}
   - component: {fileID: 997203594627313628}
   - component: {fileID: 5177098304763783188}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 5418560825005201759}
   - component: {fileID: 954261122263784330}
   - component: {fileID: 3677564862615218173}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Clear
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 2833214935107038520}
   - component: {fileID: 4446415865314997334}
   - component: {fileID: 7646228084071810371}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Screen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 7888662664863624550}
   - component: {fileID: 4259699798704415715}
   - component: {fileID: 3864394701067447944}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 7364139518002815839}
   - component: {fileID: 1383481098362172621}
   - component: {fileID: 2004000073022536237}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Keypad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,7 +445,7 @@ GameObject:
   - component: {fileID: 2332960600988622725}
   - component: {fileID: 6545217224328882753}
   - component: {fileID: 7657709034876476355}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -526,7 +526,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1040948398774733302}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Keys
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +571,7 @@ GameObject:
   - component: {fileID: 8308877316675175344}
   - component: {fileID: 7365840170133779742}
   - component: {fileID: 7361548798572835707}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -706,7 +706,7 @@ GameObject:
   - component: {fileID: 4453504086423419221}
   - component: {fileID: 7739139301926528539}
   - component: {fileID: 361431547887907816}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Numkey 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -826,7 +826,7 @@ GameObject:
   - component: {fileID: 4125191805402916153}
   - component: {fileID: 3639591294948646221}
   - component: {fileID: 296511240239777367}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -909,7 +909,7 @@ GameObject:
   - component: {fileID: 7500589372487171423}
   - component: {fileID: 6727574629970899322}
   - component: {fileID: 8459508566079444934}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: OK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -992,7 +992,7 @@ GameObject:
   - component: {fileID: 550109626776690416}
   - component: {fileID: 2381895060161368420}
   - component: {fileID: 8830883421379428439}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1076,7 +1076,7 @@ GameObject:
   - component: {fileID: 971432567992966398}
   - component: {fileID: 6443148841670983281}
   - component: {fileID: 4666246534585500598}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Numkey 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1194,7 +1194,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 314528912972821868}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KeypadInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1230,7 +1230,7 @@ GameObject:
   - component: {fileID: 2009699153281442499}
   - component: {fileID: 2950777584254722897}
   - component: {fileID: 3214862461760480032}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KeypadUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1352,7 +1352,7 @@ GameObject:
   - component: {fileID: 3515171403948589164}
   - component: {fileID: 4278721142532766150}
   - component: {fileID: 2337753165497297740}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1484,7 +1484,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2480382277428733280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Keyboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1522,7 +1522,7 @@ GameObject:
   - component: {fileID: 4607302612676082828}
   - component: {fileID: 5852044008584433701}
   - component: {fileID: 567059793536457082}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1626,7 +1626,7 @@ GameObject:
   - component: {fileID: 5893676884093991107}
   - component: {fileID: 6555061810110718146}
   - component: {fileID: 1819736693989018912}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1761,7 +1761,7 @@ GameObject:
   - component: {fileID: 6395979910193893974}
   - component: {fileID: 4951644432631523317}
   - component: {fileID: 5990922907847481859}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Numkey 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1881,7 +1881,7 @@ GameObject:
   - component: {fileID: 5090222198819704556}
   - component: {fileID: 4865887703189848358}
   - component: {fileID: 4852013135542359990}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1964,7 +1964,7 @@ GameObject:
   - component: {fileID: 7752497139937407311}
   - component: {fileID: 5915346647479122130}
   - component: {fileID: 7479571066993973894}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2048,7 +2048,7 @@ GameObject:
   - component: {fileID: 3184749820467000558}
   - component: {fileID: 7030732081139854270}
   - component: {fileID: 9062359990327336914}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cancel Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2180,7 +2180,7 @@ GameObject:
   - component: {fileID: 4036331188502248330}
   - component: {fileID: 3322895195930612735}
   - component: {fileID: 7072636073567742712}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2263,7 +2263,7 @@ GameObject:
   - component: {fileID: 9155013054239941765}
   - component: {fileID: 4431462878132320705}
   - component: {fileID: 6501518449699032677}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2397,7 +2397,7 @@ GameObject:
   - component: {fileID: 2806091396490573041}
   - component: {fileID: 7718862414861847200}
   - component: {fileID: 7195039254532754535}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_9
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2484,7 +2484,7 @@ GameObject:
   - component: {fileID: 145200371135933931}
   - component: {fileID: 2689981266549327342}
   - component: {fileID: 6644006686122118787}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KeypadFeature
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2524,7 +2524,7 @@ MonoBehaviour:
   m_Colliders:
   - {fileID: 567059793536457082}
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 256
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -2799,7 +2799,7 @@ GameObject:
   - component: {fileID: 5884062629004649843}
   - component: {fileID: 5535594103976200143}
   - component: {fileID: 7243348006309959142}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: botones_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2882,7 +2882,7 @@ GameObject:
   - component: {fileID: 4103304741034392666}
   - component: {fileID: 8877658241385779279}
   - component: {fileID: 4333023418833046421}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Title Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3016,7 +3016,7 @@ GameObject:
   - component: {fileID: 3305164648238148969}
   - component: {fileID: 1361724534181518281}
   - component: {fileID: 3396190418498604180}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Leds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
