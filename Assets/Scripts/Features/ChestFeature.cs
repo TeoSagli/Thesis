@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 
 public class ChestFeature : BaseFeature
@@ -26,46 +27,90 @@ public class ChestFeature : BaseFeature
     private bool makeItKinematicOnceOpened = false;
     [SerializeField]
     private UnityEvent onOpenChest;
+
+    [Header("Lock Configuration")]
+    [SerializeField]
+    private AudioClip AudioClipForLock;
+    private const float rotAngle = 36;// 360 / 10
+    [SerializeField]
+    private int keycodeAnswer = 2024;
+    [SerializeField]
+    private UnityEvent onKeycodesCorrect;
+    private int num1 = 0, num2 = 0, num3 = 0, num4 = 0;
+
     [Header("Interaction Configuration")]
     [SerializeField]
-    private UnityEngine.XR.Interaction.Toolkit.Interactors.XRSocketInteractor socketInteractor;
-
+    private GameObject firstCode;
     [SerializeField]
-    private UnityEngine.XR.Interaction.Toolkit.Interactables.XRSimpleInteractable simpleInteractable;
+    private GameObject secondCode;
+    [SerializeField]
+    private GameObject thirdCode;
+    [SerializeField]
+    private GameObject firthCode;
     private IEnumerator currCoroutine;
-    private void Start()
+    private XRSimpleInteractable simple1, simple2, simple3, simple4;
+    protected override void Awake()
     {
-        OpenChest();
-        // Chest with sockets
-        socketInteractor?.selectEntered.AddListener((s) =>
+        base.Awake();
+        InitLockInteractables();
+        simple1.selectEntered.AddListener((s) =>
         {
-            OpenChest();
-            PlayOnStarted();
+            EnterNumAndCheck(ref num1, ref firstCode);
         });
-        socketInteractor?.selectExited.AddListener((s) =>
+        simple2.selectEntered.AddListener((s) =>
         {
-            PlayOnEnded();
-            socketInteractor.socketActive = featureUsage == FeatureUsage.Once ? true : false;
+            EnterNumAndCheck(ref num2, ref secondCode);
         });
-
-        // Chest with simple interactables for instance a locker
-        simpleInteractable?.selectEntered.AddListener((s) =>
+        simple3.selectEntered.AddListener((s) =>
         {
-            OpenChest();
-            PlayOnStarted();
+            EnterNumAndCheck(ref num3, ref thirdCode);
         });
-        simpleInteractable?.selectExited.AddListener((s) =>
+        simple4.selectEntered.AddListener((s) =>
         {
-            PlayOnEnded();
+            EnterNumAndCheck(ref num4, ref firthCode);
         });
-
     }
-
+    private void InitLockInteractables()
+    {
+        simple1 = firstCode.GetComponent<XRSimpleInteractable>();
+        simple2 = secondCode.GetComponent<XRSimpleInteractable>();
+        simple3 = thirdCode.GetComponent<XRSimpleInteractable>();
+        simple4 = firthCode.GetComponent<XRSimpleInteractable>();
+    }
+    private void EnterNumAndCheck(ref int num, ref GameObject numCode)
+    {
+        num++;
+        if (num > 9)
+            num = 0;
+        PlayAudioLock();
+        RotateLock(1, numCode);
+        CheckCodeCombination();
+    }
+    private void CheckCodeCombination()
+    {
+        if (int.TryParse($"{num1}{num2}{num3}{num4}", out int keyCodeEntered))
+        {
+            if (keycodeAnswer == keyCodeEntered)
+            {
+                onKeycodesCorrect?.Invoke();
+                PlayOnStarted();
+                OpenChest();
+                StopInteractions();
+            }
+            else
+            {
+                PlayOnEnded();
+            }
+        }
+    }
+    private void RotateLock(int numRotations, GameObject numCode)
+    {
+        numCode.transform.RotateAround(numCode.transform.position, numCode.transform.right, rotAngle * numRotations);
+    }
     public void OpenChest()
     {
         if (!open)
         {
-            PlayOnStarted();
             open = true;
             currCoroutine = ProcessMotion();
             StartCoroutine(currCoroutine);
@@ -91,18 +136,21 @@ public class ChestFeature : BaseFeature
                 var featureRigidBody = GetComponent<Rigidbody>();
                 if (featureRigidBody != null && makeItKinematicOnceOpened)
                     featureRigidBody.isKinematic = true;
-
             }
             yield return null;
         }
-
-
     }
     private void StopInteractions()
     {
-        //disable interactable when opened
-        if (simpleInteractable != null)
-            simpleInteractable.enabled = false;
+        //disable interactables when opened
+        simple1.enabled = false;
+        simple2.enabled = false;
+        simple3.enabled = false;
+        simple4.enabled = false;
     }
 
+    private void PlayAudioLock()
+    {
+        PlayAudioClip(AudioClipForLock);
+    }
 }

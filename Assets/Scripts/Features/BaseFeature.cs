@@ -44,4 +44,9 @@ public class BaseFeature : MonoBehaviour
             audioSource.Play();
         }
     }
+    protected void PlayAudioClip(AudioClip audioClip)
+    {
+        audioSource.clip = audioClip;
+        audioSource.Play();
+    }
 }
