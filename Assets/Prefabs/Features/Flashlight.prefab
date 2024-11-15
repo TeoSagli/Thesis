@@ -63,9 +63,9 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &6298006387559419714
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,8 +234,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.06947899, y: 0.06661117, z: 0.28602982}
-  m_Center: {x: 0.00023174286, y: 0.00094133615, z: 0.0030612946}
+  m_Size: {x: 0.07011604, y: 0.06955445, z: 0.28602982}
+  m_Center: {x: -0.00008678436, y: -0.00019747019, z: 0.0030612946}
 --- !u!1 &6174202473556641758
 GameObject:
   m_ObjectHideFlags: 0
@@ -372,7 +372,6 @@ GameObject:
   - component: {fileID: 1187660767448507719}
   - component: {fileID: 3794194829723788002}
   - component: {fileID: 1691441692033862196}
-  - component: {fileID: 190530811179756838}
   m_Layer: 6
   m_Name: Flashlight_LOD0
   m_TagString: Untagged
@@ -446,28 +445,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &190530811179756838
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8768665796204374431}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300006, guid: 79cb44df3e0a6bb48b15bc373670551d, type: 3}
 --- !u!1001 &8355600611420772661
 PrefabInstance:
   m_ObjectHideFlags: 0
