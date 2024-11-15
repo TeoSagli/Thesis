@@ -60,7 +60,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
 --- !u!114 &1067049122628258705
@@ -76,7 +76,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
-  m_Colliders: []
+  m_Colliders:
+  - {fileID: 3582811503949986065}
   m_InteractionLayers:
     m_Bits: 128
   m_DistanceCalculationMode: 1
@@ -373,7 +374,7 @@ GameObject:
   - component: {fileID: 7736940335049065611}
   - component: {fileID: 2936514222687877201}
   - component: {fileID: 5846446554410415250}
-  - component: {fileID: 8400125438488363246}
+  - component: {fileID: 3582811503949986065}
   m_Layer: 7
   m_Name: Key
   m_TagString: Untagged
@@ -447,8 +448,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8400125438488363246
-MeshCollider:
+--- !u!65 &3582811503949986065
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -465,10 +466,9 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 8166710094878190335, guid: 6972f4bfc5301414ba01b6e8606ff09d, type: 3}
+  serializedVersion: 3
+  m_Size: {x: 0.057458024, y: 0.13404483, z: 0.0118617965}
+  m_Center: {x: 0.00033582764, y: -0.0024952486, z: -0.0010874046}
 --- !u!1 &5191747790600458803
 GameObject:
   m_ObjectHideFlags: 0
