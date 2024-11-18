@@ -49,4 +49,8 @@ public class BaseFeature : MonoBehaviour
         audioSource.clip = audioClip;
         audioSource.Play();
     }
+    public void SetVolume(float level)
+    {
+        audioSource.volume = level;
+    }
 }

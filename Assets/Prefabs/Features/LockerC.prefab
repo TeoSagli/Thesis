@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Colliders:
   - {fileID: 6888980624994860403}
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 64
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -497,6 +497,9 @@ MonoBehaviour:
   speed: 20
   open: 0
   makeItKinematicOnceOpened: 1
+  onOpenDoor:
+    m_PersistentCalls:
+      m_Calls: []
   socketInteractor: {fileID: 0}
   simpleInteractable: {fileID: 7116345806027689080}
 --- !u!1 &8276440357375555962
