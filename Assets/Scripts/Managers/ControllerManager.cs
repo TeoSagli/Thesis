@@ -22,9 +22,7 @@ public class ControllerManager : Singleton<ControllerManager>
     }
     private void OnEnable()
     {
-        // bind controller events
         controllerMenuAction.action.performed += ControllerMenuActionPerformed;
-        // bind to game manager events
         GameManager.Instance.onGamePaused += ControllerRayInteractorInput;
         GameManager.Instance.onGameResumed += ControllerRayInteractorInput;
         GameManager.Instance.onGameSolved += ControllerRayInteractorInput;
@@ -47,12 +45,12 @@ public class ControllerManager : Singleton<ControllerManager>
         {
             objLayer = LayerMask.LayerToName(rayInteractor.gameObject.layer);
             Debug.Log(objLayer);
-            rayInteractor.gameObject.SetActive(gameState == GameState.Paused);
+            /*   rayInteractor.gameObject.SetActive(gameState == GameState.Paused);*/
             if (gameState == GameState.Paused)
-                ApplyDefaultLayers(rayInteractor.transform.parent, "UI");
+                ApplyDefaultLayers(rayInteractor.transform, "UI");
             else
                 //       ApplyDefaultLayers(rayInteractor.transform.parent, "Default");
-                ApplyDefaultLayers(rayInteractor.transform.parent, objLayer);
+                ApplyDefaultLayers(rayInteractor.transform, objLayer);
         }
     }
     private void ApplyDefaultLayers(Transform rayParent, string layerName)
