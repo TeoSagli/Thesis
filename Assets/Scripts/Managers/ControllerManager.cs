@@ -45,8 +45,9 @@ public class ControllerManager : Singleton<ControllerManager>
     {
         foreach (var rayInteractor in cachedRayInteractors)
         {
-            objLayer = rayInteractor.gameObject.layer.ToString();
-            //rayInteractor.gameObject.SetActive(gameState == GameState.Paused);
+            objLayer = LayerMask.LayerToName(rayInteractor.gameObject.layer);
+            Debug.Log(objLayer);
+            rayInteractor.gameObject.SetActive(gameState == GameState.Paused);
             if (gameState == GameState.Paused)
                 ApplyDefaultLayers(rayInteractor.transform.parent, "UI");
             else
