@@ -11,19 +11,19 @@ public class ControllerManager : Singleton<ControllerManager>
     [Header("Controller mapping")]
     [SerializeField]
     private InputActionProperty controllerMenuAction;
-    private UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor[] cachedRayInteractors;
+    private UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor[] cachedRayInteractors;
 
     [Header("Events")]
     public Action onControllerMenuActionExecuted;
+    private string objLayer;
     private void Awake()
     {
-        cachedRayInteractors = FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.Interactors.XRRayInteractor>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
+        cachedRayInteractors = FindObjectsByType<UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor>(FindObjectsInactive.Include, FindObjectsSortMode.InstanceID);
     }
     private void OnEnable()
     {
         // bind controller events
         controllerMenuAction.action.performed += ControllerMenuActionPerformed;
-
         // bind to game manager events
         GameManager.Instance.onGamePaused += ControllerRayInteractorInput;
         GameManager.Instance.onGameResumed += ControllerRayInteractorInput;
@@ -45,11 +45,13 @@ public class ControllerManager : Singleton<ControllerManager>
     {
         foreach (var rayInteractor in cachedRayInteractors)
         {
-            rayInteractor.gameObject.SetActive(gameState == GameState.Paused);
+            objLayer = rayInteractor.gameObject.layer.ToString();
+            //rayInteractor.gameObject.SetActive(gameState == GameState.Paused);
             if (gameState == GameState.Paused)
                 ApplyDefaultLayers(rayInteractor.transform.parent, "UI");
             else
-                ApplyDefaultLayers(rayInteractor.transform.parent, "Default");
+                //       ApplyDefaultLayers(rayInteractor.transform.parent, "Default");
+                ApplyDefaultLayers(rayInteractor.transform.parent, objLayer);
         }
     }
     private void ApplyDefaultLayers(Transform rayParent, string layerName)

@@ -1,17 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class PortalFeature : BaseFeature
 {
-    private const float teleportDistance = 0.5f;
 
     [Header("Portal Configuration")]
     [SerializeField]
-    private GameObject portalModel;
+    private GameObject portalPivot;
+    [SerializeField]
+    private GameObject portalDestination;
     [SerializeField]
     private float rotSpeed = 0.05f;
     [SerializeField]
@@ -41,8 +41,9 @@ public class PortalFeature : BaseFeature
             UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable selectedInteractable = socketInteractor.firstInteractableSelected;
             GameObject objectPlaced = selectedInteractable.transform.gameObject;
 
+            Debug.Log("" + objectPlaced.name);
             socketInteractor.interactionManager.SelectExit(socketInteractor, selectedInteractable);
-            TeleportObject(objectPlaced);
+            TeleportObjectTo(objectPlaced, portalDestination.transform.position, portalDestination.transform.rotation);
             SetVolume(0.05f);
             //  PlayOnStarted();
         });
@@ -58,14 +59,14 @@ public class PortalFeature : BaseFeature
     //  ROTATIONS
     private void InitRotations()
     {
-        rotX = portalModel.transform.localEulerAngles.x;
-        rotY = portalModel.transform.localEulerAngles.y;
-        rotZ = portalModel.transform.localEulerAngles.z;
+        rotX = portalPivot.transform.localEulerAngles.x;
+        rotY = portalPivot.transform.localEulerAngles.y;
+        rotZ = portalPivot.transform.localEulerAngles.z;
     }
     private void UpdatePortalRotationZ(float speed)
     {
         rotZ += speed;
-        portalModel.transform.localEulerAngles = new UnityEngine.Vector3(rotX, rotY, rotZ);
+        portalPivot.transform.localEulerAngles = new Vector3(rotX, rotY, rotZ);
     }
     //==============================================================================
     //  PARTICLES
@@ -85,11 +86,12 @@ public class PortalFeature : BaseFeature
 
     //==============================================================================
     //  TELEPORT
-    private void TeleportObject(GameObject objectToTeleport)
+    private void TeleportObjectTo(GameObject objectToTeleport, Vector3 destination, Quaternion rotation)
     {
-        objectToTeleport.transform.Translate(-teleportDistance, 0, 0);
+        Instantiate(objectToTeleport, destination, rotation);
+        RemoveOldObj(objectToTeleport);
     }
-    private void RemoveOldObj(ref GameObject obj)
+    private void RemoveOldObj(GameObject obj)
     {
         Destroy(obj);
     }
