@@ -5060,8 +5060,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7133682404734158413}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 1.497, z: -2.731}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5069,7 +5069,7 @@ Transform:
   - {fileID: 6052169589864164691}
   - {fileID: 2557746467446373534}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3248576585384454384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5087,7 +5087,7 @@ MonoBehaviour:
   featureUsage: 0
   portalPivot: {fileID: 2257321597599474866}
   portalDestination: {fileID: 3023946268498322209}
-  rotSpeed: 0.025
+  rotSpeed: 0.2
   rotX: 0
   rotY: 0
   rotZ: 0

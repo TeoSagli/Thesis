@@ -22,13 +22,14 @@ using Meta.XR.MRUtilityKit;
 using Meta.XR.Util;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static EnumsMRUK;
 
 
 /// <summary>
 /// Allows for fast generation of valid (inside the room, outside furniture bounds) random positions for content spawning.
 /// Optional method to pin directly to surfaces.
 /// </summary>
-public class FindAndPlaceChest : MonoBehaviour
+public class FindAndPlacePortal : MonoBehaviour
 {
     [Tooltip("When the scene data is loaded, this controls what room(s) the prefabs will spawn in.")]
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
@@ -41,18 +42,6 @@ public class FindAndPlaceChest : MonoBehaviour
 
     [SerializeField, Tooltip("Maximum number of times to attempt spawning/moving an object before giving up.")]
     public int MaxIterations = 1000;
-
-    /// <summary>
-    /// Defines possible locations where objects can be spawned.
-    /// </summary>
-    public enum SpawnLocation
-    {
-        Floating, // Spawn somewhere floating in the free space within the room
-        AnySurface, // Spawn on any surface (i.e. a combination of all 3 options below)
-        VerticalSurfaces, // Spawn only on vertical surfaces such as walls, windows, wall art, doors, etc...
-        OnTopOfSurfaces, // Spawn on surfaces facing upwards such as ground, top of tables, beds, couches, etc...
-        HangingDown // Spawn on surfaces facing downwards such as the ceiling
-    }
 
     [FormerlySerializedAs("selectedSnapOption")]
     [SerializeField, Tooltip("Attach content to scene surfaces.")]
@@ -209,7 +198,7 @@ public class FindAndPlaceChest : MonoBehaviour
                     }
                 }
 
-                Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, spawnNormal);
+                Quaternion spawnRotation = Quaternion.identity;
                 if (CheckOverlaps && prefabBounds.HasValue)
                 {
                     if (Physics.CheckBox(spawnPosition + spawnRotation * adjustedBounds.center, adjustedBounds.extents, spawnRotation, LayerMask, QueryTriggerInteraction.Ignore))
@@ -222,10 +211,12 @@ public class FindAndPlaceChest : MonoBehaviour
 
                 if (SpawnObject.gameObject.scene.path == null)
                 {
-                    /*  var player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;*/
+                    /*   var player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;*/
+                    Vector2 vec2;
+                    spawnPosition = MRUK.Instance.GetCurrentRoom().GetKeyWall(out vec2).GetAnchorCenter();
 
-                    Instantiate(SpawnObject, spawnPosition, spawnRotation, transform).transform.LookAt(new Vector3(0, spawnPosition.y, 0));
-                    Debug.Log("Spawned Chest");
+                    Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
+                    Debug.Log("Spawned Portal");
 
                 }
                 else

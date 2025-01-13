@@ -1457,15 +1457,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Tracking State",
-                    "type": "Value",
-                    "id": "167ea203-5bfb-4d74-bde9-8026b7483102",
-                    "expectedControlType": "Integer",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
                     "name": "Haptic Device",
                     "type": "PassThrough",
                     "id": "57b2a1b4-3290-46d6-ac07-4854ee8f91b1",
@@ -1551,6 +1542,15 @@
                     "type": "Value",
                     "id": "b8c0ccd3-e1b6-4913-96b3-e0864c9ac6bd",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Tracking State",
+                    "type": "Value",
+                    "id": "03228a68-b51d-4020-bb97-2f35fd5f4c5b",
+                    "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1653,28 +1653,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Haptic Device",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "03ccbaec-eeca-4fc4-8281-ee1758b4eb9b",
-                    "path": "<XRController>{RightHand}/trackingState",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Tracking State",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "714d1173-f908-4bca-951c-4adb4eb7b4c5",
-                    "path": "<XRHandDevice>{RightHand}/trackingState",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Tracking State",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -1961,6 +1939,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Thumbstick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f47c4c35-a9d4-4291-8f8d-6a66a05b3d90",
+                    "path": "<XRController>{RightHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e7f56def-b4d7-473b-a3cf-372ff70a7290",
+                    "path": "<XRHandDevice>{RightHand}/trackingState",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tracking State",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
