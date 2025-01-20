@@ -18,18 +18,23 @@
  * limitations under the License.
  */
 
+using System;
+using LearnXR.Core.Utilities;
 using Meta.XR.MRUtilityKit;
 using Meta.XR.Util;
+using Unity.VisualScripting;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static EnumsMRUK;
+
 
 
 /// <summary>
 /// Allows for fast generation of valid (inside the room, outside furniture bounds) random positions for content spawning.
 /// Optional method to pin directly to surfaces.
 /// </summary>
-public class FindAndPlacePortal : MonoBehaviour
+public class SpawnChest : MonoBehaviour
 {
     [Tooltip("When the scene data is loaded, this controls what room(s) the prefabs will spawn in.")]
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
@@ -42,6 +47,10 @@ public class FindAndPlacePortal : MonoBehaviour
 
     [SerializeField, Tooltip("Maximum number of times to attempt spawning/moving an object before giving up.")]
     public int MaxIterations = 1000;
+
+    /// <summary>
+    /// Defines possible locations where objects can be spawned.
+    /// </summary>
 
     [FormerlySerializedAs("selectedSnapOption")]
     [SerializeField, Tooltip("Attach content to scene surfaces.")]
@@ -63,11 +72,11 @@ public class FindAndPlacePortal : MonoBehaviour
     [SerializeField, Tooltip("The clearance distance required in front of the surface in order for it to be considered a valid spawn position")]
     public float SurfaceClearanceDistance = 0.1f;
 
+    //const
+    const string pathToMeshRenderer = "Joint_L/LowerChest";
+
     private void Start()
-    {/*
-#if UNITY_EDITOR
-        OVRTelemetry.Start(TelemetryConstants.MarkerId.LoadFindSpawnPositions).Send();
-#endif*/
+    {
         if (MRUK.Instance && SpawnOnStart != MRUK.RoomFilter.None)
         {
             MRUK.Instance.RegisterSceneLoadedCallback(() =>
@@ -102,11 +111,12 @@ public class FindAndPlacePortal : MonoBehaviour
     /// <param name="room">The room to spawn objects in.</param>
     public void StartSpawn(MRUKRoom room)
     {
-        var prefabBounds = Utilities.GetPrefabBounds(SpawnObject);
+        //to retrieve child mesh
+        GameObject toFind = SpawnObject.transform.Find(pathToMeshRenderer).gameObject;
+        Bounds? prefabBounds = Utilities.GetPrefabBounds(toFind);
+
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
-        float baseOffset = -prefabBounds?.min.y ?? 0.0f;
-        float centerOffset = prefabBounds?.center.y ?? 0.0f;
         Bounds adjustedBounds = new();
 
         if (prefabBounds.HasValue)
@@ -116,33 +126,35 @@ public class FindAndPlacePortal : MonoBehaviour
             {
                 minRadius = 0f;
             }
-
-            var min = prefabBounds.Value.min;
-            var max = prefabBounds.Value.max;
-            min.y += clearanceDistance;
-            if (max.y < min.y)
-            {
-                max.y = min.y;
-            }
-
-            adjustedBounds.SetMinMax(min, max);
-            if (OverrideBounds > 0)
-            {
-                Vector3 center = new Vector3(0f, clearanceDistance, 0f);
-                Vector3 size = new Vector3(OverrideBounds * 2f, clearanceDistance * 2f, OverrideBounds * 2f); // OverrideBounds represents the extents, not the size
-                adjustedBounds = new Bounds(center, size);
-            }
+            adjustedBounds = GetAdjustedPrefabBounds(prefabBounds, OverrideBounds, clearanceDistance);
+            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} Min radius is:" + minRadius);
+            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} pref b:" + prefabBounds);
+            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} adj b:" + adjustedBounds);
         }
 
-        for (int i = 0; i < SpawnAmount; ++i)
+        GeneratePrefabsOnSurfaces(room, prefabBounds, SpawnAmount, MaxIterations, minRadius, SpawnLocations, Labels, adjustedBounds, SurfaceClearanceDistance, CheckOverlaps);
+    }
+
+    /// <summary>
+    /// Generate prefabs randomly in the room by the selected parameters.
+    /// </summary>
+    /// <param name="room">The room to spawn objects in.</param>
+    /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
+    /// <param name="spawnAmount">How many objects to spawn.</param>
+    private void GeneratePrefabsOnSurfaces(MRUKRoom room, Bounds? prefabBounds, int spawnAmount, int maxIterations, float minRadius, SpawnLocation spawnLocations, MRUKAnchor.SceneLabels labels, Bounds adjustedBounds, float surfaceClearanceDistance, bool checkOverlaps)
+    {
+        float baseOffset = -prefabBounds?.min.y ?? 0.0f;
+        float centerOffset = prefabBounds?.center.y ?? 0.0f;
+        for (int i = 0; i < spawnAmount; ++i)
         {
             bool foundValidSpawnPosition = false;
-            for (int j = 0; j < MaxIterations; ++j)
+            for (int j = 0; j < maxIterations; ++j)
             {
                 Vector3 spawnPosition = Vector3.zero;
                 Vector3 spawnNormal = Vector3.zero;
                 if (SpawnLocations == SpawnLocation.Floating)
                 {
+                    //spawn somewhere floating
                     var randomPos = room.GenerateRandomPositionInRoom(minRadius, true);
                     if (!randomPos.HasValue)
                     {
@@ -153,26 +165,10 @@ public class FindAndPlacePortal : MonoBehaviour
                 }
                 else
                 {
-                    MRUK.SurfaceType surfaceType = 0;
-                    switch (SpawnLocations)
-                    {
-                        case SpawnLocation.AnySurface:
-                            surfaceType |= MRUK.SurfaceType.FACING_UP;
-                            surfaceType |= MRUK.SurfaceType.VERTICAL;
-                            surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                            break;
-                        case SpawnLocation.VerticalSurfaces:
-                            surfaceType |= MRUK.SurfaceType.VERTICAL;
-                            break;
-                        case SpawnLocation.OnTopOfSurfaces:
-                            surfaceType |= MRUK.SurfaceType.FACING_UP;
-                            break;
-                        case SpawnLocation.HangingDown:
-                            surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                            break;
-                    }
+                    //retrieve the selected surface by the user
+                    MRUK.SurfaceType surfaceType = GetSurfaceType(spawnLocations);
 
-                    if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(Labels), out var pos, out var normal))
+                    if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(labels), out var pos, out var normal))
                     {
                         spawnPosition = pos + normal * baseOffset;
                         spawnNormal = normal;
@@ -191,15 +187,15 @@ public class FindAndPlacePortal : MonoBehaviour
                         }
 
                         // Also make sure there is nothing close to the surface that would obstruct it
-                        if (room.Raycast(new Ray(pos, normal), SurfaceClearanceDistance, out _))
+                        if (room.Raycast(new Ray(pos, normal), surfaceClearanceDistance, out _))
                         {
                             continue;
                         }
                     }
                 }
 
-                Quaternion spawnRotation = Quaternion.identity;
-                if (CheckOverlaps && prefabBounds.HasValue)
+                Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, spawnNormal);
+                if (checkOverlaps && prefabBounds.HasValue)
                 {
                     if (Physics.CheckBox(spawnPosition + spawnRotation * adjustedBounds.center, adjustedBounds.extents, spawnRotation, LayerMask, QueryTriggerInteraction.Ignore))
                     {
@@ -211,13 +207,9 @@ public class FindAndPlacePortal : MonoBehaviour
 
                 if (SpawnObject.gameObject.scene.path == null)
                 {
-                    /*   var player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;*/
-                    Vector2 vec2;
-                    spawnPosition = MRUK.Instance.GetCurrentRoom().GetKeyWall(out vec2).GetAnchorCenter();
-
-                    Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
-                    Debug.Log("Spawned Portal");
-
+                    GameObject chest = Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
+                    chest.transform.LookAt(new Vector3(0, spawnPosition.y, 0));
+                    /*  SpatialLogger.Instance.LogInfo($"{nameof(FindAndPlaceChest)} Spawned Chest");*/
                 }
                 else
                 {
@@ -231,10 +223,66 @@ public class FindAndPlacePortal : MonoBehaviour
 
             if (!foundValidSpawnPosition)
             {
-                Debug.LogWarning($"Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
+                SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// Get the adjusted bounds if necessary.
+    /// </summary>
+    /// <param name="overrideBounds">To handle bounds manually.</param>
+    /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
+    /// <param name="clearanceDistance">Cleareance to adjust bounds.</param>
+    private Bounds GetAdjustedPrefabBounds(Bounds? prefabBounds, float overrideBounds, float clearanceDistance)
+    {
+        Bounds adjustedBounds = new();
+
+        var min = prefabBounds.Value.min;
+        var max = prefabBounds.Value.max;
+        min.y += clearanceDistance;
+        if (max.y < min.y)
+        {
+            max.y = min.y;
+        }
+
+        adjustedBounds.SetMinMax(min, max);
+        SpatialLogger.Instance.LogInfo("overrbounds " + overrideBounds);
+        if (overrideBounds > 0)
+        {
+            Vector3 center = new Vector3(0f, clearanceDistance, 0f);
+            Vector3 size = new Vector3(overrideBounds * 2f, clearanceDistance * 2f, overrideBounds * 2f); // OverrideBounds represents the extents, not the size
+            adjustedBounds = new Bounds(center, size);
+        }
+        return adjustedBounds;
+    }
+
+    /// <summary>
+    /// Select and retrieve the surfaceType given the spawnLocations.
+    /// </summary>
+    /// <param name="spawnLocations">Retrieve the surfaceType.</param>
+    private MRUK.SurfaceType GetSurfaceType(SpawnLocation spawnLocations)
+    {
+        MRUK.SurfaceType surfaceType = 0;
+        switch (spawnLocations)
+        {
+            case SpawnLocation.AnySurface:
+                surfaceType |= MRUK.SurfaceType.FACING_UP;
+                surfaceType |= MRUK.SurfaceType.VERTICAL;
+                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
+                break;
+            case SpawnLocation.VerticalSurfaces:
+                surfaceType |= MRUK.SurfaceType.VERTICAL;
+                break;
+            case SpawnLocation.OnTopOfSurfaces:
+                surfaceType |= MRUK.SurfaceType.FACING_UP;
+                break;
+            case SpawnLocation.HangingDown:
+                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
+                break;
+        }
+        return surfaceType;
     }
 }
 

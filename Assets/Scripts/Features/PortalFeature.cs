@@ -9,7 +9,7 @@ public class PortalFeature : BaseFeature
 
     [Header("Portal Configuration")]
     [SerializeField]
-    private GameObject portalPivot;
+    private GameObject portalMesh;
     [SerializeField]
     private GameObject portalDestination;
     [SerializeField]
@@ -35,7 +35,7 @@ public class PortalFeature : BaseFeature
     {
         InitRotations();
         InitParticles();
-
+        ToggleParticle(particleSystemIn);
         socketInteractor?.selectEntered.AddListener((s) =>
         {
             UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable selectedInteractable = socketInteractor.firstInteractableSelected;
@@ -45,7 +45,7 @@ public class PortalFeature : BaseFeature
             socketInteractor.interactionManager.SelectExit(socketInteractor, selectedInteractable);
             TeleportObjectTo(objectPlaced, portalDestination.transform.position, portalDestination.transform.rotation);
             SetVolume(0.05f);
-            //  PlayOnStarted();
+            //PlayOnStarted();
         });
     }
 
@@ -59,14 +59,14 @@ public class PortalFeature : BaseFeature
     //  ROTATIONS
     private void InitRotations()
     {
-        rotX = portalPivot.transform.localEulerAngles.x;
-        rotY = portalPivot.transform.localEulerAngles.y;
-        rotZ = portalPivot.transform.localEulerAngles.z;
+        rotX = portalMesh.transform.localEulerAngles.x;
+        rotY = portalMesh.transform.localEulerAngles.y;
+        rotZ = portalMesh.transform.localEulerAngles.z;
     }
     private void UpdatePortalRotationZ(float speed)
     {
         rotZ += speed;
-        portalPivot.transform.localEulerAngles = new Vector3(rotX, rotY, rotZ);
+        portalMesh.transform.localEulerAngles = new Vector3(rotX, rotY, rotZ);
     }
     //==============================================================================
     //  PARTICLES

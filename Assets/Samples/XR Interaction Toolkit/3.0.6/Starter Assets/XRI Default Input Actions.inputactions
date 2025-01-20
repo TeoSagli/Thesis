@@ -63,7 +63,7 @@
                     "name": "Eye Gaze Is Tracked",
                     "type": "Button",
                     "id": "ea26ba43-844b-4585-817a-2f124b571813",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1450,8 +1450,17 @@
                 {
                     "name": "Is Tracked",
                     "type": "Button",
-                    "id": "a705ffe4-b2c8-4b78-847f-25257d4e30af",
+                    "id": "a0ec43d1-2f9f-4068-af47-e1fb94aeaab5",
                     "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Tracking State",
+                    "type": "Value",
+                    "id": "03228a68-b51d-4020-bb97-2f35fd5f4c5b",
+                    "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1542,15 +1551,6 @@
                     "type": "Value",
                     "id": "b8c0ccd3-e1b6-4913-96b3-e0864c9ac6bd",
                     "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Tracking State",
-                    "type": "Value",
-                    "id": "03228a68-b51d-4020-bb97-2f35fd5f4c5b",
-                    "expectedControlType": "Integer",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -1878,28 +1878,6 @@
                 },
                 {
                     "name": "",
-                    "id": "1de48aee-890b-4dbb-a02d-51df9bd39db7",
-                    "path": "<XRController>{RightHand}/isTracked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Is Tracked",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5a0c4fe0-639a-44e0-beeb-4e11e0dea7ef",
-                    "path": "<XRHandDevice>{RightHand}/isTracked",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Is Tracked",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5469d4d1-9645-4397-a596-d74f876eafc2",
                     "path": "<MetaAimHand>{RightHand}/aimFlags",
                     "interactions": "",
@@ -1961,6 +1939,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Tracking State",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "de83c0d5-63c7-40c9-a6af-1f1bcda54d64",
+                    "path": "<XRController>{RightHand}/isTracked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Is Tracked",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4ffea0a-11ab-4383-ad95-6e8894339ada",
+                    "path": "<XRHandDevice>{RightHand}/isTracked",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Is Tracked",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2385,7 +2385,7 @@
                     "name": "Teleport Mode Cancel",
                     "type": "Button",
                     "id": "d587b60c-39a0-4365-8075-477ce484ba0f",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -2421,7 +2421,7 @@
                     "name": "Grab Move",
                     "type": "Button",
                     "id": "cfb29d37-3db0-4e5d-a73b-7d48a19e279e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false

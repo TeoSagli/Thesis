@@ -18,17 +18,19 @@
  * limitations under the License.
  */
 
+using LearnXR.Core.Utilities;
 using Meta.XR.MRUtilityKit;
 using Meta.XR.Util;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static EnumsMRUK;
 
 
 /// <summary>
 /// Allows for fast generation of valid (inside the room, outside furniture bounds) random positions for content spawning.
 /// Optional method to pin directly to surfaces.
 /// </summary>
-public class FindAndPlaceChest : MonoBehaviour
+public class SpawnFlashlight : MonoBehaviour
 {
     [Tooltip("When the scene data is loaded, this controls what room(s) the prefabs will spawn in.")]
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
@@ -45,14 +47,6 @@ public class FindAndPlaceChest : MonoBehaviour
     /// <summary>
     /// Defines possible locations where objects can be spawned.
     /// </summary>
-    public enum SpawnLocation
-    {
-        Floating, // Spawn somewhere floating in the free space within the room
-        AnySurface, // Spawn on any surface (i.e. a combination of all 3 options below)
-        VerticalSurfaces, // Spawn only on vertical surfaces such as walls, windows, wall art, doors, etc...
-        OnTopOfSurfaces, // Spawn on surfaces facing upwards such as ground, top of tables, beds, couches, etc...
-        HangingDown // Spawn on surfaces facing downwards such as the ceiling
-    }
 
     [FormerlySerializedAs("selectedSnapOption")]
     [SerializeField, Tooltip("Attach content to scene surfaces.")]
@@ -73,12 +67,10 @@ public class FindAndPlaceChest : MonoBehaviour
 
     [SerializeField, Tooltip("The clearance distance required in front of the surface in order for it to be considered a valid spawn position")]
     public float SurfaceClearanceDistance = 0.1f;
-
+    //const
+    const string pathToMeshRenderer = "Flashlight_LOD0";
     private void Start()
-    {/*
-#if UNITY_EDITOR
-        OVRTelemetry.Start(TelemetryConstants.MarkerId.LoadFindSpawnPositions).Send();
-#endif*/
+    {
         if (MRUK.Instance && SpawnOnStart != MRUK.RoomFilter.None)
         {
             MRUK.Instance.RegisterSceneLoadedCallback(() =>
@@ -113,7 +105,10 @@ public class FindAndPlaceChest : MonoBehaviour
     /// <param name="room">The room to spawn objects in.</param>
     public void StartSpawn(MRUKRoom room)
     {
-        var prefabBounds = Utilities.GetPrefabBounds(SpawnObject);
+        //to retrieve child mesh
+        GameObject toFind = SpawnObject.transform.Find(pathToMeshRenderer).gameObject;
+        Bounds? prefabBounds = Utilities.GetPrefabBounds(toFind);
+        SpatialLogger.Instance.LogInfo($"{nameof(SpawnFlashlight)} bounds of flashlight:" + prefabBounds);
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
         float baseOffset = -prefabBounds?.min.y ?? 0.0f;
@@ -225,7 +220,7 @@ public class FindAndPlaceChest : MonoBehaviour
                     /*  var player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;*/
 
                     Instantiate(SpawnObject, spawnPosition, spawnRotation, transform).transform.LookAt(new Vector3(0, spawnPosition.y, 0));
-                    Debug.Log("Spawned Chest");
+                    Debug.Log("Spawned Flashlight");
 
                 }
                 else
