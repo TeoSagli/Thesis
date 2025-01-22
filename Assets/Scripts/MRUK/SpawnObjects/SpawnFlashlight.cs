@@ -30,7 +30,7 @@ using static EnumsMRUK;
 /// Allows for fast generation of valid (inside the room, outside furniture bounds) random positions for content spawning.
 /// Optional method to pin directly to surfaces.
 /// </summary>
-public class SpawnFlashlight : MonoBehaviour
+public class SpawnFlashlight : Spawn
 {
     [Tooltip("When the scene data is loaded, this controls what room(s) the prefabs will spawn in.")]
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
@@ -68,7 +68,7 @@ public class SpawnFlashlight : MonoBehaviour
     [SerializeField, Tooltip("The clearance distance required in front of the surface in order for it to be considered a valid spawn position")]
     public float SurfaceClearanceDistance = 0.1f;
     //const
-    const string pathToMeshRenderer = "Flashlight_LOD0";
+    const string PATH_TO_MESH_RENDERER = "Flashlight_LOD0";
     private void Start()
     {
         if (MRUK.Instance && SpawnOnStart != MRUK.RoomFilter.None)
@@ -106,13 +106,12 @@ public class SpawnFlashlight : MonoBehaviour
     public void StartSpawn(MRUKRoom room)
     {
         //to retrieve child mesh
-        GameObject toFind = SpawnObject.transform.Find(pathToMeshRenderer).gameObject;
+        GameObject toFind = SpawnObject.transform.Find(PATH_TO_MESH_RENDERER).gameObject;
         Bounds? prefabBounds = Utilities.GetPrefabBounds(toFind);
-        SpatialLogger.Instance.LogInfo($"{nameof(SpawnFlashlight)} bounds of flashlight:" + prefabBounds);
+        printToLogger("bounds of flashlight:" + prefabBounds);
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
-        float baseOffset = -prefabBounds?.min.y ?? 0.0f;
-        float centerOffset = prefabBounds?.center.y ?? 0.0f;
+
         Bounds adjustedBounds = new();
 
         if (prefabBounds.HasValue)
@@ -123,23 +122,23 @@ public class SpawnFlashlight : MonoBehaviour
                 minRadius = 0f;
             }
 
-            var min = prefabBounds.Value.min;
-            var max = prefabBounds.Value.max;
-            min.y += clearanceDistance;
-            if (max.y < min.y)
-            {
-                max.y = min.y;
-            }
-
-            adjustedBounds.SetMinMax(min, max);
-            if (OverrideBounds > 0)
-            {
-                Vector3 center = new Vector3(0f, clearanceDistance, 0f);
-                Vector3 size = new Vector3(OverrideBounds * 2f, clearanceDistance * 2f, OverrideBounds * 2f); // OverrideBounds represents the extents, not the size
-                adjustedBounds = new Bounds(center, size);
-            }
+            adjustedBounds = GetAdjustedPrefabBounds(prefabBounds, OverrideBounds, clearanceDistance);
         }
+        GeneratePrefabsOnSurfaces(room, prefabBounds, minRadius, adjustedBounds);
 
+    }
+
+    /// <summary>
+    /// Generate prefabs randomly in the room by the selected parameters.
+    /// </summary>
+    /// <param name="room">The room to spawn objects in.</param>
+    /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
+    /// <param name="adjustedBounds">Adjusted bounds of the mesh renderer of the prefab, if needed.</param>
+    /// <param name="minRadius">Min distance between objs.</param>
+    private void GeneratePrefabsOnSurfaces(MRUKRoom room, Bounds? prefabBounds, float minRadius, Bounds adjustedBounds)
+    {
+        float baseOffset = -prefabBounds?.min.y ?? 0.0f;
+        float centerOffset = prefabBounds?.center.y ?? 0.0f;
         for (int i = 0; i < SpawnAmount; ++i)
         {
             bool foundValidSpawnPosition = false;
@@ -159,24 +158,7 @@ public class SpawnFlashlight : MonoBehaviour
                 }
                 else
                 {
-                    MRUK.SurfaceType surfaceType = 0;
-                    switch (SpawnLocations)
-                    {
-                        case SpawnLocation.AnySurface:
-                            surfaceType |= MRUK.SurfaceType.FACING_UP;
-                            surfaceType |= MRUK.SurfaceType.VERTICAL;
-                            surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                            break;
-                        case SpawnLocation.VerticalSurfaces:
-                            surfaceType |= MRUK.SurfaceType.VERTICAL;
-                            break;
-                        case SpawnLocation.OnTopOfSurfaces:
-                            surfaceType |= MRUK.SurfaceType.FACING_UP;
-                            break;
-                        case SpawnLocation.HangingDown:
-                            surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                            break;
-                    }
+                    MRUK.SurfaceType surfaceType = GetSurfaceType(SpawnLocations);
 
                     if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(Labels), out var pos, out var normal))
                     {
@@ -220,7 +202,6 @@ public class SpawnFlashlight : MonoBehaviour
                     /*  var player = GameObject.FindGameObjectWithTag("Player").gameObject.transform;*/
 
                     Instantiate(SpawnObject, spawnPosition, spawnRotation, transform).transform.LookAt(new Vector3(0, spawnPosition.y, 0));
-                    Debug.Log("Spawned Flashlight");
 
                 }
                 else
@@ -235,10 +216,65 @@ public class SpawnFlashlight : MonoBehaviour
 
             if (!foundValidSpawnPosition)
             {
-                Debug.LogWarning($"Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
+                printToLogger("Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
                 break;
             }
         }
+    }
+
+    /// <summary>
+    /// Select and retrieve the surfaceType given the spawnLocations.
+    /// </summary>
+    /// <param name="spawnLocations">Retrieve the surfaceType.</param>
+    private MRUK.SurfaceType GetSurfaceType(SpawnLocation spawnLocations)
+    {
+        MRUK.SurfaceType surfaceType = 0;
+        switch (spawnLocations)
+        {
+            case SpawnLocation.AnySurface:
+                surfaceType |= MRUK.SurfaceType.FACING_UP;
+                surfaceType |= MRUK.SurfaceType.VERTICAL;
+                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
+                break;
+            case SpawnLocation.VerticalSurfaces:
+                surfaceType |= MRUK.SurfaceType.VERTICAL;
+                break;
+            case SpawnLocation.OnTopOfSurfaces:
+                surfaceType |= MRUK.SurfaceType.FACING_UP;
+                break;
+            case SpawnLocation.HangingDown:
+                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
+                break;
+        }
+        return surfaceType;
+    }
+
+    /// <summary>
+    /// Generate prefabs randomly in the room by the selected parameters.
+    /// </summary>
+    /// <param name="overrideBounds">To handle bounds manually.</param>
+    /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
+    /// <param name="clearanceDistance">Cleareance to adjust bounds.</param>
+    private Bounds GetAdjustedPrefabBounds(Bounds? prefabBounds, float overrideBounds, float clearanceDistance)
+    {
+        Bounds adjustedBounds = new();
+
+        var min = prefabBounds.Value.min;
+        var max = prefabBounds.Value.max;
+        min.y += clearanceDistance;
+        if (max.y < min.y)
+        {
+            max.y = min.y;
+        }
+
+        adjustedBounds.SetMinMax(min, max);
+        if (overrideBounds > 0)
+        {
+            Vector3 center = new Vector3(0f, clearanceDistance, 0f);
+            Vector3 size = new Vector3(overrideBounds * 2f, clearanceDistance * 2f, overrideBounds * 2f); // OverrideBounds represents the extents, not the size
+            adjustedBounds = new Bounds(center, size);
+        }
+        return adjustedBounds;
     }
 }
 

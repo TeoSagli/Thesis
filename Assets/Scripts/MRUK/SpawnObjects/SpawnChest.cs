@@ -34,7 +34,7 @@ using static EnumsMRUK;
 /// Allows for fast generation of valid (inside the room, outside furniture bounds) random positions for content spawning.
 /// Optional method to pin directly to surfaces.
 /// </summary>
-public class SpawnChest : MonoBehaviour
+public class SpawnChest : Spawn
 {
     [Tooltip("When the scene data is loaded, this controls what room(s) the prefabs will spawn in.")]
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
@@ -73,7 +73,7 @@ public class SpawnChest : MonoBehaviour
     public float SurfaceClearanceDistance = 0.1f;
 
     //const
-    const string pathToMeshRenderer = "Joint_L/LowerChest";
+    const string PATH_TO_MESH_RENDERER = "Joint_L/LowerChest";
 
     private void Start()
     {
@@ -112,7 +112,7 @@ public class SpawnChest : MonoBehaviour
     public void StartSpawn(MRUKRoom room)
     {
         //to retrieve child mesh
-        GameObject toFind = SpawnObject.transform.Find(pathToMeshRenderer).gameObject;
+        GameObject toFind = SpawnObject.transform.Find(PATH_TO_MESH_RENDERER).gameObject;
         Bounds? prefabBounds = Utilities.GetPrefabBounds(toFind);
 
         float minRadius = 0.0f;
@@ -127,12 +127,12 @@ public class SpawnChest : MonoBehaviour
                 minRadius = 0f;
             }
             adjustedBounds = GetAdjustedPrefabBounds(prefabBounds, OverrideBounds, clearanceDistance);
-            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} Min radius is:" + minRadius);
-            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} pref b:" + prefabBounds);
-            SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} adj b:" + adjustedBounds);
+            /*   printToLogger("Min radius is:" + minRadius);
+               printToLogger("pref b:" + prefabBounds);
+               printToLogger("adj b:" + adjustedBounds);*/
         }
 
-        GeneratePrefabsOnSurfaces(room, prefabBounds, SpawnAmount, MaxIterations, minRadius, SpawnLocations, Labels, adjustedBounds, SurfaceClearanceDistance, CheckOverlaps);
+        GeneratePrefabsOnSurfaces(room, prefabBounds, minRadius, adjustedBounds);
     }
 
     /// <summary>
@@ -140,15 +140,16 @@ public class SpawnChest : MonoBehaviour
     /// </summary>
     /// <param name="room">The room to spawn objects in.</param>
     /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
-    /// <param name="spawnAmount">How many objects to spawn.</param>
-    private void GeneratePrefabsOnSurfaces(MRUKRoom room, Bounds? prefabBounds, int spawnAmount, int maxIterations, float minRadius, SpawnLocation spawnLocations, MRUKAnchor.SceneLabels labels, Bounds adjustedBounds, float surfaceClearanceDistance, bool checkOverlaps)
+    /// <param name="adjustedBounds">Adjusted bounds of the mesh renderer of the prefab, if needed.</param>
+    /// <param name="minRadius">Min distance between objs.</param>
+    private void GeneratePrefabsOnSurfaces(MRUKRoom room, Bounds? prefabBounds, float minRadius, Bounds adjustedBounds)
     {
         float baseOffset = -prefabBounds?.min.y ?? 0.0f;
         float centerOffset = prefabBounds?.center.y ?? 0.0f;
-        for (int i = 0; i < spawnAmount; ++i)
+        for (int i = 0; i < SpawnAmount; ++i)
         {
             bool foundValidSpawnPosition = false;
-            for (int j = 0; j < maxIterations; ++j)
+            for (int j = 0; j < MaxIterations; ++j)
             {
                 Vector3 spawnPosition = Vector3.zero;
                 Vector3 spawnNormal = Vector3.zero;
@@ -166,9 +167,9 @@ public class SpawnChest : MonoBehaviour
                 else
                 {
                     //retrieve the selected surface by the user
-                    MRUK.SurfaceType surfaceType = GetSurfaceType(spawnLocations);
+                    MRUK.SurfaceType surfaceType = GetSurfaceType(SpawnLocations);
 
-                    if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(labels), out var pos, out var normal))
+                    if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(Labels), out var pos, out var normal))
                     {
                         spawnPosition = pos + normal * baseOffset;
                         spawnNormal = normal;
@@ -187,7 +188,7 @@ public class SpawnChest : MonoBehaviour
                         }
 
                         // Also make sure there is nothing close to the surface that would obstruct it
-                        if (room.Raycast(new Ray(pos, normal), surfaceClearanceDistance, out _))
+                        if (room.Raycast(new Ray(pos, normal), SurfaceClearanceDistance, out _))
                         {
                             continue;
                         }
@@ -195,7 +196,7 @@ public class SpawnChest : MonoBehaviour
                 }
 
                 Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, spawnNormal);
-                if (checkOverlaps && prefabBounds.HasValue)
+                if (CheckOverlaps && prefabBounds.HasValue)
                 {
                     if (Physics.CheckBox(spawnPosition + spawnRotation * adjustedBounds.center, adjustedBounds.extents, spawnRotation, LayerMask, QueryTriggerInteraction.Ignore))
                     {
@@ -209,7 +210,7 @@ public class SpawnChest : MonoBehaviour
                 {
                     GameObject chest = Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
                     chest.transform.LookAt(new Vector3(0, spawnPosition.y, 0));
-                    /*  SpatialLogger.Instance.LogInfo($"{nameof(FindAndPlaceChest)} Spawned Chest");*/
+                    /* printToLogger("Spawned Chest");*/
                 }
                 else
                 {
@@ -223,7 +224,7 @@ public class SpawnChest : MonoBehaviour
 
             if (!foundValidSpawnPosition)
             {
-                SpatialLogger.Instance.LogInfo($"{nameof(SpawnChest)} Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
+                printToLogger($"Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
                 break;
             }
         }
@@ -248,7 +249,7 @@ public class SpawnChest : MonoBehaviour
         }
 
         adjustedBounds.SetMinMax(min, max);
-        SpatialLogger.Instance.LogInfo("overrbounds " + overrideBounds);
+        /* printToLogger("overrbounds " + overrideBounds);*/
         if (overrideBounds > 0)
         {
             Vector3 center = new Vector3(0f, clearanceDistance, 0f);

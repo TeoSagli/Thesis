@@ -35,7 +35,12 @@ public class AudioManager : Singleton<AudioManager>
         if (tracks.Length > 0)
         {
             audioSource.clip = tracks[UnityEngine.Random.Range(0, tracks.Length - 1)];
+            adjustvolume(0.25f);
             audioSource.Play();
         }
+    }
+    private void adjustvolume(float value)
+    {
+        audioSource.volume = value;
     }
 }

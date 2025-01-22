@@ -36,18 +36,10 @@ public class PortalFeature : BaseFeature
         InitRotations();
         InitParticles();
         ToggleParticle(particleSystemIn);
-        socketInteractor?.selectEntered.AddListener((s) =>
-        {
-            UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable selectedInteractable = socketInteractor.firstInteractableSelected;
-            GameObject objectPlaced = selectedInteractable.transform.gameObject;
+        AddListenerAndExecuteAction(ref socketInteractor, ExitObjectSelection);
 
-            Debug.Log("" + objectPlaced.name);
-            socketInteractor.interactionManager.SelectExit(socketInteractor, selectedInteractable);
-            TeleportObjectTo(objectPlaced, portalDestination.transform.position, portalDestination.transform.rotation);
-            SetVolume(0.05f);
-            //PlayOnStarted();
-        });
     }
+
 
 
     void Update()
@@ -96,5 +88,26 @@ public class PortalFeature : BaseFeature
         Destroy(obj);
     }
     //==============================================================================
+    // SOCKET
+    private void AddListenerAndExecuteAction(ref XRSocketInteractor socketInteractor, Action exitObjectSelection)
+    {
+        socketInteractor?.selectEntered.AddListener((s) =>
+        {
+            ExitObjectSelection();
+        });
+    }
+    void ExitObjectSelection()
+    {
+        UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable selectedInteractable = socketInteractor.firstInteractableSelected;
+        GameObject objectPlaced = selectedInteractable.transform.gameObject;
+
+        Debug.Log("" + objectPlaced.name);
+        socketInteractor.interactionManager.SelectExit(socketInteractor, selectedInteractable);
+        TeleportObjectTo(objectPlaced, portalDestination.transform.position, portalDestination.transform.rotation);
+        SetVolume(0.05f);
+        //PlayOnStarted();
+    }
+    //==============================================================================
+
 
 }
