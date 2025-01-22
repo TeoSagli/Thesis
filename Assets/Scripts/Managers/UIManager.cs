@@ -8,7 +8,7 @@ using DilmerGames.Core.Singletons;
 
 public class UIManager : Singleton<UIManager>
 {
-    private const string GAME_SCENE_NAME = "Game";
+    private const string GAME_SCENE_NAME = "MRUKTest";
 
     [Header("UI configuration")]
     [SerializeField]
@@ -34,6 +34,9 @@ public class UIManager : Singleton<UIManager>
             onGameResumeActionExecuted?.Invoke();
         });
     }
+    /// <summary>
+    /// Subscribe the other managers to the actions to perform
+    /// </summary>
     private void OnEnable()
     {
         //listen to game manager state changes
@@ -41,6 +44,9 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.onGameResumed += HandleMenuOptions;
         GameManager.Instance.onGameSolved += HandleMenuOptions;
     }
+    /// <summary>
+    /// Unsubscribe the other managers to the actions to perform
+    /// </summary>
     private void OnDisable()
     {
         //remove listeners
@@ -48,6 +54,11 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.onGameResumed -= HandleMenuOptions;
         GameManager.Instance.onGameSolved -= HandleMenuOptions;
     }
+    /// <summary>
+    /// Change UI option bsed on the current gaame state
+    /// </summary>
+    /// <param name="gameState">current game state</param>
+    /// 
     private void HandleMenuOptions(GameState gameState)
     {
         switch (gameState)
@@ -65,11 +76,28 @@ public class UIManager : Singleton<UIManager>
                 break;
         }
     }
+    /// <summary>
+    /// Activate and show the menu.
+    /// </summary>
+    /// 
     private void ActivateAndShowMenu()
     {
         menuContainer.SetActive(true);
         PlaceMenuInFrontOfPlayer();
+        PauseAudioSource();
     }
+    /// <summary>
+    /// Pause the audio source of the audio manager.
+    /// </summary>
+    /// 
+    private void PauseAudioSource()
+    {
+        AudioManager.Instance.PauseAudioSource();
+    }
+    /// <summary>
+    /// Place the menu fixed in front of camera and positioned by the device's position & rotation. 
+    /// </summary>
+    /// 
     private void PlaceMenuInFrontOfPlayer()
     {
         var playerHead = Camera.main.transform;

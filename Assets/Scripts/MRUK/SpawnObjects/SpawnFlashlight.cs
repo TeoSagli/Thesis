@@ -108,7 +108,7 @@ public class SpawnFlashlight : Spawn
         //to retrieve child mesh
         GameObject toFind = SpawnObject.transform.Find(PATH_TO_MESH_RENDERER).gameObject;
         Bounds? prefabBounds = Utilities.GetPrefabBounds(toFind);
-        printToLogger("bounds of flashlight:" + prefabBounds);
+        PrintToLogger("bounds of flashlight:" + prefabBounds);
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
 
@@ -216,65 +216,10 @@ public class SpawnFlashlight : Spawn
 
             if (!foundValidSpawnPosition)
             {
-                printToLogger("Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
+                PrintToLogger("Failed to find valid spawn position after {MaxIterations} iterations. Only spawned {i} prefabs instead of {SpawnAmount}.");
                 break;
             }
         }
-    }
-
-    /// <summary>
-    /// Select and retrieve the surfaceType given the spawnLocations.
-    /// </summary>
-    /// <param name="spawnLocations">Retrieve the surfaceType.</param>
-    private MRUK.SurfaceType GetSurfaceType(SpawnLocation spawnLocations)
-    {
-        MRUK.SurfaceType surfaceType = 0;
-        switch (spawnLocations)
-        {
-            case SpawnLocation.AnySurface:
-                surfaceType |= MRUK.SurfaceType.FACING_UP;
-                surfaceType |= MRUK.SurfaceType.VERTICAL;
-                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                break;
-            case SpawnLocation.VerticalSurfaces:
-                surfaceType |= MRUK.SurfaceType.VERTICAL;
-                break;
-            case SpawnLocation.OnTopOfSurfaces:
-                surfaceType |= MRUK.SurfaceType.FACING_UP;
-                break;
-            case SpawnLocation.HangingDown:
-                surfaceType |= MRUK.SurfaceType.FACING_DOWN;
-                break;
-        }
-        return surfaceType;
-    }
-
-    /// <summary>
-    /// Generate prefabs randomly in the room by the selected parameters.
-    /// </summary>
-    /// <param name="overrideBounds">To handle bounds manually.</param>
-    /// <param name="prefabBounds">Bounds of the mesh renderer of the prefab.</param>
-    /// <param name="clearanceDistance">Cleareance to adjust bounds.</param>
-    private Bounds GetAdjustedPrefabBounds(Bounds? prefabBounds, float overrideBounds, float clearanceDistance)
-    {
-        Bounds adjustedBounds = new();
-
-        var min = prefabBounds.Value.min;
-        var max = prefabBounds.Value.max;
-        min.y += clearanceDistance;
-        if (max.y < min.y)
-        {
-            max.y = min.y;
-        }
-
-        adjustedBounds.SetMinMax(min, max);
-        if (overrideBounds > 0)
-        {
-            Vector3 center = new Vector3(0f, clearanceDistance, 0f);
-            Vector3 size = new Vector3(overrideBounds * 2f, clearanceDistance * 2f, overrideBounds * 2f); // OverrideBounds represents the extents, not the size
-            adjustedBounds = new Bounds(center, size);
-        }
-        return adjustedBounds;
     }
 }
 

@@ -21,26 +21,57 @@ public class AudioManager : Singleton<AudioManager>
         StartCoroutine(ShuffleWhenItStopsPlaying());
         ShuffleAndPlay();
     }
+    /// <summary>
+    /// Shuffle the tracks and play the audio source if game is playing.
+    /// </summary>
+    /// 
     private IEnumerator ShuffleWhenItStopsPlaying()
     {
         while (true)
         {
-            yield return new WaitUntil(() => !audioSource.isPlaying);
+            yield return new WaitUntil(() => !audioSource.isPlaying && IsGamePlaying());
             onCurrentTrackEnded?.Invoke();
             ShuffleAndPlay();
         }
     }
-    private void ShuffleAndPlay(GameState gameState = GameState.Playing)
+    /// <summary>
+    /// Shuffle the tracks and play the audio source.
+    /// </summary>
+    /// 
+    private void ShuffleAndPlay()
     {
-        if (tracks.Length > 0)
+        if (tracks.Length > 0 && IsGamePlaying())
         {
             audioSource.clip = tracks[UnityEngine.Random.Range(0, tracks.Length - 1)];
-            adjustvolume(0.25f);
+            Adjustvolume(0.25f);
             audioSource.Play();
         }
     }
-    private void adjustvolume(float value)
+    /// <summary>
+    /// Adjust audio source volume.
+    /// </summary>
+    /// <param name="value">Volume level.</param>
+    /// 
+    public void Adjustvolume(float value)
     {
         audioSource.volume = value;
+    }
+
+    /// <summary>
+    /// Pause audio source.
+    /// </summary>
+    /// 
+    public void PauseAudioSource()
+    {
+        audioSource.Pause();
+    }
+
+    /// <summary>
+    /// Returns if the game is playing.
+    /// </summary>
+    /// 
+    bool IsGamePlaying()
+    {
+        return GameManager.Instance.GetGameState() == GameState.Playing;
     }
 }
