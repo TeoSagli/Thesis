@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 5569460736538870100}
   - component: {fileID: 2514782072411343170}
   m_Layer: 0
-  m_Name: MapHolder
+  m_Name: MapHolderPedestal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

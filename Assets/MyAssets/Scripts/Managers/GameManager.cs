@@ -27,7 +27,7 @@ public class GameManager : Singleton<GameManager>
     {
         ControllerManager.Instance.onControllerMenuActionExecuted += ToggleGameState;
         UIManager.Instance.onGameResumeActionExecuted += ToggleGameState;
-        PuzzleSolverFeature.Instance.onPuzzleSolved += GameSolved;
+        PuzzleManager.Instance.onPuzzleSolved += GameSolved;
     }
     /// <summary>
     /// Unsubscribe the other managers to the actions to perform
@@ -36,7 +36,7 @@ public class GameManager : Singleton<GameManager>
     {
         ControllerManager.Instance.onControllerMenuActionExecuted -= ToggleGameState;
         UIManager.Instance.onGameResumeActionExecuted -= ToggleGameState;
-        PuzzleSolverFeature.Instance.onPuzzleSolved -= GameSolved;
+        PuzzleManager.Instance.onPuzzleSolved -= GameSolved;
     }
     /// <summary>
     /// Execute after game is solved

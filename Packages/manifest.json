@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "com.learnxr.core": "https://github.com/dilmerv/com.learnxr.core.git",
-    "com.meta.xr.mrutilitykit": "71.0.0",
-    "com.meta.xr.simulator": "71.0.0",
+    "com.meta.xr.mrutilitykit": "72.0.0",
+    "com.meta.xr.simulator": "72.0.0",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.collab-proxy": "2.5.2",
     "com.unity.feature.development": "1.0.1",

@@ -8,11 +8,11 @@
       "hash": "6f417cd90787a570cd2d042b32ed3ae46d34bca9"
     },
     "com.meta.xr.mrutilitykit": {
-      "version": "71.0.0",
+      "version": "72.0.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.meta.xr.sdk.core": "71.0.0",
+        "com.meta.xr.sdk.core": "72.0.0",
         "com.unity.textmeshpro": "3.0.6",
         "com.unity.ai.navigation": "1.1.4",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
@@ -20,14 +20,14 @@
       "url": "https://packages.unity.com"
     },
     "com.meta.xr.sdk.core": {
-      "version": "71.0.0",
+      "version": "72.0.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.meta.xr.simulator": {
-      "version": "71.0.0",
+      "version": "72.0.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {

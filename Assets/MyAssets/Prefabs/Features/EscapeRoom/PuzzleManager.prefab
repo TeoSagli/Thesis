@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7636950332218669758}
   - component: {fileID: 5307183241517010989}
   m_Layer: 0
-  m_Name: PuzzleSolverFeature
+  m_Name: PuzzleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

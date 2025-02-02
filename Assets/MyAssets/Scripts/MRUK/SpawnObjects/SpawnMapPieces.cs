@@ -18,9 +18,7 @@
  * limitations under the License.
  */
 
-using LearnXR.Core.Utilities;
 using Meta.XR.MRUtilityKit;
-using Meta.XR.Util;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static EnumsMRUK;
@@ -192,18 +190,24 @@ public class SpawnMapPieces : Spawn
                         continue;
                     }
                 }
+                float ex = room.GetRoomBounds().extents.x;
+                float ey = room.GetRoomBounds().extents.y;
+                float ez = room.GetRoomBounds().extents.z;
+                // float o = 0.5f;
+
+                PrintToLogger("=========");
+                /*   if (!(spawnPosition.x < ex - o && spawnPosition.x > -ex + o && spawnPosition.y < ey - o && spawnPosition.y > -ey + o))
+                       continue;*/
 
                 foundValidSpawnPosition = true;
 
-                if (SpawnObject.scene.path == null)
-                {
-                    Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
-                }
-                else
-                {
-                    SpawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
-                    /*   return; // ignore SpawnAmount once we have a successful move of existing object in the scene*/
-                }
+                SpawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
+
+                float height = room.GetRoomBounds().size.y * 3 / 4;
+                SpawnObject.transform.Translate(0, 0, -height);
+                /*   return; // ignore SpawnAmount once we have a successful move of existing object in the scene*/
+                if (!room.GetRoomBounds().Contains(spawnPosition))
+                    continue;
 
                 break;
             }

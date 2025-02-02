@@ -18,12 +18,7 @@
  * limitations under the License.
  */
 
-using System;
-using LearnXR.Core.Utilities;
 using Meta.XR.MRUtilityKit;
-using Meta.XR.Util;
-using Unity.VisualScripting;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static EnumsMRUK;

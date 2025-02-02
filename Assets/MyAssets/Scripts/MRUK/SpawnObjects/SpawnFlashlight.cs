@@ -18,9 +18,7 @@
  * limitations under the License.
  */
 
-using LearnXR.Core.Utilities;
 using Meta.XR.MRUtilityKit;
-using Meta.XR.Util;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static EnumsMRUK;
@@ -138,7 +136,7 @@ public class SpawnFlashlight : Spawn
     {
         float baseOffset = -prefabBounds?.min.y ?? 0.0f;
         float centerOffset = prefabBounds?.center.y ?? 0.0f;
-        PrintToLogger("bounds:" + prefabBounds);
+        //   PrintToLogger("bounds:" + prefabBounds);
         for (int i = 0; i < SpawnAmount; ++i)
         {
             bool foundValidSpawnPosition = false;
