@@ -38,6 +38,7 @@ public class MapSocketFeature : BaseFeature
     // Start is called before the first frame update
     private void Start()
     {
+        SetVolume(0.2f);
         SpawnMapSockets();
     }
     //================TITLE===================
@@ -122,6 +123,7 @@ public class MapSocketFeature : BaseFeature
         xRSocketInteractor.attachTransform = attachPoint.transform;
         xRSocketInteractor.selectEntered.AddListener((s) =>
         {
+            //PlayOnStarted();
             CheckPieceCorrect(xRSocketInteractor, i);
         });
         //socket back
@@ -174,6 +176,5 @@ public class MapSocketFeature : BaseFeature
     private void OnWin()
     {
         PuzzleManager.Instance.PuzzleAdvancement();
-        PlayOnStarted();
     }
 }
