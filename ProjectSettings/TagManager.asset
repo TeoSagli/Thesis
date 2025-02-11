@@ -8,6 +8,7 @@ TagManager:
   - Sun
   - VentilationGrid
   - Portal
+  - Murales
   layers:
   - Default
   - TransparentFX

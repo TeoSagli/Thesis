@@ -84,7 +84,7 @@ public class SpawnMapSockets : Spawn
     {
         Vector3 spawnNormal = Vector3.zero;
         Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, spawnNormal);
-        Vector3 spawnPosition = new Vector3(0, 1.5f, 0.5f);
+        Vector3 spawnPosition = new Vector3(0, 1.3f, 2f);
         GameObject mapHolder = Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
         /* mapHolder.transform.LookAt(new Vector3(0, 20, 0));*/
     }

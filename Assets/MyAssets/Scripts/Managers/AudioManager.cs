@@ -44,7 +44,7 @@ public class AudioManager : Singleton<AudioManager>
         if (tracks.Length > 0 && IsGamePlaying())
         {
             audioSource.clip = tracks[UnityEngine.Random.Range(0, tracks.Length - 1)];
-            Adjustvolume(0.1f);
+            Adjustvolume(0.05f);
             audioSource.Play();
         }
     }

@@ -102,7 +102,6 @@ public class SpawnMapPieces : Spawn
     {
         //to retrieve child mesh
         Bounds? prefabBounds = Utilities.GetPrefabBounds(SpawnObjectArr[0]);
-        PrintToLogger("bounds:" + prefabBounds);
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
 
@@ -135,7 +134,6 @@ public class SpawnMapPieces : Spawn
         float centerOffset = prefabBounds?.center.y ?? 0.0f;
         foreach (var SpawnObject in SpawnObjectArr)
         {
-            PrintToLogger("obj: " + SpawnObjectArr.Length);
             bool foundValidSpawnPosition = false;
             for (int j = 0; j < MaxIterations; ++j)
             {
@@ -157,7 +155,6 @@ public class SpawnMapPieces : Spawn
 
                     if (room.GenerateRandomPositionOnSurface(surfaceType, minRadius, new LabelFilter(Labels), out var pos, out var normal))
                     {
-                        PrintToLogger("pos: " + pos);
                         spawnPosition = pos + normal * baseOffset;
                         spawnNormal = normal;
                         var center = spawnPosition + normal * centerOffset;
@@ -190,14 +187,6 @@ public class SpawnMapPieces : Spawn
                         continue;
                     }
                 }
-                float ex = room.GetRoomBounds().extents.x;
-                float ey = room.GetRoomBounds().extents.y;
-                float ez = room.GetRoomBounds().extents.z;
-                // float o = 0.5f;
-
-                PrintToLogger("=========");
-                /*   if (!(spawnPosition.x < ex - o && spawnPosition.x > -ex + o && spawnPosition.y < ey - o && spawnPosition.y > -ey + o))
-                       continue;*/
 
                 foundValidSpawnPosition = true;
 

@@ -20,4 +20,31 @@ public class Enums : MonoBehaviour
         Paused,
         PuzzleSolved
     }
+    public enum QuizQuestion
+    {
+        Text,
+        Video,
+        Image,
+
+    }
+    public enum QuizAnswers
+    {
+        FourAnswers,
+        TwoAnswers,
+        ThreeAnswers,
+        Object,
+        Text
+    }
+    public enum SelectFourAnswers
+    {
+        A, B, C, D
+    }
+    public enum SelectThreeAnswers
+    {
+        A, B, C
+    }
+    public enum SelectTwoAnswers
+    {
+        A, B
+    }
 }

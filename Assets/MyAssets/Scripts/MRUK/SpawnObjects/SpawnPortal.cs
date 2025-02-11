@@ -201,8 +201,9 @@ public class SpawnPortal : Spawn
                     float px = portal.transform.position.x;
                     float py = portal.transform.position.y;
                     float pz = portal.transform.position.z;
-                    float checkBound = 2.5f;
+                    float checkBound = 0.2f;
                     int choice = GetPrefabOrientation(px, py, pz, checkBound, room);
+                    PrintToLogger("ch " + choice);
                     OrientatePrefabToDirection(portal, choice, px, py, pz, checkBound);
                     /*  PrintToLogger("vec2 key wall:" + vec2);
                       PrintToLogger("Portal coords position:" + spawnPosition);
@@ -263,6 +264,7 @@ public class SpawnPortal : Spawn
                 }
             }
         }
+        //  Debug.Log("choice portal " + choice);
         return choice;
     }
 

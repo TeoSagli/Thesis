@@ -10,12 +10,16 @@ public class PuzzleManager : Singleton<PuzzleManager>
 
     [SerializeField]
     [Header("Tot puzzles to solve")]
+
     private int totPuzzle = 4;
-    [field: SerializeField]
-    [Header("Audio clip for win")]
-    public AudioClip audioClip;
+    [Header("Audio")]
+    [SerializeField]
+    private AudioClip audioClipWin;
+    [SerializeField]
+    private AudioClip audioClipFail;
     private int totSolvedPuzzle = 0;
-    private readonly AudioSource audioSource;
+    [SerializeField]
+    private AudioSource audioSource;
     public Action<GameState> onPuzzleSolved;
 
     private void Start()
@@ -49,9 +53,14 @@ public class PuzzleManager : Singleton<PuzzleManager>
     {
         return totPuzzle;
     }
-    public void PlayAdvancementAudio()
+    private void PlayAdvancementAudio()
     {
-        audioSource.clip = audioClip;
+        audioSource.clip = audioClipWin;
+        audioSource.Play();
+    }
+    public void PlayFailAudio()
+    {
+        audioSource.clip = audioClipFail;
         audioSource.Play();
     }
 }
