@@ -16,6 +16,8 @@ public class UIManager : Singleton<UIManager>
     private float offsetPositionFromPlayer = 1.0f;
     [SerializeField]
     private GameObject menuContainer;
+    [SerializeField]
+    private GameObject progressContainer;
 
     [Header("Events")]
     public Action onGameResumeActionExecuted;
@@ -44,6 +46,7 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.onGamePaused += HandleMenuOptions;
         GameManager.Instance.onGameResumed += HandleMenuOptions;
         GameManager.Instance.onGameSolved += HandleMenuOptions;
+        GameManager.Instance.onGameShowProgress += HandleMenuOptions;
     }
     /// <summary>
     /// Unsubscribe the other managers to the actions to perform
@@ -54,6 +57,7 @@ public class UIManager : Singleton<UIManager>
         GameManager.Instance.onGamePaused -= HandleMenuOptions;
         GameManager.Instance.onGameResumed -= HandleMenuOptions;
         GameManager.Instance.onGameSolved -= HandleMenuOptions;
+        GameManager.Instance.onGameShowProgress -= HandleMenuOptions;
     }
     /// <summary>
     /// Change UI option bsed on the current gaame state
@@ -67,6 +71,9 @@ public class UIManager : Singleton<UIManager>
             case GameState.Paused:
                 ActivateAndShowMenu();
                 break;
+            case GameState.ShowProgress:
+                ActivateAndShowProgress();
+                break;
             case GameState.PuzzleSolved:
                 ActivateAndShowMenu();
                 menu.resumeButton.gameObject.SetActive(false);
@@ -74,6 +81,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             default:
                 menuContainer.SetActive(false);
+                progressContainer.SetActive(false);
                 break;
         }
     }
@@ -84,8 +92,18 @@ public class UIManager : Singleton<UIManager>
     private void ActivateAndShowMenu()
     {
         menuContainer.SetActive(true);
-        PlaceMenuInFrontOfPlayer();
+        PlaceMenuInFrontOfPlayer(menuContainer);
         PauseAudioSource();
+    }
+    /// <summary>
+    /// Activate and show the menu.
+    /// </summary>
+    /// 
+    private void ActivateAndShowProgress()
+    {
+        progressContainer.SetActive(true);
+        ProgressBarFeature.Instance.UpdateBar();
+        PlaceMenuInFrontOfPlayer(progressContainer);
     }
     /// <summary>
     /// Pause the audio source of the audio manager.
@@ -99,10 +117,9 @@ public class UIManager : Singleton<UIManager>
     /// Place the menu fixed in front of camera and positioned by the device's position & rotation. 
     /// </summary>
     /// 
-    private void PlaceMenuInFrontOfPlayer()
+    private void PlaceMenuInFrontOfPlayer(GameObject obj)
     {
         var playerHead = Camera.main.transform;
-        menuContainer.transform.position = playerHead.position + (playerHead.forward * offsetPositionFromPlayer);
-        menuContainer.transform.rotation = playerHead.rotation;
+        obj.transform.SetPositionAndRotation(playerHead.position + playerHead.forward * offsetPositionFromPlayer, playerHead.rotation);
     }
 }

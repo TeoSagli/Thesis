@@ -26,26 +26,11 @@ public class PuzzleManager : Singleton<PuzzleManager>
     {
 
     }
-    /*
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.tag == playerTag && !puzzleSolvedDetected)
-            {
-                onPuzzleSolved?.Invoke(GameState.PuzzleSolved);
-                puzzleSolvedDetected = true;
-                   ActivatePortal();
-            }
-        }*/
-    /* public void ActivatePortal()
-     {
-         PortalFeature script = GameObject.FindGameObjectWithTag("Portal").GetComponent<PortalFeature>();
-         script.ToggleParticle(script.GetParticleSystemIn());
-     }*/
     public void PuzzleAdvancement()
     {
         PlayAdvancementAudio();
         totSolvedPuzzle++;
-        ProgressBarFeature.Instance.UpdateBar(totSolvedPuzzle * 100 / totPuzzle);
+        ProgressBarFeature.Instance.SetPercentage(totSolvedPuzzle * 100 / totPuzzle);
         if (totSolvedPuzzle == totPuzzle)
             onPuzzleSolved?.Invoke(GameState.PuzzleSolved);
     }

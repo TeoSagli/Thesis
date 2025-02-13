@@ -18,7 +18,8 @@ public class Enums : MonoBehaviour
     {
         Playing,
         Paused,
-        PuzzleSolved
+        PuzzleSolved,
+        ShowProgress
     }
     public enum QuizQuestion
     {

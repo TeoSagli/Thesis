@@ -106,19 +106,31 @@ public class QuizFeature : MonoBehaviour
                 imageQuestion.sprite = imageToShow;
                 break;
             case QuizQuestion.Video:
-                videoQuestion.gameObject.SetActive(true);
-                PlayVideo.Instance.AddVideoClip(videoToShow);
-                float videoHeight = videoToShow.height;
-                float videoWidth = videoToShow.width;
-                float aspectRatio = videoWidth / videoHeight;
-                videoQuestion.transform.localScale = new Vector3(0.4f, 1 / aspectRatio, 0.4f);
-                videoQuestion.clip = videoToShow;
-                videoButton.GetComponent<Button>().onClick.AddListener(() =>
+                HandleVideo();
+                break;
+        }
+    }
+    private void HandleVideo()
+    {
+        videoQuestion.gameObject.SetActive(true);
+        float videoHeight = videoToShow.height;
+        float videoWidth = videoToShow.width;
+        float aspectRatio = videoWidth / videoHeight;
+        videoQuestion.transform.localScale = new Vector3(0.4f, 1 / aspectRatio, 0.4f);
+        videoQuestion.clip = videoToShow;
+        ResetVideo(videoQuestion);
+        var btn = videoButton.GetComponent<Button>();
+        btn.onClick.AddListener(() =>
         {
             TogglePlayPause(videoQuestion);
         });
-                break;
-        }
+        videoQuestion.loopPointReached += ResetVideo;
+    }
+    private void ResetVideo(VideoPlayer vp)
+    {
+        vp.time = 0;
+        vp.Play();
+        vp.Pause();
     }
     private void InitAnswers()
     {

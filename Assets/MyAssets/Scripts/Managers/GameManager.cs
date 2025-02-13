@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
     public Action<GameState> onGameResumed;
     public Action<GameState> onGamePaused;
     public Action<GameState> onGameSolved;
+    public Action<GameState> onGameShowProgress;
+
     private LayerMask cachedCameraCullingMask;
     private void Awake()
     {
@@ -25,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     private void OnEnable()
     {
+        ControllerManager.Instance.onControllerProgressActionExecuted += ToggleGameStateProgress;
         ControllerManager.Instance.onControllerMenuActionExecuted += ToggleGameState;
         UIManager.Instance.onGameResumeActionExecuted += ToggleGameState;
         PuzzleManager.Instance.onPuzzleSolved += GameSolved;
@@ -35,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     private void OnDisable()
     {
         ControllerManager.Instance.onControllerMenuActionExecuted -= ToggleGameState;
+        ControllerManager.Instance.onControllerProgressActionExecuted -= ToggleGameStateProgress;
         UIManager.Instance.onGameResumeActionExecuted -= ToggleGameState;
         PuzzleManager.Instance.onPuzzleSolved -= GameSolved;
     }
@@ -54,6 +58,11 @@ public class GameManager : Singleton<GameManager>
         gameState = gameState == GameState.Playing ? GameState.Paused : GameState.Playing;
         CommitGameStateChanges();
     }
+    private void ToggleGameStateProgress()
+    {
+        gameState = gameState == GameState.Playing ? GameState.ShowProgress : GameState.Playing;
+        CommitGameStateChanges();
+    }
     /// <summary>
     /// Commit changes by current game state
     /// </summary>
@@ -66,6 +75,9 @@ public class GameManager : Singleton<GameManager>
                 break;
             case GameState.PuzzleSolved:
                 InvokeActionSetTimeAndCullingMask(GameState.PuzzleSolved, ref onGameSolved, 0, LayerMask.GetMask("UI"));
+                break;
+            case GameState.ShowProgress:
+                InvokeActionSetTimeAndCullingMask(GameState.ShowProgress, ref onGameShowProgress, 0, LayerMask.GetMask("UI"));
                 break;
             default:
                 InvokeActionSetTimeAndCullingMask(GameState.Playing, ref onGameResumed, 1, cachedCameraCullingMask);

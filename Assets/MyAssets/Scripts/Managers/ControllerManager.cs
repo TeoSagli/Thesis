@@ -12,10 +12,13 @@ public class ControllerManager : Singleton<ControllerManager>
     [Header("Controller mapping")]
     [SerializeField]
     private InputActionProperty controllerMenuAction;
+    [SerializeField]
+    private InputActionProperty controllerProgressAction;
     private UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor[] cachedRayInteractors;
 
     [Header("Events")]
     public Action onControllerMenuActionExecuted;
+    public Action onControllerProgressActionExecuted;
     private string objLayer;
     private void Awake()
     {
@@ -27,9 +30,11 @@ public class ControllerManager : Singleton<ControllerManager>
     private void OnEnable()
     {
         controllerMenuAction.action.performed += ControllerMenuActionPerformed;
+        controllerProgressAction.action.performed += ControllerProgressActionPerformed;
         GameManager.Instance.onGamePaused += ControllerRayInteractorInput;
         GameManager.Instance.onGameResumed += ControllerRayInteractorInput;
         GameManager.Instance.onGameSolved += ControllerRayInteractorInput;
+        GameManager.Instance.onGameShowProgress += ControllerRayInteractorInput;
     }
     /// <summary>
     /// Unsubscribe the other managers to the actions to perform
@@ -37,9 +42,11 @@ public class ControllerManager : Singleton<ControllerManager>
     private void OnDisable()
     {
         controllerMenuAction.action.performed -= ControllerMenuActionPerformed;
+        controllerProgressAction.action.performed -= ControllerProgressActionPerformed;
         GameManager.Instance.onGamePaused -= ControllerRayInteractorInput;
         GameManager.Instance.onGameResumed -= ControllerRayInteractorInput;
         GameManager.Instance.onGameSolved -= ControllerRayInteractorInput;
+        GameManager.Instance.onGameShowProgress -= ControllerRayInteractorInput;
     }
     /// <summary>
     /// Add menu binding when button pressed
@@ -47,6 +54,13 @@ public class ControllerManager : Singleton<ControllerManager>
     private void ControllerMenuActionPerformed(InputAction.CallbackContext obj)
     {
         onControllerMenuActionExecuted?.Invoke();
+    }
+    /// <summary>
+    /// Add menu binding when button pressed
+    /// </summary>
+    private void ControllerProgressActionPerformed(InputAction.CallbackContext obj)
+    {
+        onControllerProgressActionExecuted?.Invoke();
     }
     /// <summary>
     /// Apply layers to rays depending on the current game state
@@ -58,7 +72,7 @@ public class ControllerManager : Singleton<ControllerManager>
             objLayer = LayerMask.LayerToName(rayInteractor.gameObject.layer);
             Debug.Log(objLayer);
             /*   rayInteractor.gameObject.SetActive(gameState == GameState.Paused);*/
-            if (gameState == GameState.Paused)
+            if (gameState == GameState.Paused || gameState == GameState.ShowProgress)
                 ApplyLayersToRays(rayInteractor.transform, "UI");
             else
                 //       ApplyLayersToRays(rayInteractor.transform.parent, "Default");

@@ -752,7 +752,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   AudioClipForLock: {fileID: 8300000, guid: 5edb6219b335f9b449c13d5944bac7c3, type: 3}
-  keycodeAnswer: 2025
+  keycodeAnswer: 6931
   onKeycodesCorrect:
     m_PersistentCalls:
       m_Calls: []
