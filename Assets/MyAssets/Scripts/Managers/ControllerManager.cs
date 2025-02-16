@@ -70,13 +70,8 @@ public class ControllerManager : Singleton<ControllerManager>
         foreach (var rayInteractor in cachedRayInteractors)
         {
             objLayer = LayerMask.LayerToName(rayInteractor.gameObject.layer);
-            Debug.Log(objLayer);
-            /*   rayInteractor.gameObject.SetActive(gameState == GameState.Paused);*/
-            if (gameState == GameState.Paused || gameState == GameState.ShowProgress)
-                ApplyLayersToRays(rayInteractor.transform, "UI");
-            else
-                //       ApplyLayersToRays(rayInteractor.transform.parent, "Default");
-                ApplyLayersToRays(rayInteractor.transform, objLayer);
+            var layerStr = gameState == GameState.Paused || gameState == GameState.ShowProgress ? "UI" : objLayer;
+            ApplyLayersToRays(rayInteractor.transform, layerStr);
         }
     }
     /// <summary>

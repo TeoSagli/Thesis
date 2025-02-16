@@ -14,17 +14,16 @@ public class ProgressBarFeature : Singleton<ProgressBarFeature>
     private TextMeshProUGUI percentageText;
     [SerializeField]
     [Header("Green bar object")]
-    private GameObject bar;
+    private GameObject greenBar;
     private float percentage = 0;
-    void Start()
-    {
-        UpdateBar();
-    }
 
     public void UpdateBar()
     {
-        UpdateTextPercentage();
-        AdjustBar();
+        if (transform.gameObject.activeSelf)
+        {
+            UpdateTextPercentage();
+            AdjustBar();
+        }
     }
 
     public void SetPercentage(float p)
@@ -40,8 +39,8 @@ public class ProgressBarFeature : Singleton<ProgressBarFeature>
     }
     private void AdjustBar()
     {
-        var s = bar.transform.localScale;
-        bar.transform.localScale = new Vector3(percentage / 100, s.y, s.z);
+        var s = greenBar.transform.localScale;
+        greenBar.transform.localScale = new Vector3(percentage / 100, s.y, s.z);
     }
 
 }

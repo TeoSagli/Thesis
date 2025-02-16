@@ -9,6 +9,8 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 using static Enums;
 
@@ -27,6 +29,8 @@ public class QuizFeature : MonoBehaviour
     private GameObject options;
     [SerializeField]
     private GameObject objectAnswer;
+    [SerializeField]
+    private GameObject placeHolderVideo;
     //==================================================
     [SerializeField, Header("Title (max 78 chars)")]
     private TextMeshProUGUI textTitle;
@@ -113,6 +117,7 @@ public class QuizFeature : MonoBehaviour
     private void HandleVideo()
     {
         videoQuestion.gameObject.SetActive(true);
+        placeHolderVideo.SetActive(true);
         float videoHeight = videoToShow.height;
         float videoWidth = videoToShow.width;
         float aspectRatio = videoWidth / videoHeight;
@@ -171,7 +176,10 @@ public class QuizFeature : MonoBehaviour
                 objectAnswer.GetComponent<XRSocketInteractor>().selectEntered.AddListener((s) =>
                 {
                     if (CheckWin(0))
+                    {
                         PuzzleManager.Instance.PuzzleAdvancement();
+                        DisableAllBtns();
+                    }
                     else
                         PuzzleManager.Instance.PlayFailAudio();
                 });
@@ -223,6 +231,17 @@ public class QuizFeature : MonoBehaviour
         int noptions = GetNOptions();
         for (int i = 0; i < noptions; i++)
             options.GetNamedChild("Option" + (i + 1)).GetComponent<Button>().interactable = false;
+        if (noptions == 0)
+        {
+            var socket = options.GetNamedChild("ObjectHolder").GetComponent<XRSocketInteractor>();
+            var murales = socket.interactablesSelected[0].transform.GetComponent<XRGrabInteractable>();
+            var sprite = murales.GetComponent<SpriteRenderer>().sprite;
+            if (sprite != null)
+                imageQuestion.sprite = sprite;
+            socket.enabled = false;
+            options.SetActive(false);
+        }
+
     }
     private int GetNOptions()
     {
@@ -268,6 +287,7 @@ public class QuizFeature : MonoBehaviour
     {
         bool isPlaying = !videoPlayer.isPlaying;
         SetPlay(videoPlayer, isPlaying);
+        placeHolderVideo.SetActive(!isPlaying);
     }
     public void SetPlay(VideoPlayer videoPlayer, bool value)
     {
