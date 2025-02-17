@@ -51,7 +51,7 @@ MonoBehaviour:
   imageQuestion: {fileID: 4593568813793435935}
   options: {fileID: 8974553835440741536}
   objectAnswer: {fileID: 1634187909754016331}
-  placeHolderVideo: {fileID: 7999652144866540499}
+  placeHolderVideo: {fileID: 7714178335882992415}
   textTitle: {fileID: 831178583497777976}
   textTitleToShow: "Qual \xE8 l'animale simbolo di NoLo?"
   questionType: 1
@@ -84,7 +84,7 @@ GameObject:
   - component: {fileID: 3817090302296924051}
   - component: {fileID: 3173357122380779693}
   - component: {fileID: 2650551911836825190}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Option3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -420,7 +420,7 @@ GameObject:
   - component: {fileID: 4387921069908779235}
   - component: {fileID: 528084130210452045}
   - component: {fileID: 7237671706817617415}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 6787774958697356454}
   - component: {fileID: 8265075817967210010}
   - component: {fileID: 5603783953415373154}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -615,7 +615,7 @@ GameObject:
   - component: {fileID: 6009442757139553287}
   - component: {fileID: 957299077137831806}
   - component: {fileID: 3541735485850099567}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -749,7 +749,7 @@ GameObject:
   - component: {fileID: 922754452360994225}
   - component: {fileID: 6081347459135496283}
   - component: {fileID: 5732073237111240936}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: QuestionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -883,7 +883,7 @@ GameObject:
   - component: {fileID: 7436815568887910321}
   - component: {fileID: 7241663349542705968}
   - component: {fileID: 865620067255160811}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1018,7 +1018,7 @@ GameObject:
   - component: {fileID: 2547888271871936534}
   - component: {fileID: 3822974316326113235}
   - component: {fileID: 4827768685462589819}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Option4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1136,7 +1136,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4386253413560577297}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Questions
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1177,7 +1177,7 @@ GameObject:
   - component: {fileID: 1758389944228788920}
   - component: {fileID: 5690214041726362090}
   - component: {fileID: 9025092309654028614}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1314,7 +1314,7 @@ GameObject:
   - component: {fileID: 341068827236680947}
   - component: {fileID: 2063854990682260167}
   - component: {fileID: 2422877275401153093}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: QuizCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1336,7 +1336,7 @@ RectTransform:
   - {fileID: 4386253413560577297}
   - {fileID: 6629511249908853852}
   - {fileID: 4387921069908779235}
-  - {fileID: 278615074264748199}
+  - {fileID: 4026195125666784518}
   m_Father: {fileID: 4273781570517373627}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1542,7 +1542,7 @@ GameObject:
   - component: {fileID: 761319671437175766}
   - component: {fileID: 7176321687327414587}
   - component: {fileID: 831178583497777976}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: QuestionTitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1676,7 +1676,7 @@ GameObject:
   - component: {fileID: 6669455426778812590}
   - component: {fileID: 5660657984192225316}
   - component: {fileID: 6860161946579795225}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1813,7 +1813,7 @@ GameObject:
   - component: {fileID: 8635242600682639008}
   - component: {fileID: 5503088435157376728}
   - component: {fileID: 4996456614905654124}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: QuestionVideo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2043,7 +2043,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &7999652144866540499
+--- !u!1 &7714178335882992415
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2051,22 +2051,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 278615074264748199}
-  - component: {fileID: 1771029120635564432}
-  m_Layer: 5
+  - component: {fileID: 4026195125666784518}
+  - component: {fileID: 896998292125215875}
+  m_Layer: 0
   m_Name: PlaceHolderPause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 0
---- !u!224 &278615074264748199
+--- !u!224 &4026195125666784518
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7999652144866540499}
+  m_GameObject: {fileID: 7714178335882992415}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0.15}
   m_LocalScale: {x: 0.90000045, y: 0.80000025, z: 1}
@@ -2079,13 +2079,13 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0.79999995}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!212 &1771029120635564432
+--- !u!212 &896998292125215875
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7999652144866540499}
+  m_GameObject: {fileID: 7714178335882992415}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -2143,7 +2143,7 @@ GameObject:
   - component: {fileID: 9176895431146562064}
   - component: {fileID: 2683257954213141590}
   - component: {fileID: 4170636073363674023}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Option1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2264,7 +2264,7 @@ GameObject:
   - component: {fileID: 4307716248508481300}
   - component: {fileID: 3723657706185040383}
   - component: {fileID: 96136254001769032}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Option2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2382,7 +2382,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6629511249908853852}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Answers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
