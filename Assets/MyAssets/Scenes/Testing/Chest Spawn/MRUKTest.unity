@@ -3109,6 +3109,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7994cf9ac4b64974c809d1187701d297, type: 3}
   - {fileID: 21300000, guid: 0e6be26b028d1c649b4198bd609aa9cb, type: 3}
   spriteShader: {fileID: 4800000, guid: eaaf6014898ce6e49babf2cf56ea532a, type: 3}
+  spriteToRender: {fileID: 21300000, guid: 5936df4385c9a06459d3d7abd7c3f5b4, type: 3}
+  ncols: 5
+  nrows: 4
   pieceScale: {x: 0.05, y: 0.05, z: 0.05}
 --- !u!1 &304392078
 GameObject:

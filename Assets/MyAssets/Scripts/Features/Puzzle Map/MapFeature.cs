@@ -3,28 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using Meta.XR.MRUtilityKit;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class MapFeature : Spawn
 {
-    [SerializeField]
-    [Header("MRUK object")]
+    [SerializeField, Header("MRUK object")]
     private MRUK mruk;
-    [SerializeField]
-    [Header("Image pieces")]
-    private Sprite[] spriteRendererArr;
-
-    [SerializeField]
-    [Header("Sprite shader")]
+    [SerializeField, Header("Sprite params")]
     private Shader spriteShader;
     [SerializeField]
-    [Header("Scale of the image pieces")]
-
+    private Sprite spriteToRender;
+    [SerializeField]
+    private int nCols;
+    [SerializeField]
+    private int nRows;
+    [SerializeField, Header("Scale of the image pieces")]
     private Vector3 pieceScale = new(0.05f, 0.05f, 0.05f);
-
+    [SerializeField, Header("Title")]
+    private string title;
     private void Start()
     {
         if (MRUK.Instance)
@@ -33,24 +34,38 @@ public class MapFeature : Spawn
                 SpawnMapPieces();
             });
     }
-    /*IEnumerator Countdown(float seconds)
+    private Sprite SpriteExtractor(Sprite sprite, int i, int j, int pos)
     {
-        yield return new WaitForSeconds(seconds);
-        
-    }*/
-    public void SpawnMapPieces()
+        float w = sprite.bounds.size.x / nRows * 100;
+        float h = sprite.bounds.size.y / nCols * 100;
+        float x = i * w;
+        float y = j * h;
+        // Define the portion of the sprite to extract (x, y, width, height)
+        Rect rect = new(x, y, w, h);
+        // Create the new sprite
+        Vector2 pivotDef = new(0.5f, 0.5f);
+        Sprite s = Sprite.Create(sprite.texture, rect, pivotDef);
+        s.name = sprite.name + "-tile" + pos;
+        return s;
+    }
+    private void SpawnMapPieces()
     {
-        GameObject[] objectsArr = new GameObject[spriteRendererArr.Length];
-        int i = 0;
-        foreach (Sprite mapPiece in spriteRendererArr)
+        int contTiles = 0;
+        int totPieces = nCols * nRows;
+        GameObject[] objectsArr = new GameObject[totPieces];
+        for (int j = 0; j < nCols; j++)
         {
-            GameObject piece = GenerateMapPiece(mapPiece);
-            objectsArr[i] = piece;
-            i++;
+            for (int i = 0; i < nRows; i++)
+            {
+                Sprite mapPiece = SpriteExtractor(spriteToRender, nRows - 1 - i, j, contTiles);
+                GameObject piece = GenerateMapPiece(mapPiece);
+                objectsArr[contTiles] = piece;
+                contTiles++;
+            }
+
         }
         SpawnRndMapPieces(objectsArr);
     }
-
     private GameObject GenerateMapPiece(Sprite mapPiece)
     {
         GameObject piece = new(mapPiece.name);
@@ -82,13 +97,11 @@ public class MapFeature : Spawn
         piece.transform.parent = transform;
         return piece;
     }
-
     void SpawnRndMapPieces(GameObject[] objectsArr)
     {
         SpawnMapPieces script = GameObject.Find("SpawnMapPieces").GetComponent<SpawnMapPieces>();
         script.SetObjectsArr(objectsArr);
         script.StartSpawn();
-
     }
     void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Sprite mapPiece)
     {
@@ -97,12 +110,24 @@ public class MapFeature : Spawn
         attachPoint.transform.Translate(new(0, offset, 0));
         attachPoint.transform.parent = obj.transform;
     }
-    public Sprite[] GetSpritesArray()
+    public Sprite GetOriginalSprite()
     {
-        return spriteRendererArr;
+        return spriteToRender;
     }
     public Vector3 GetPieceScale()
     {
         return pieceScale;
+    }
+    public int GetNRows()
+    {
+        return nRows;
+    }
+    public int GetNCols()
+    {
+        return nCols;
+    }
+    public string GetTitle()
+    {
+        return title;
     }
 }
