@@ -3087,32 +3087,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mruk: {fileID: 1764117906}
-  spriteRendererArr:
-  - {fileID: 21300000, guid: dffd1ca7f9c4a74409833362bebfbed7, type: 3}
-  - {fileID: 21300000, guid: 7204688ae7b46a14c806f8f993e1672f, type: 3}
-  - {fileID: 21300000, guid: 5cb7a776c585a2b4181b920b39290818, type: 3}
-  - {fileID: 21300000, guid: 7b6ffd61ad8430f46a2a093a15d519e6, type: 3}
-  - {fileID: 21300000, guid: 869b2764c34faa5489b79431a3870cc1, type: 3}
-  - {fileID: 21300000, guid: 52e3e89350d3e23439b7c484d9607ca8, type: 3}
-  - {fileID: 21300000, guid: 8023e2b4f47c6a1498e695bdd67c04ad, type: 3}
-  - {fileID: 21300000, guid: 0329c832371302543b3583af69cf5a47, type: 3}
-  - {fileID: 21300000, guid: 0bef4d638b462714a848d08504996545, type: 3}
-  - {fileID: 21300000, guid: 4371e6250483bec479bda60b106bac36, type: 3}
-  - {fileID: 21300000, guid: 2297e78bd1e41cf4e8687463c80ab6b3, type: 3}
-  - {fileID: 21300000, guid: fcc8f4d644bc8494fa141ec95f7887f1, type: 3}
-  - {fileID: 21300000, guid: 80ad32cac9d9f3a4ab64d8ac3bb5b3ad, type: 3}
-  - {fileID: 21300000, guid: 90025bdd7bd3f794e88a6158eefe1e41, type: 3}
-  - {fileID: 21300000, guid: 6fa0afb0969bf074d990740475e12655, type: 3}
-  - {fileID: 21300000, guid: 8b2060ff8b98d3344bead05b6ed7e53d, type: 3}
-  - {fileID: 21300000, guid: a18740d2c52734a4f908594e1c8e7940, type: 3}
-  - {fileID: 21300000, guid: d1ce44ec1d069ad4aad55a7f153fe5c2, type: 3}
-  - {fileID: 21300000, guid: 7994cf9ac4b64974c809d1187701d297, type: 3}
-  - {fileID: 21300000, guid: 0e6be26b028d1c649b4198bd609aa9cb, type: 3}
   spriteShader: {fileID: 4800000, guid: eaaf6014898ce6e49babf2cf56ea532a, type: 3}
   spriteToRender: {fileID: 21300000, guid: 5936df4385c9a06459d3d7abd7c3f5b4, type: 3}
-  ncols: 5
-  nrows: 4
+  nCols: 3
+  nRows: 3
   pieceScale: {x: 0.05, y: 0.05, z: 0.05}
+  title: MAPPA DI NOLO
 --- !u!1 &304392078
 GameObject:
   m_ObjectHideFlags: 0

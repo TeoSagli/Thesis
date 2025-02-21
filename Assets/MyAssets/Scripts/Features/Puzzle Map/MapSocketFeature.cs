@@ -50,8 +50,8 @@ public class MapSocketFeature : BaseFeature
     //================BOUNDS===================
     private void CalculateBounds()
     {
-        boundsX = originalSprite.bounds.size.x / nRows;
-        boundsY = originalSprite.bounds.size.y / nCols;
+        boundsX = originalSprite.bounds.size.x / nCols;
+        boundsY = originalSprite.bounds.size.y / nRows;
         boundsZ = originalSprite.bounds.size.z;
     }
     //================MAP HOLDER===================
@@ -80,13 +80,13 @@ public class MapSocketFeature : BaseFeature
         SetMapHolderScale();
         //configure title
         SetTitle(titleToSet);
-        PositionTitle(new Vector3(0, -boundsY * (nRows - 1) * pieceScale.y, 0));
+        PositionTitle(new Vector3(0, -boundsY * 3 / 4 * nRows * pieceScale.y, 0));
         //configure map sockets
-        for (int i = 0; i < nRows; i++)
+        for (int i = 0; i < nCols; i++)
         {
-            for (int j = 0; j < nCols; j++)
+            for (int j = 0; j < nRows; j++)
             {
-                int index = nCols * i + (nCols - j - 1);
+                int index = nRows * i + (nRows - j - 1);
                 GameObject socket = GenerateMapSocket(originalSprite, index);
                 PlaceSocketAt(ref socket, i, j);
             }
@@ -94,8 +94,8 @@ public class MapSocketFeature : BaseFeature
     }
     private void PlaceSocketAt(ref GameObject socket, int i, int j)
     {
-        float offsetX = CalculateTraslation(nCols, j);
-        float offsetY = CalculateTraslation(nRows, i);
+        float offsetX = CalculateTraslation(nCols, i);
+        float offsetY = CalculateTraslation(nRows, j);
         socket.transform.Translate(offsetX * transform.localScale.x, offsetY * transform.localScale.y, 0);
     }
     private float CalculateTraslation(int tot, int i)

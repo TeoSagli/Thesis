@@ -36,10 +36,11 @@ public class MapFeature : Spawn
     }
     private Sprite SpriteExtractor(Sprite sprite, int i, int j, int pos)
     {
-        float w = sprite.bounds.size.x / nRows * 100;
-        float h = sprite.bounds.size.y / nCols * 100;
-        float x = i * w;
-        float y = j * h;
+        float w = sprite.bounds.size.x / nCols * 100; //tot 1000
+        float h = sprite.bounds.size.y / nRows * 100; //tot 1330
+        float x = j * w;
+        float y = i * h;
+
         // Define the portion of the sprite to extract (x, y, width, height)
         Rect rect = new(x, y, w, h);
         // Create the new sprite
