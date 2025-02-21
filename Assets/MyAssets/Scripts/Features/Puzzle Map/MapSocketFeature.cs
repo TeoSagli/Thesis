@@ -36,30 +36,9 @@ public class MapSocketFeature : BaseFeature
     private void Start()
     {
         SetVolume(0.2f);
-        SpawnMapSockets();
+        GenerateAndPlaceSockets();
     }
-    //================TITLE===================
-    private void SetTitle(String titleToSet)
-    {
-        title.text = titleToSet;
-    }
-    private void PositionTitle(Vector3 vector)
-    {
-        title.transform.Translate(vector);
-    }
-    //================BOUNDS===================
-    private void CalculateBounds()
-    {
-        boundsX = originalSprite.bounds.size.x / nCols;
-        boundsY = originalSprite.bounds.size.y / nRows;
-        boundsZ = originalSprite.bounds.size.z;
-    }
-    //================MAP HOLDER===================
-    private void SetMapHolderScale()
-    {
-        transform.localScale = new Vector3(boundsX * nCols * pieceScale.x, boundsY * nRows * pieceScale.y, transform.localScale.z * pieceScale.z);
-    }
-    //================SOCKETS===================
+    //================CONFIGURATION===================
     private void ImportParameters()
     {
         var mapPiecesScript = GameObject.Find("SpawnMapPieces").GetComponent<MapFeature>();
@@ -69,18 +48,37 @@ public class MapSocketFeature : BaseFeature
         titleToSet = mapPiecesScript.GetTitle();
         pieceScale = mapPiecesScript.GetPieceScale();
     }
-    public void SpawnMapSockets()
+    private void SetTitle(String titleToSet)
+    {
+        title.text = titleToSet;
+    }
+    private void PositionTitle(Vector3 vector)
+    {
+        title.transform.Translate(vector);
+    }
+    private void CalculateBounds()
+    {
+        boundsX = originalSprite.bounds.size.x / nCols;
+        boundsY = originalSprite.bounds.size.y / nRows;
+        boundsZ = originalSprite.bounds.size.z;
+    }
+    private void SetPuzzleSize()
+    {
+        transform.localScale = new Vector3(boundsX * nCols * pieceScale.x, boundsY * nRows * pieceScale.y, transform.localScale.z * pieceScale.z);
+    }
+    //================SOCKETS===================
+    public void GenerateAndPlaceSockets()
     {
         ImportParameters();
-        //define bool matrix to evaluate win conditions
-        isPieceCorrect = new bool[nRows * nCols];
         //configure bounds
         CalculateBounds();
-        //configure map holder
-        SetMapHolderScale();
+        //configure puzzle size
+        SetPuzzleSize();
         //configure title
         SetTitle(titleToSet);
-        PositionTitle(new Vector3(0, -boundsY * 3 / 4 * nRows * pieceScale.y, 0));
+        PositionTitle(new Vector3(0, -boundsY * 0.75f * nRows * pieceScale.y, 0));
+        //define bool matrix to evaluate win conditions
+        isPieceCorrect = new bool[nRows * nCols];
         //configure map sockets
         for (int i = 0; i < nCols; i++)
         {
@@ -112,8 +110,8 @@ public class MapSocketFeature : BaseFeature
         XRSocketInteractor xRSocketInteractor = socket.AddComponent(typeof(XRSocketInteractor)) as XRSocketInteractor;
 
         //setup box collider
-        Vector3 o = new(4, 4, 1);
-        box.size = new Vector3(boundsX / o.x, boundsY / o.y, boundsZ / o.z);
+        Vector3 reduceVec = new(4, 4, 1);
+        box.size = new Vector3(boundsX / reduceVec.x, boundsY / reduceVec.y, boundsZ / reduceVec.z);
         box.isTrigger = true;
 
         //setup attachPoint

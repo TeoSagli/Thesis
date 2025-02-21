@@ -31,9 +31,25 @@ public class MapFeature : Spawn
         if (MRUK.Instance)
             MRUK.Instance.RegisterSceneLoadedCallback(() =>
             {
-                SpawnMapPieces();
+                ExtractAndGeneratePieces();
             });
     }
+    private void ExtractAndGeneratePieces()
+    {
+        int contTiles = 0;
+        GameObject[] mapPiecesArr = new GameObject[nCols * nRows];
+        for (int j = 0; j < nCols; j++)
+        {
+            for (int i = 0; i < nRows; i++)
+            {
+                Sprite mapPiece = SpriteExtractor(spriteToRender, nRows - 1 - i, j, contTiles);
+                mapPiecesArr[contTiles] = GenerateMapPiece(mapPiece);
+                contTiles++;
+            }
+        }
+        SpawnRndMapPieces(mapPiecesArr);
+    }
+    // EXTRACTION PROCESS
     private Sprite SpriteExtractor(Sprite sprite, int i, int j, int pos)
     {
         float w = sprite.bounds.size.x / nCols * 100; //tot 1000
@@ -49,34 +65,16 @@ public class MapFeature : Spawn
         s.name = sprite.name + "-tile" + pos;
         return s;
     }
-    private void SpawnMapPieces()
-    {
-        int contTiles = 0;
-        int totPieces = nCols * nRows;
-        GameObject[] objectsArr = new GameObject[totPieces];
-        for (int j = 0; j < nCols; j++)
-        {
-            for (int i = 0; i < nRows; i++)
-            {
-                Sprite mapPiece = SpriteExtractor(spriteToRender, nRows - 1 - i, j, contTiles);
-                GameObject piece = GenerateMapPiece(mapPiece);
-                objectsArr[contTiles] = piece;
-                contTiles++;
-            }
-
-        }
-        SpawnRndMapPieces(objectsArr);
-    }
+    // MAP PIECES' GENERATION PROCESS
     private GameObject GenerateMapPiece(Sprite mapPiece)
     {
         GameObject piece = new(mapPiece.name);
-
         SpriteRenderer sr = piece.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         Rigidbody rb = piece.AddComponent(typeof(Rigidbody)) as Rigidbody;
         BoxCollider box = piece.AddComponent(typeof(BoxCollider)) as BoxCollider;
         DontFallUnderFloor script = piece.AddComponent(typeof(DontFallUnderFloor)) as DontFallUnderFloor;
         XRGrabInteractable xrGrabInteractable = piece.AddComponent(typeof(XRGrabInteractable)) as XRGrabInteractable;
-        //setup boc collider
+        //setup box collider
         box.size = new Vector3(mapPiece.bounds.size.x, mapPiece.bounds.size.y, mapPiece.bounds.size.z);
         //setup renderer
         sr.sprite = mapPiece;
@@ -98,19 +96,13 @@ public class MapFeature : Spawn
         piece.transform.parent = transform;
         return piece;
     }
-    void SpawnRndMapPieces(GameObject[] objectsArr)
-    {
-        SpawnMapPieces script = GameObject.Find("SpawnMapPieces").GetComponent<SpawnMapPieces>();
-        script.SetObjectsArr(objectsArr);
-        script.StartSpawn();
-    }
     void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Sprite mapPiece)
     {
-        //attachPoint.transform.localPosition = new(0, 0, 0);
         float offset = -mapPiece.bounds.size.y / (2 * obj.transform.localScale.y);
         attachPoint.transform.Translate(new(0, offset, 0));
         attachPoint.transform.parent = obj.transform;
     }
+    // GETTERS
     public Sprite GetOriginalSprite()
     {
         return spriteToRender;
@@ -130,5 +122,12 @@ public class MapFeature : Spawn
     public string GetTitle()
     {
         return title;
+    }
+    // RANDOMLY PLACE THE PIECES
+    void SpawnRndMapPieces(GameObject[] mapPiecesArr)
+    {
+        SpawnMapPieces script = GameObject.Find("SpawnMapPieces").GetComponent<SpawnMapPieces>();
+        script.SetObjectsArr(mapPiecesArr);
+        script.StartSpawn();
     }
 }

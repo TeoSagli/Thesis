@@ -101,7 +101,7 @@ public class PortalFeature : BaseFeature
         UnityEngine.XR.Interaction.Toolkit.Interactables.IXRSelectInteractable selectedInteractable = socketInteractor.firstInteractableSelected;
         GameObject objectPlaced = selectedInteractable.transform.gameObject;
 
-        Debug.Log("" + objectPlaced.name);
+        //Debug.Log("" + objectPlaced.name);
         socketInteractor.interactionManager.SelectExit(socketInteractor, selectedInteractable);
         TeleportObjectTo(objectPlaced, portalDestination.transform.position, portalDestination.transform.rotation);
         SetVolume(0.05f);
