@@ -13,8 +13,9 @@ public class Puzzle : MonoBehaviour
     protected int nCols = 1;
     [SerializeField]
     protected int nRows = 1;
+    protected GameObject[] puzzlePiecesArr;
     // RANDOMLY PLACE THE PIECES
-    protected void SpawnRndPuzzlePieces(GameObject[] puzzlePiecesArr)
+    public void SpawnRndPuzzlePieces()
     {
         SpawnPuzzlePieces script = GetComponent<SpawnPuzzlePieces>();
         script.SetObjectsArr(puzzlePiecesArr);
@@ -35,5 +36,9 @@ public class Puzzle : MonoBehaviour
     public string GetTitle()
     {
         return title;
+    }
+    public GameObject[] GetPuzzleArr()
+    {
+        return puzzlePiecesArr;
     }
 }

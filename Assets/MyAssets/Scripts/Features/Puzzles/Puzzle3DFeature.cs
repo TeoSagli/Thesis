@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
+using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -12,19 +13,19 @@ public class Puzzle3DFeature : Puzzle
     private GameObject objectToRender;
     [SerializeField]
     private GameObject objectMesh;
-
     private void Start()
     {
         if (MRUK.Instance)
             MRUK.Instance.RegisterSceneLoadedCallback(() =>
             {
                 ExtractGridMesh();
+                SpawnRndPuzzlePieces();
             });
     }
     // EXTRACTION PROCESS
     public void ExtractGridMesh()
     {
-        GameObject[] puzzlePiecesArr = new GameObject[nCols * nRows * nDepth];
+        puzzlePiecesArr = new GameObject[nCols * nRows * nDepth];
         MeshFilter meshFilter = objectMesh.GetComponent<MeshFilter>();
         Mesh originalMesh = meshFilter.sharedMesh;
         // Get the mesh bounds
@@ -45,15 +46,25 @@ public class Puzzle3DFeature : Puzzle
             {
                 for (int z = 0; z < nDepth; z++)
                 {
-                    int contTiles = x * nCols + y * nDepth + z;
+                    int contTiles = x * nCols * nDepth + y * nDepth + z;
                     Vector3 cubeMin = minBounds + new Vector3(x * stepSize.x, y * stepSize.y, z * stepSize.z);
                     Vector3 cubeMax = cubeMin + stepSize;
                     Mesh tileMesh = ExtractCubeMesh(originalMesh.vertices, originalMesh.triangles, cubeMin, cubeMax);
-                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(objectToRender.name + $"-tile{contTiles}", tileMesh);
+                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}", x, y, z);
                 }
             }
         }
-        SpawnRndPuzzlePieces(puzzlePiecesArr);
+    }
+    protected float CalculateOffsetForSocketCenter(int tot, int i)
+    {
+        float pos = i < tot / 2 ? -(tot / 2 - i) : (i - tot / 2);
+        if (tot % 2 == 0)
+            pos = i >= tot / 2 ? _ = pos * 2 + 1 : _ = (pos + 1) * 2 - 1;
+        return tot % 2 != 0 ? pos / tot : pos / (tot * 2);
+    }
+    protected Vector3 CalculateOffsetVec(int i, int j, int k)
+    {
+        return new Vector3(CalculateOffsetForSocketCenter(nCols, i) * transform.localScale.x, CalculateOffsetForSocketCenter(nRows, j) * transform.localScale.y, CalculateOffsetForSocketCenter(nDepth, k) * transform.localScale.z);
     }
     private Mesh ExtractCubeMesh(Vector3[] originalVertices, int[] originalTriangles, Vector3 cubeMin, Vector3 cubeMax)
     {
@@ -101,11 +112,11 @@ public class Puzzle3DFeature : Puzzle
             triangles = newTriangles.ToArray()
         };
         newMesh.RecalculateNormals();
-
+        newMesh.name = "Mesh";
         return newMesh;
     }
     // PUZZLE PIECES' GENERATION PROCESS
-    private GameObject GeneratePuzzlePiece(string name, Mesh mesh)
+    private GameObject GeneratePuzzlePiece(Mesh mesh, string name, int i, int j, int k)
     {
         GameObject piece = new(name);
         MeshRenderer mr = piece.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
@@ -119,7 +130,7 @@ public class Puzzle3DFeature : Puzzle
         mf.mesh = mesh;
         mr.material = mrOriginal.material;
         //setup box collider
-        box.size = mesh.bounds.size;
+        box.size = mesh.bounds.size * 0.9f;
         box.center = mesh.bounds.center;
         //setup rigidBody
         rb.useGravity = true;
@@ -127,19 +138,35 @@ public class Puzzle3DFeature : Puzzle
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         //attach
         GameObject attachPoint = new("Attach Point");
-        attachPoint.transform.Rotate(Vector3.up);
-        attachPoint.transform.Translate(0, -mr.bounds.size.y * transform.localScale.y, 0);
-        attachPoint.transform.parent = piece.transform;
+        AddAttachPoint(piece, ref attachPoint, mesh, i, j, k);
         //grab interactable
         xrGrabInteractable.interactionLayers = LayerMask.GetMask("Puzzle3D");
         xrGrabInteractable.farAttachMode = InteractableFarAttachMode.Near;
-        //   xrGrabInteractable.useDynamicAttach = true;
         xrGrabInteractable.attachTransform = attachPoint.transform;
         xrGrabInteractable.selectMode = InteractableSelectMode.Single;
         //change transform and attach to parent
         piece.transform.localScale = pieceScale * Vector3.one;
         piece.transform.parent = transform;
         return piece;
+    }
+    void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh puzzleMesh, int i, int j, int k)
+    {
+        Vector3 off = CalculateOffsetVec(i, j, k) / pieceScale;
+        Mesh m = objectMesh.GetComponent<MeshFilter>().mesh;
+        Vector3 objEx = new()
+        {
+            x = m.bounds.extents.x / nCols,
+            y = m.bounds.extents.y / nRows,
+            z = m.bounds.extents.z / nDepth
+        };
+        Vector3 offset = new()
+        {
+            x = off.x < 0 ? -objEx.x : objEx.x,
+            y = puzzleMesh.bounds.center.y - puzzleMesh.bounds.extents.y,
+            z = off.z < 0 ? -objEx.z : objEx.z,
+        };
+        attachPoint.transform.position = offset;
+        attachPoint.transform.parent = obj.transform;
     }
     // GETTERS
     public GameObject GetOriginalObject()
@@ -149,6 +176,10 @@ public class Puzzle3DFeature : Puzzle
     public int GetNDepth()
     {
         return nDepth;
+    }
+    public GameObject GetOriginalMeshObject()
+    {
+        return objectMesh;
     }
 
 }

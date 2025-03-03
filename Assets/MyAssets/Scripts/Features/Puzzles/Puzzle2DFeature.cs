@@ -15,11 +15,12 @@ public class Puzzle2DFeature : Puzzle
             MRUK.Instance.RegisterSceneLoadedCallback(() =>
             {
                 ExtractAndGeneratePieces();
+                SpawnRndPuzzlePieces();
             });
     }
     private void ExtractAndGeneratePieces()
     {
-        GameObject[] puzzlePiecesArr = new GameObject[nCols * nRows];
+        puzzlePiecesArr = new GameObject[nCols * nRows];
         for (int j = 0; j < nCols; j++)
         {
             for (int i = 0; i < nRows; i++)
@@ -29,7 +30,7 @@ public class Puzzle2DFeature : Puzzle
                 puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(puzzlePiece, spriteToRender.name + "-tile" + contTiles);
             }
         }
-        SpawnRndPuzzlePieces(puzzlePiecesArr);
+
     }
     // EXTRACTION PROCESS
     private Sprite SpriteExtractor(Sprite sprite, int i, int j, int pos)
@@ -79,8 +80,8 @@ public class Puzzle2DFeature : Puzzle
     }
     void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Sprite puzzlePiece)
     {
-        float offset = -puzzlePiece.bounds.size.y / (2 * obj.transform.localScale.y);
-        attachPoint.transform.Translate(new(0, offset, 0));
+        float offset = -puzzlePiece.bounds.extents.y;
+        attachPoint.transform.Translate(0, offset, 0);
         attachPoint.transform.parent = obj.transform;
     }
     // GETTERS
