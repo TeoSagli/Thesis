@@ -40,13 +40,14 @@ public class Puzzle3DFeature : Puzzle
             (maxBounds.z - minBounds.z) / nDepth
         );
         // Loop through each grid cell
-        for (int x = 0; x < nRows; x++)
+        for (int z = 0; z < nDepth; z++)
         {
-            for (int y = 0; y < nCols; y++)
+            for (int x = 0; x < nRows; x++)
             {
-                for (int z = 0; z < nDepth; z++)
+                for (int y = 0; y < nCols; y++)
                 {
-                    int contTiles = x * nCols * nDepth + y * nDepth + z;
+
+                    int contTiles = z * nCols * nRows + x * nCols + y;
                     Vector3 cubeMin = minBounds + new Vector3(x * stepSize.x, y * stepSize.y, z * stepSize.z);
                     Vector3 cubeMax = cubeMin + stepSize;
                     Mesh tileMesh = ExtractCubeMesh(originalMesh.vertices, originalMesh.triangles, cubeMin, cubeMax);

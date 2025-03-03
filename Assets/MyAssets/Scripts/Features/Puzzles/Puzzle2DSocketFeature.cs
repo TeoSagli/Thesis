@@ -136,7 +136,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         PuzzleManager.Instance.PuzzleAdvancement();
     }
 
-    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int i, int j, int k, int index)
+    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
     {
         throw new System.NotImplementedException();
     }

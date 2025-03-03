@@ -8,7 +8,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class Puzzle3DSocketFeature : PuzzleSocket
 {
     private int nDepth = 1;
-    private bool[,,] isPieceCorrect;
+    private bool[] isPieceCorrect;
     private GameObject originalObject;
     private GameObject originalMeshObject;
     [SerializeField]
@@ -57,7 +57,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         SetTitle(titleToSet);
         PositionTitle(new Vector3(0, -bounds.y * 0.75f * nRows, 0) * pieceScale);
         //define bool matrix to evaluate win conditions
-        isPieceCorrect = new bool[nRows, nCols, nDepth];
+        isPieceCorrect = new bool[nRows * nCols * nDepth];
         offsetPosVec = new Vector3[nRows * nCols * nDepth];
         //configure puzzle sockets
         for (int k = 0; k < nDepth; k++)
@@ -66,8 +66,8 @@ public class Puzzle3DSocketFeature : PuzzleSocket
             {
                 for (int j = 0; j < nRows; j++)
                 {
-                    int index = nCols * nRows * k + nRows * i + (nRows - j - 1);
-                    GameObject socket = GeneratePuzzleSocket(originalObject, i, j, k, index);
+                    int index = nCols * nRows * k + nRows * i + j;
+                    GameObject socket = GeneratePuzzleSocket(originalObject, index);
                     PlaceSocketAt(ref socket, CalculateOffsetVec(i, j, k));
                 }
             }
@@ -81,7 +81,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
     {
         socket.transform.Translate(offsetVec);
     }
-    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int i, int j, int k, int index)
+    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
     {
         GameObject socket = new(puzzlePiece.name + "-tile" + index);
         BoxCollider box = socket.AddComponent(typeof(BoxCollider)) as BoxCollider;
@@ -100,10 +100,9 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         xRSocketInteractor.interactableCantHoverMeshMaterial = cantHoverMat;
         xRSocketInteractor.interactableHoverMeshMaterial = canHoverMat;
         xRSocketInteractor.attachTransform = attachPoint.transform;
-        Vector3 coords = new(i, j, k);
         xRSocketInteractor.selectEntered.AddListener((s) =>
         {
-            CheckPieceCorrect(xRSocketInteractor, i, j, k);
+            CheckPieceCorrect(xRSocketInteractor, index);
         });
         //socket back
         var back = Instantiate(socketBack);
@@ -124,19 +123,17 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         attachPoint.transform.parent = socket.transform;
     }
     //================CHECK AND HANDLE WIN===================
-    private void CheckPieceCorrect(XRSocketInteractor socket, int i, int j, int k)
+    private void CheckPieceCorrect(XRSocketInteractor socket, int index)
     {
-        Debug.Log("sn " + socket.name);
-        Debug.Log("on " + socket.interactablesSelected[0].transform.name);
-        isPieceCorrect[i, j, k] = socket.isSelectActive && socket.name == socket.interactablesSelected[0].transform.name;
+        isPieceCorrect[index] = socket.isSelectActive && socket.name == socket.interactablesSelected[0].transform.name;
         CheckWin();
     }
     private bool TestWin()
     {
         for (int k = 0; k < nDepth; k++)
-            for (int i = 0; i < nRows; i++)
-                for (int j = 0; j < nCols; j++)
-                    if (!isPieceCorrect[k * nRows * nCols, i * nCols, j])
+            for (int i = 0; i < nCols; i++)
+                for (int j = 0; j < nRows; j++)
+                    if (!isPieceCorrect[nCols * nRows * k + nRows * i + j])
                         return false;
         return true;
     }
