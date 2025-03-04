@@ -35,23 +35,22 @@ public class Puzzle3DFeature : Puzzle
 
         // Calculate grid step size
         Vector3 stepSize = new(
-            (maxBounds.x - minBounds.x) / nRows,
-            (maxBounds.y - minBounds.y) / nCols,
+            (maxBounds.x - minBounds.x) / nCols,
+            (maxBounds.y - minBounds.y) / nRows,
             (maxBounds.z - minBounds.z) / nDepth
         );
         // Loop through each grid cell
         for (int z = 0; z < nDepth; z++)
         {
-            for (int x = 0; x < nRows; x++)
+            for (int x = 0; x < nCols; x++)
             {
-                for (int y = 0; y < nCols; y++)
+                for (int y = 0; y < nRows; y++)
                 {
-
-                    int contTiles = z * nCols * nRows + x * nCols + y;
+                    int contTiles = z * nCols * nRows + x * nRows + y;
                     Vector3 cubeMin = minBounds + new Vector3(x * stepSize.x, y * stepSize.y, z * stepSize.z);
                     Vector3 cubeMax = cubeMin + stepSize;
                     Mesh tileMesh = ExtractCubeMesh(originalMesh.vertices, originalMesh.triangles, cubeMin, cubeMax);
-                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}", x, y, z);
+                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}");
                 }
             }
         }
@@ -117,7 +116,7 @@ public class Puzzle3DFeature : Puzzle
         return newMesh;
     }
     // PUZZLE PIECES' GENERATION PROCESS
-    private GameObject GeneratePuzzlePiece(Mesh mesh, string name, int i, int j, int k)
+    private GameObject GeneratePuzzlePiece(Mesh mesh, string name)
     {
         GameObject piece = new(name);
         MeshRenderer mr = piece.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
@@ -131,7 +130,7 @@ public class Puzzle3DFeature : Puzzle
         mf.mesh = mesh;
         mr.material = mrOriginal.material;
         //setup box collider
-        box.size = mesh.bounds.size * 0.9f;
+        box.size = mesh.bounds.size;
         box.center = mesh.bounds.center;
         //setup rigidBody
         rb.useGravity = true;
@@ -139,7 +138,7 @@ public class Puzzle3DFeature : Puzzle
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         //attach
         GameObject attachPoint = new("Attach Point");
-        AddAttachPoint(piece, ref attachPoint, mesh, i, j, k);
+        AddAttachPoint(piece, ref attachPoint, mesh);
         //grab interactable
         xrGrabInteractable.interactionLayers = LayerMask.GetMask("Puzzle3D");
         xrGrabInteractable.farAttachMode = InteractableFarAttachMode.Near;
@@ -150,21 +149,20 @@ public class Puzzle3DFeature : Puzzle
         piece.transform.parent = transform;
         return piece;
     }
-    void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh puzzleMesh, int i, int j, int k)
+    void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh m)
     {
-        Vector3 off = CalculateOffsetVec(i, j, k) / pieceScale;
-        Mesh m = objectMesh.GetComponent<MeshFilter>().mesh;
-        Vector3 objEx = new()
+        Vector3 extendsObj = new()
         {
-            x = m.bounds.extents.x / nCols,
-            y = m.bounds.extents.y / nRows,
-            z = m.bounds.extents.z / nDepth
+            x = m.bounds.extents.x,
+            y = m.bounds.extents.y,
+            z = m.bounds.extents.z
         };
+        Vector3 center = m.bounds.center;
         Vector3 offset = new()
         {
-            x = off.x < 0 ? -objEx.x : objEx.x,
-            y = puzzleMesh.bounds.center.y - puzzleMesh.bounds.extents.y,
-            z = off.z < 0 ? -objEx.z : objEx.z,
+            x = center.x,
+            y = center.y - extendsObj.y,
+            z = center.z,
         };
         attachPoint.transform.position = offset;
         attachPoint.transform.parent = obj.transform;

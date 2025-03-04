@@ -177,8 +177,8 @@ public class SpawnPuzzlePieces : Spawn
                     }
                 }
 
-                //Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.back, spawnNormal);
-                Quaternion spawnRotation = Quaternion.identity;
+                Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.back, spawnNormal);
+                //Quaternion spawnRotation = Quaternion.identity;
 
                 foundValidSpawnPosition = true;
                 spawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);

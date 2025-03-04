@@ -1,5 +1,6 @@
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class Puzzle2DSocketFeature : PuzzleSocket
@@ -43,6 +44,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         PositionTitle(new Vector3(0, -bounds.y * 0.75f * nRows, 0) * pieceScale);
         //define bool matrix to evaluate win conditions
         isPieceCorrect = new bool[nRows * nCols];
+        sockets = new GameObject[nRows * nCols];
         //configure puzzle sockets
         for (int i = 0; i < nCols; i++)
         {
@@ -51,6 +53,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
                 int index = nRows * i + (nRows - j - 1);
                 GameObject socket = GeneratePuzzleSocket(originalSprite, index);
                 PlaceSocketAt(ref socket, CalculateOffsetVec(i, j, 0));
+                sockets[index] = socket;
             }
         }
     }
@@ -120,8 +123,6 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         bool res = TestWin();
         if (res)
             OnWin();
-
-        //INTERCTABLESECELT SELECT MODER socket.interactablesSelected[0].SELECTOMODE
     }
     private bool TestWin()
     {
@@ -134,8 +135,18 @@ public class Puzzle2DSocketFeature : PuzzleSocket
     private void OnWin()
     {
         PuzzleManager.Instance.PuzzleAdvancement();
+        DisableAllSockets();
+        ReplaceWithSprite();
     }
-
+    private void ReplaceWithSprite()
+    {
+        GameObject s = new(originalSprite.name);
+        var sr = s.AddComponent<SpriteRenderer>();
+        sr.sprite = originalSprite;
+        s.transform.position = transform.position;
+        s.transform.localScale = pieceScale * Vector3.one;
+        s.transform.parent = transform;
+    }
     protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
     {
         throw new System.NotImplementedException();

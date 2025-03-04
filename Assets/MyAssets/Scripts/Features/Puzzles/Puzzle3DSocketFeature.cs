@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -15,7 +16,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
     private Material canHoverMat;
     [SerializeField]
     private Material cantHoverMat;
-    private Vector3[] offsetPosVec;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -58,7 +59,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         PositionTitle(new Vector3(0, -bounds.y * 0.75f * nRows, 0) * pieceScale);
         //define bool matrix to evaluate win conditions
         isPieceCorrect = new bool[nRows * nCols * nDepth];
-        offsetPosVec = new Vector3[nRows * nCols * nDepth];
+        sockets = new GameObject[nRows * nCols * nDepth];
         //configure puzzle sockets
         for (int k = 0; k < nDepth; k++)
         {
@@ -69,6 +70,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
                     int index = nCols * nRows * k + nRows * i + j;
                     GameObject socket = GeneratePuzzleSocket(originalObject, index);
                     PlaceSocketAt(ref socket, CalculateOffsetVec(i, j, k));
+                    sockets[index] = socket;
                 }
             }
         }
@@ -118,8 +120,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
     }
     void AddAttachPoint(GameObject socket, ref GameObject attachPoint, Mesh puzzleMesh)
     {
-        float offsety = -puzzleMesh.bounds.extents.x;
-        attachPoint.transform.position = new(0, offsety, 0);
+        attachPoint.transform.position = new(0, -bounds.y / 2, 0);
         attachPoint.transform.parent = socket.transform;
     }
     //================CHECK AND HANDLE WIN===================
@@ -145,8 +146,37 @@ public class Puzzle3DSocketFeature : PuzzleSocket
     private void OnWin()
     {
         PuzzleManager.Instance.PuzzleAdvancement();
+        DisableAllSockets();
+        ReplaceWithObject();
     }
+    private void ReplaceWithObject()
+    {
+        GameObject o = new(originalObject.name);
+        var mesh = originalMeshObject.GetComponent<MeshFilter>().mesh;
+        var mf = o.AddComponent<MeshFilter>();
+        var mr = o.AddComponent<MeshRenderer>();
+        var rb = o.AddComponent<Rigidbody>();
+        var box = o.AddComponent<BoxCollider>();
+        var grab = o.AddComponent<XRGrabInteractable>();
+        o.AddComponent<DontFallUnderFloor>();
 
+        grab.interactionLayers = LayerMask.GetMask("Puzzle3D");
+        grab.farAttachMode = InteractableFarAttachMode.Near;
+        GameObject attachPoint = new("Attach Point");
+        attachPoint.transform.position = new(0, (mesh.bounds.center.y - mesh.bounds.extents.y) * pieceScale, 0);
+        attachPoint.transform.parent = o.transform;
+        grab.attachTransform = attachPoint.transform;
+        grab.selectMode = InteractableSelectMode.Single;
+        rb.useGravity = true;
+        rb.interpolation = RigidbodyInterpolation.None;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
+        box.size = mesh.bounds.size * 0.9f;
+        box.center = mesh.bounds.center;
+        mf.mesh = mesh;
+        mr.material = originalMeshObject.GetComponent<MeshRenderer>().material;
+        o.transform.position = transform.position;
+        o.transform.localScale = pieceScale * Vector3.one;
+    }
     protected override GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index)
     {
         throw new System.NotImplementedException();

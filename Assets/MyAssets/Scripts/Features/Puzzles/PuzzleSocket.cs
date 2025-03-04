@@ -17,6 +17,7 @@ public abstract class PuzzleSocket : BaseFeature
     protected string titleToSet;
     protected Vector3 bounds;
     protected float pieceScale;
+    protected GameObject[] sockets;
     protected void SetTitle(string titleToSet)
     {
         title.text = titleToSet;
@@ -36,7 +37,17 @@ public abstract class PuzzleSocket : BaseFeature
             pos = i >= tot / 2 ? _ = pos * 2 + 1 : _ = (pos + 1) * 2 - 1;
         return tot % 2 != 0 ? pos / tot : pos / (tot * 2);
     }
-
+    protected void DisableAllSockets()
+    {
+        for (int i = 0; i < sockets.Length; i++)
+        {
+            Debug.Log("i " + i);
+            XRSocketInteractor socketInteractor = sockets[i].GetComponent<XRSocketInteractor>();
+            GameObject imageToDel = socketInteractor.interactablesSelected[0].transform.gameObject;
+            imageToDel.SetActive(false);
+            sockets[i].SetActive(false);
+        }
+    }
     protected abstract void ImportParameters();
     protected abstract void CalculateBounds();
     public abstract void GenerateAndPlaceSockets();
