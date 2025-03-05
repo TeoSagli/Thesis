@@ -55,17 +55,6 @@ public class Puzzle3DFeature : Puzzle
             }
         }
     }
-    protected float CalculateOffsetForSocketCenter(int tot, int i)
-    {
-        float pos = i < tot / 2 ? -(tot / 2 - i) : (i - tot / 2);
-        if (tot % 2 == 0)
-            pos = i >= tot / 2 ? _ = pos * 2 + 1 : _ = (pos + 1) * 2 - 1;
-        return tot % 2 != 0 ? pos / tot : pos / (tot * 2);
-    }
-    protected Vector3 CalculateOffsetVec(int i, int j, int k)
-    {
-        return new Vector3(CalculateOffsetForSocketCenter(nCols, i) * transform.localScale.x, CalculateOffsetForSocketCenter(nRows, j) * transform.localScale.y, CalculateOffsetForSocketCenter(nDepth, k) * transform.localScale.z);
-    }
     private Mesh ExtractCubeMesh(Vector3[] originalVertices, int[] originalTriangles, Vector3 cubeMin, Vector3 cubeMax)
     {
         List<Vector3> newVertices = new();
@@ -109,10 +98,10 @@ public class Puzzle3DFeature : Puzzle
         Mesh newMesh = new()
         {
             vertices = newVertices.ToArray(),
-            triangles = newTriangles.ToArray()
+            triangles = newTriangles.ToArray(),
+            name = "Mesh",
         };
         newMesh.RecalculateNormals();
-        newMesh.name = "Mesh";
         return newMesh;
     }
     // PUZZLE PIECES' GENERATION PROCESS
@@ -151,18 +140,13 @@ public class Puzzle3DFeature : Puzzle
     }
     void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh m)
     {
-        Vector3 extendsObj = new()
-        {
-            x = m.bounds.extents.x,
-            y = m.bounds.extents.y,
-            z = m.bounds.extents.z
-        };
-        Vector3 center = m.bounds.center;
+        Vector3 extendsObj = m.bounds.extents;
+        Vector3 centerObj = m.bounds.center;
         Vector3 offset = new()
         {
-            x = center.x,
-            y = center.y - extendsObj.y,
-            z = center.z,
+            x = centerObj.x,
+            y = centerObj.y - extendsObj.y,
+            z = centerObj.z,
         };
         attachPoint.transform.position = offset;
         attachPoint.transform.parent = obj.transform;

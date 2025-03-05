@@ -152,7 +152,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
     private void ReplaceWithObject()
     {
         GameObject o = new(originalObject.name);
-        var mesh = originalMeshObject.GetComponent<MeshFilter>().mesh;
+        var m = originalMeshObject.GetComponent<MeshFilter>().mesh;
         var mf = o.AddComponent<MeshFilter>();
         var mr = o.AddComponent<MeshRenderer>();
         var rb = o.AddComponent<Rigidbody>();
@@ -163,16 +163,20 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         grab.interactionLayers = LayerMask.GetMask("Puzzle3D");
         grab.farAttachMode = InteractableFarAttachMode.Near;
         GameObject attachPoint = new("Attach Point");
-        attachPoint.transform.position = new(0, (mesh.bounds.center.y - mesh.bounds.extents.y) * pieceScale, 0);
+        Vector3 offset = new()
+        {
+            y = m.bounds.center.y - m.bounds.extents.y,
+        };
+        attachPoint.transform.position = offset;
         attachPoint.transform.parent = o.transform;
         grab.attachTransform = attachPoint.transform;
         grab.selectMode = InteractableSelectMode.Single;
         rb.useGravity = true;
         rb.interpolation = RigidbodyInterpolation.None;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        box.size = mesh.bounds.size * 0.9f;
-        box.center = mesh.bounds.center;
-        mf.mesh = mesh;
+        box.size = m.bounds.size * 0.9f;
+        box.center = m.bounds.center;
+        mf.mesh = m;
         mr.material = originalMeshObject.GetComponent<MeshRenderer>().material;
         o.transform.position = transform.position;
         o.transform.localScale = pieceScale * Vector3.one;

@@ -34,7 +34,7 @@ public class SpawnPuzzlePieces : Spawn
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
 
     [SerializeField, Tooltip("Prefab to be placed into the scene, or object in the scene to be moved around.")]
-    public GameObject[] SpawnObjectArr;
+    private GameObject[] SpawnObjectArr;
 
     [SerializeField, Tooltip("Maximum number of times to attempt spawning/moving an object before giving up.")]
     public int MaxIterations = 1000;
