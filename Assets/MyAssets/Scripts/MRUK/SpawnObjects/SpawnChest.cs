@@ -191,17 +191,10 @@ public class SpawnChest : Spawn
                 }
 
                 Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.up, spawnNormal);
-                if (CheckOverlaps && prefabBounds.HasValue)
-                {
-                    if (Physics.CheckBox(spawnPosition + spawnRotation * adjustedBounds.center, adjustedBounds.extents, spawnRotation, LayerMask, QueryTriggerInteraction.Ignore))
-                    {
-                        continue;
-                    }
-                }
 
                 foundValidSpawnPosition = true;
 
-                if (SpawnObject.gameObject.scene.path == null)
+                if (SpawnObject.scene.path == null)
                 {
                     GameObject chest = Instantiate(SpawnObject, spawnPosition, spawnRotation, transform);
                     chest.transform.LookAt(new Vector3(0, spawnPosition.y, 0));
@@ -209,8 +202,7 @@ public class SpawnChest : Spawn
                 }
                 else
                 {
-                    SpawnObject.transform.position = spawnPosition;
-                    SpawnObject.transform.rotation = spawnRotation;
+                    SpawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
                     return; // ignore SpawnAmount once we have a successful move of existing object in the scene
                 }
 
