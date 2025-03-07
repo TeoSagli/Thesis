@@ -77,7 +77,7 @@ public class GameManager : Singleton<GameManager>
                 InvokeActionSetTimeAndCullingMask(GameState.PuzzleSolved, ref onGameSolved, 0, LayerMask.GetMask("UI"));
                 break;
             case GameState.ShowProgress:
-                InvokeActionSetTimeAndCullingMask(GameState.ShowProgress, ref onGameShowProgress, 0, LayerMask.GetMask("UI"));
+                //InvokeActionSetTimeAndCullingMask(GameState.ShowProgress, ref onGameShowProgress, 0, LayerMask.GetMask("UI"));
                 break;
             default:
                 InvokeActionSetTimeAndCullingMask(GameState.Playing, ref onGameResumed, 1, cachedCameraCullingMask);

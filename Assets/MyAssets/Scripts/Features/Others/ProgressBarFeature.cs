@@ -19,11 +19,11 @@ public class ProgressBarFeature : Singleton<ProgressBarFeature>
 
     public void UpdateBar()
     {
-        /*  if (transform.gameObject.activeSelf)
-          {
-              UpdateTextPercentage();
-              AdjustBar();
-          }*/
+        /*   if (transform.gameObject.activeSelf)
+           {*/
+        UpdateTextPercentage();
+        AdjustBar();
+        /* }*/
     }
 
     public void SetPercentage(float p)

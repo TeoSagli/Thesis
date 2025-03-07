@@ -72,7 +72,7 @@ public class UIManager : Singleton<UIManager>
                 ActivateAndShowMenu();
                 break;
             case GameState.ShowProgress:
-                ActivateAndShowProgress();
+                //ActivateAndShowProgress();
                 break;
             case GameState.PuzzleSolved:
                 ActivateAndShowMenu();
@@ -81,7 +81,7 @@ public class UIManager : Singleton<UIManager>
                 break;
             default:
                 menuContainer.SetActive(false);
-                progressContainer.SetActive(false);
+                //   progressContainer.SetActive(false);
                 break;
         }
     }

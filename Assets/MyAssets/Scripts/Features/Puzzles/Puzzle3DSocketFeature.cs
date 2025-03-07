@@ -160,7 +160,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         var grab = o.AddComponent<XRGrabInteractable>();
         o.AddComponent<DontFallUnderFloor>();
 
-        grab.interactionLayers = LayerMask.GetMask("Puzzle3D");
+        grab.interactionLayers = LayerMask.GetMask("Grabbable");
         grab.farAttachMode = InteractableFarAttachMode.Near;
         GameObject attachPoint = new("Attach Point");
         Vector3 offset = new()

@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 7060448752807495032}
   - component: {fileID: 3711684532663961428}
   - component: {fileID: 8682580545155790962}
-  - component: {fileID: 4680454090525522591}
+  - component: {fileID: 8252708973494203246}
   - component: {fileID: 8140039238503277835}
   - component: {fileID: 2750881811250370294}
   m_Layer: 0
@@ -96,7 +96,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3033667219593020291, guid: a57659421fff52043b68e34bc1759032, type: 3}
+  - {fileID: 2100000, guid: 89be39dbda9d8804b8439c459da4f227, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,7 +118,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4680454090525522591
+--- !u!65 &8252708973494203246
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -137,8 +137,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.8237104, y: 2.3533683, z: 1.7606177}
-  m_Center: {x: 9.311211, y: 7.719862, z: -7.7199497}
+  m_Size: {x: 1.82371, y: 2.3533669, z: 1.760618}
+  m_Center: {x: -0.06121099, y: 0.96986145, z: -0.03005001}
 --- !u!54 &8140039238503277835
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -180,7 +180,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_InteractionManager: {fileID: 0}
   m_Colliders:
-  - {fileID: 4680454090525522591}
+  - {fileID: 0}
   m_InteractionLayers:
     m_Bits: 1024
   m_DistanceCalculationMode: 1
@@ -304,7 +304,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7208415082041563798
 Transform:
   m_ObjectHideFlags: 0
