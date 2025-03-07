@@ -9,6 +9,7 @@ TagManager:
   - VentilationGrid
   - Portal
   - Murales
+  - Editable
   layers:
   - Default
   - TransparentFX

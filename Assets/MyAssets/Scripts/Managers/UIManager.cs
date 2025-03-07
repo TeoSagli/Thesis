@@ -36,6 +36,11 @@ public class UIManager : Singleton<UIManager>
             SceneManager.LoadScene(GAME_SCENE_NAME);
             onGameResumeActionExecuted?.Invoke();
         });
+        menu.editButton.onClick.AddListener(() =>
+        {
+            EditModeManager.Instance.ToggleEditableState();
+            onGameResumeActionExecuted?.Invoke();
+        });
     }
     /// <summary>
     /// Subscribe the other managers to the actions to perform
@@ -78,6 +83,7 @@ public class UIManager : Singleton<UIManager>
                 ActivateAndShowMenu();
                 menu.resumeButton.gameObject.SetActive(false);
                 menu.solvedText.gameObject.SetActive(true);
+                menu.editButton.gameObject.SetActive(false);
                 break;
             default:
                 menuContainer.SetActive(false);

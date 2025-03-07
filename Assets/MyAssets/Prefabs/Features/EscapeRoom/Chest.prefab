@@ -1038,7 +1038,7 @@ GameObject:
   - component: {fileID: 1937913673719678867}
   m_Layer: 0
   m_Name: Chest
-  m_TagString: Untagged
+  m_TagString: Editable
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
