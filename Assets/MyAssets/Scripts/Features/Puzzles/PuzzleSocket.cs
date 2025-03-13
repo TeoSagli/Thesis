@@ -41,7 +41,6 @@ public abstract class PuzzleSocket : BaseFeature
     {
         for (int i = 0; i < sockets.Length; i++)
         {
-            Debug.Log("i " + i);
             XRSocketInteractor socketInteractor = sockets[i].GetComponent<XRSocketInteractor>();
             GameObject imageToDel = socketInteractor.interactablesSelected[0].transform.gameObject;
             imageToDel.SetActive(false);

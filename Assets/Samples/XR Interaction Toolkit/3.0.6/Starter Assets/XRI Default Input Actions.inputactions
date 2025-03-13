@@ -1563,6 +1563,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Long press menu",
+                    "type": "Button",
+                    "id": "1e0469dc-f794-4f84-b919-d42c48c275f2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1992,6 +2001,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Button A",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "bacacff4-b5b3-4769-b321-f47dfe02435c",
+                    "path": "<OculusTouchController>{RightHand}/start",
+                    "interactions": "Hold",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Long press menu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

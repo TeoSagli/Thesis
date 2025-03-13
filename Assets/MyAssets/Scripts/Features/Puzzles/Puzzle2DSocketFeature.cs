@@ -73,7 +73,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         XRSocketInteractor xRSocketInteractor = socket.AddComponent(typeof(XRSocketInteractor)) as XRSocketInteractor;
 
         //setup box collider
-        Vector3 reduceVec = new(4, 4, 1);
+        Vector3 reduceVec = new(2, 2, 1);
         box.size = new Vector3(bounds.x / reduceVec.x, bounds.y / reduceVec.y, bounds.z / reduceVec.z);
         box.isTrigger = true;
 
@@ -143,7 +143,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         GameObject s = new(originalSprite.name);
         var sr = s.AddComponent<SpriteRenderer>();
         sr.sprite = originalSprite;
-        s.transform.position = transform.position;
+        s.transform.position = transform.position + new Vector3(0, 0, -0.01f);
         s.transform.localScale = pieceScale * Vector3.one;
         s.transform.parent = transform;
     }
