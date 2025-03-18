@@ -9,13 +9,8 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class Puzzle3DSocketFeature : PuzzleSocket
 {
     private int nDepth = 1;
-    private bool[] isPieceCorrect;
     private GameObject originalObject;
     private GameObject originalMeshObject;
-    [SerializeField]
-    private Material canHoverMat;
-    [SerializeField]
-    private Material cantHoverMat;
 
     // Start is called before the first frame update
     private void Start()
@@ -32,7 +27,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         nRows = puzzlePiecesScript.GetNRows();
         nCols = puzzlePiecesScript.GetNCols();
         nDepth = puzzlePiecesScript.GetNDepth();
-        titleToSet = puzzlePiecesScript.GetTitle();
+        titleStr = puzzlePiecesScript.GetTitle();
         pieceScale = puzzlePiecesScript.GetPieceScale();
     }
     protected override void CalculateBounds()
@@ -55,7 +50,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         Vector3 size = new(bounds.x * nCols, bounds.y * nRows, bounds.z * nDepth);
         SetPuzzleSize(size * pieceScale);
         //configure title
-        SetTitle(titleToSet);
+        SetTitle(titleStr);
         PositionTitle(new Vector3(0, -bounds.y * 0.75f * nRows, 0) * pieceScale);
         //define bool matrix to evaluate win conditions
         isPieceCorrect = new bool[nRows * nCols * nDepth];
@@ -95,7 +90,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         box.isTrigger = true;
         //setup attachPoint
         GameObject attachPoint = new("Attach Point");
-        AddAttachPoint(socket, ref attachPoint, originalMeshObject.GetComponent<MeshFilter>().mesh);
+        AddAttachPoint(socket, ref attachPoint);
         //socket interactor
         xRSocketInteractor.hoverSocketSnapping = true;
         xRSocketInteractor.interactionLayers = LayerMask.GetMask("Puzzle3D");
@@ -106,6 +101,10 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         {
             CheckPieceCorrect(xRSocketInteractor, index);
         });
+        xRSocketInteractor.selectExited.AddListener((s) =>
+        {
+            UpdateMatrix(xRSocketInteractor, index);
+        });
         //socket back
         var back = Instantiate(socketBack);
         back.transform.position = socket.transform.position;
@@ -115,21 +114,15 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         socket.transform.localScale = pieceScale * Vector3.one;
         socket.transform.position += transform.position;
         socket.transform.parent = transform;
-        //create child game object to show
         return socket;
     }
-    void AddAttachPoint(GameObject socket, ref GameObject attachPoint, Mesh puzzleMesh)
+    void AddAttachPoint(GameObject socket, ref GameObject attachPoint)
     {
-        attachPoint.transform.position = new(0, -bounds.y / 2, 0);
+        attachPoint.transform.position = new(0, -bounds.y / nRows, 0);
         attachPoint.transform.parent = socket.transform;
     }
     //================CHECK AND HANDLE WIN===================
-    private void CheckPieceCorrect(XRSocketInteractor socket, int index)
-    {
-        isPieceCorrect[index] = socket.isSelectActive && socket.name == socket.interactablesSelected[0].transform.name;
-        CheckWin();
-    }
-    private bool TestWin()
+    protected override bool TestWin()
     {
         for (int k = 0; k < nDepth; k++)
             for (int i = 0; i < nCols; i++)
@@ -138,12 +131,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
                         return false;
         return true;
     }
-    private void CheckWin()
-    {
-        if (TestWin())
-            OnWin();
-    }
-    private void OnWin()
+    protected override void OnWin()
     {
         PuzzleManager.Instance.PuzzleAdvancement();
         DisableAllSockets();

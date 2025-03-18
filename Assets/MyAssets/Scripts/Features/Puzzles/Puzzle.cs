@@ -1,33 +1,24 @@
-
 using Meta.XR.MRUtilityKit;
 using UnityEngine;
-public class Puzzle : MonoBehaviour
+public abstract class Puzzle : BaseFeature
 {
     [SerializeField, Header("MRUK object")]
     private MRUK mruk;
-    [SerializeField, Header("Scale of the image pieces")]
+    [SerializeField, Header("Scale of the pieces")]
     protected float pieceScale = 0.05f;
     [SerializeField, Header("Title")]
-    protected string title;
+    protected string titleStr;
     [SerializeField, Header("Grid dimensions")]
     protected int nCols = 1;
     [SerializeField]
     protected int nRows = 1;
-    protected GameObject[] puzzlePiecesArr;
-    // RANDOMLY PLACE THE PIECES
-    public void SpawnRndPuzzlePieces()
+    protected Vector3 bounds;
+    protected float CalculateOffsetForSocketCenter(int tot, int i)
     {
-        SpawnPuzzlePieces script = GetComponent<SpawnPuzzlePieces>();
-        script.SetObjectsArr(puzzlePiecesArr);
-        script.StartSpawn();
-    }
-    public int GetNRows()
-    {
-        return nRows;
-    }
-    public int GetNCols()
-    {
-        return nCols;
+        float pos = i < tot / 2 ? -(tot / 2 - i) : (i - tot / 2);
+        if (tot % 2 == 0)
+            pos = i >= tot / 2 ? _ = pos * 2 + 1 : _ = (pos + 1) * 2 - 1;
+        return tot % 2 != 0 ? pos / tot : pos / (tot * 2);
     }
     public float GetPieceScale()
     {
@@ -35,10 +26,15 @@ public class Puzzle : MonoBehaviour
     }
     public string GetTitle()
     {
-        return title;
+        return titleStr;
     }
-    public GameObject[] GetPuzzleArr()
+    public int GetNCols()
     {
-        return puzzlePiecesArr;
+        return nCols;
     }
+    public int GetNRows()
+    {
+        return nRows;
+    }
+    protected abstract void CalculateBounds();
 }

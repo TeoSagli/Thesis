@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class Puzzle3DFeature : Puzzle
+public class Puzzle3DFeature : PuzzlePiece
 {
     [SerializeField]
     private int nDepth = 1;
@@ -13,6 +13,7 @@ public class Puzzle3DFeature : Puzzle
     private GameObject objectToRender;
     [SerializeField]
     private GameObject objectMesh;
+
     private void Start()
     {
         if (MRUK.Instance)
@@ -25,6 +26,7 @@ public class Puzzle3DFeature : Puzzle
     // EXTRACTION PROCESS
     public void ExtractGridMesh()
     {
+        CalculateBounds();
         puzzlePiecesArr = new GameObject[nCols * nRows * nDepth];
         MeshFilter meshFilter = objectMesh.GetComponent<MeshFilter>();
         Mesh originalMesh = meshFilter.sharedMesh;
@@ -50,7 +52,7 @@ public class Puzzle3DFeature : Puzzle
                     Vector3 cubeMin = minBounds + new Vector3(x * stepSize.x, y * stepSize.y, z * stepSize.z);
                     Vector3 cubeMax = cubeMin + stepSize;
                     Mesh tileMesh = ExtractCubeMesh(originalMesh.vertices, originalMesh.triangles, cubeMin, cubeMax);
-                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}");
+                    puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}", CalculateOffsetVec(x, y, z));
                 }
             }
         }
@@ -102,10 +104,27 @@ public class Puzzle3DFeature : Puzzle
             name = "Mesh",
         };
         newMesh.RecalculateNormals();
+        newMesh.uv = GenerateDefaultUVs(newMesh);
         return newMesh;
     }
+    Vector2[] GenerateDefaultUVs(Mesh mesh)
+    {
+        Vector2[] uvs = mesh.uv;
+        Bounds bounds = mesh.bounds;
+
+        for (int i = 0; i < uvs.Length; i++)
+        {
+            // Normalize UVs based on extracted piece position
+            uvs[i] = new Vector2(
+                (uvs[i].x - bounds.min.x) / bounds.size.x,
+                (uvs[i].y - bounds.min.y) / bounds.size.y
+            );
+        }
+
+        return uvs;
+    }
     // PUZZLE PIECES' GENERATION PROCESS
-    private GameObject GeneratePuzzlePiece(Mesh mesh, string name)
+    private GameObject GeneratePuzzlePiece(Mesh mesh, string name, Vector3 toTrans)
     {
         GameObject piece = new(name);
         MeshRenderer mr = piece.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
@@ -127,7 +146,7 @@ public class Puzzle3DFeature : Puzzle
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
         //attach
         GameObject attachPoint = new("Attach Point");
-        AddAttachPoint(piece, ref attachPoint, mesh);
+        AddAttachPoint(piece, ref attachPoint, mesh, toTrans);
         //grab interactable
         xrGrabInteractable.interactionLayers = LayerMask.GetMask("Puzzle3D");
         xrGrabInteractable.farAttachMode = InteractableFarAttachMode.Near;
@@ -138,17 +157,36 @@ public class Puzzle3DFeature : Puzzle
         piece.transform.parent = transform;
         return piece;
     }
-    void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh m)
+    protected override void CalculateBounds()
     {
-        Vector3 extendsObj = m.bounds.extents;
-        Vector3 centerObj = m.bounds.center;
+        Mesh m = objectMesh.GetComponent<MeshFilter>().mesh;
+        bounds = new()
+        {
+            x = m.bounds.size.x / nCols,
+            y = m.bounds.size.y / nRows,
+            z = m.bounds.size.z / nDepth
+        };
+    }
+    protected Vector3 CalculateOffsetVec(int i, int j, int k)
+    {
+        return new Vector3(CalculateOffsetForSocketCenter(nCols, i) * transform.localScale.x, CalculateOffsetForSocketCenter(nRows, j) * transform.localScale.y, CalculateOffsetForSocketCenter(nDepth, k) * transform.localScale.z);
+    }
+    void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Mesh puzzleMesh, Vector3 toTrans)
+    {
+        Vector3 centerObj = puzzleMesh.bounds.center;
+        Vector3 mismatch = bounds / 2 - puzzleMesh.bounds.extents;
         Vector3 offset = new()
         {
-            x = centerObj.x,
-            y = centerObj.y - extendsObj.y,
-            z = centerObj.z,
+            x = toTrans.x > 0 ? mismatch.x : -mismatch.x,
+            y = (toTrans.y < 0 ? -mismatch.y : mismatch.y) - bounds.y / nRows,
+            z = toTrans.z > 0 ? mismatch.z : -mismatch.z,
         };
+        if (toTrans.x == 0) offset.x = 0;
+        if (toTrans.y == 0) offset.y = -bounds.y / nRows;
+        if (toTrans.z == 0) offset.z = 0;
+
         attachPoint.transform.position = offset;
+        attachPoint.transform.position += centerObj;
         attachPoint.transform.parent = obj.transform;
     }
     // GETTERS

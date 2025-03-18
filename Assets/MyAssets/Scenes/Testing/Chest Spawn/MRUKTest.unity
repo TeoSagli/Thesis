@@ -2974,7 +2974,6 @@ Transform:
   - {fileID: 350981661}
   - {fileID: 839682244}
   - {fileID: 495547802}
-  - {fileID: 1838680162}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &276938450
@@ -3404,9 +3403,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00485c76e01cc64d9bb2fc17d83ac87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AudioClipForOnStarted>k__BackingField: {fileID: 0}
+  <AudioClipForOnStopped>k__BackingField: {fileID: 0}
+  featureUsage: 0
   mruk: {fileID: 1764117906}
   pieceScale: 0.1
-  title: MAPPA DI NOLO
+  titleStr: MAPPA DI NOLO
   nCols: 5
   nRows: 4
   spriteShader: {fileID: 4800000, guid: eaaf6014898ce6e49babf2cf56ea532a, type: 3}
@@ -3606,11 +3608,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0398b2e5980db64983592b81ac9fbf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AudioClipForOnStarted>k__BackingField: {fileID: 0}
+  <AudioClipForOnStopped>k__BackingField: {fileID: 0}
+  featureUsage: 0
   mruk: {fileID: 1764117906}
-  pieceScale: 0.25
-  title: TESTA DAVID
-  nCols: 2
-  nRows: 1
+  pieceScale: 0.4
+  titleStr: TESTA DEL DAVID
+  nCols: 3
+  nRows: 2
   nDepth: 2
   objectToRender: {fileID: 151087429}
   objectMesh: {fileID: 1035703830}
@@ -17428,62 +17433,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 701541725}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1838680161
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1838680162}
-  - component: {fileID: 1838680163}
-  m_Layer: 0
-  m_Name: DisableRecenter
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1838680162
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838680161}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 270956334}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1838680163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1838680161}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9709fe30c04d7534ab33d6b56b834089, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputMenu:
-    m_UseReference: 1
-    m_Action:
-      m_Name: Input Menu
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: 2237076e-2791-468f-98a2-bcae78390c4a
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings: []
-      m_Flags: 0
-    m_Reference: {fileID: 8384539129215156158, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &1849429479
 GameObject:
   m_ObjectHideFlags: 0
@@ -19248,11 +19197,16 @@ MonoBehaviour:
   <AudioClipForOnStarted>k__BackingField: {fileID: 0}
   <AudioClipForOnStopped>k__BackingField: {fileID: 0}
   featureUsage: 0
+  mruk: {fileID: 0}
+  pieceScale: 0.05
+  titleStr: 
+  nCols: 1
+  nRows: 1
   title: {fileID: 79435461}
   socketBack: {fileID: 5111468227601978443, guid: 27cd1c5a745ae9e46be9cd03dd28541a, type: 3}
-  puzzleObject: {fileID: 324831621}
   canHoverMat: {fileID: 2100000, guid: e4762d9a0dec29d489d72ab14b0b6847, type: 2}
   cantHoverMat: {fileID: 2100000, guid: a7cc3ff560271fa44abb956d822a4113, type: 2}
+  puzzleObject: {fileID: 324831621}
 --- !u!1 &2005215351
 GameObject:
   m_ObjectHideFlags: 0
@@ -23198,8 +23152,15 @@ MonoBehaviour:
   <AudioClipForOnStarted>k__BackingField: {fileID: 8300000, guid: 17c28b91fe6ba414fbe25049936a0a31, type: 3}
   <AudioClipForOnStopped>k__BackingField: {fileID: 0}
   featureUsage: 0
+  mruk: {fileID: 0}
+  pieceScale: 0.05
+  titleStr: 
+  nCols: 1
+  nRows: 1
   title: {fileID: 119485702282107343}
   socketBack: {fileID: 5111468227601978443, guid: 27cd1c5a745ae9e46be9cd03dd28541a, type: 3}
+  canHoverMat: {fileID: 0}
+  cantHoverMat: {fileID: 0}
   puzzleObject: {fileID: 296845331}
 --- !u!1 &1363677062290739423
 GameObject:
@@ -34680,9 +34641,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c00485c76e01cc64d9bb2fc17d83ac87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AudioClipForOnStarted>k__BackingField: {fileID: 0}
+  <AudioClipForOnStopped>k__BackingField: {fileID: 0}
+  featureUsage: 0
   mruk: {fileID: 1764117906}
   pieceScale: 0.05
-  title: MONA LISA
+  titleStr: MONA LISA
   nCols: 3
   nRows: 2
   spriteShader: {fileID: 4800000, guid: eaaf6014898ce6e49babf2cf56ea532a, type: 3}
@@ -35129,8 +35093,15 @@ MonoBehaviour:
   <AudioClipForOnStarted>k__BackingField: {fileID: 8300000, guid: 17c28b91fe6ba414fbe25049936a0a31, type: 3}
   <AudioClipForOnStopped>k__BackingField: {fileID: 0}
   featureUsage: 0
+  mruk: {fileID: 0}
+  pieceScale: 0.05
+  titleStr: 
+  nCols: 1
+  nRows: 1
   title: {fileID: 8749714632005451859}
   socketBack: {fileID: 5111468227601978443, guid: 27cd1c5a745ae9e46be9cd03dd28541a, type: 3}
+  canHoverMat: {fileID: 0}
+  cantHoverMat: {fileID: 0}
   puzzleObject: {fileID: 1154617857392677411}
 --- !u!33 &7279180860831384564
 MeshFilter:
@@ -37173,9 +37144,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0398b2e5980db64983592b81ac9fbf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <AudioClipForOnStarted>k__BackingField: {fileID: 0}
+  <AudioClipForOnStopped>k__BackingField: {fileID: 0}
+  featureUsage: 0
   mruk: {fileID: 1764117906}
   pieceScale: 0.002
-  title: TROFEO
+  titleStr: TROFEO
   nCols: 2
   nRows: 3
   nDepth: 1
@@ -38012,11 +37986,16 @@ MonoBehaviour:
   <AudioClipForOnStarted>k__BackingField: {fileID: 0}
   <AudioClipForOnStopped>k__BackingField: {fileID: 0}
   featureUsage: 0
+  mruk: {fileID: 0}
+  pieceScale: 0.05
+  titleStr: 
+  nCols: 1
+  nRows: 1
   title: {fileID: 2370516378523097455}
   socketBack: {fileID: 5111468227601978443, guid: 27cd1c5a745ae9e46be9cd03dd28541a, type: 3}
-  puzzleObject: {fileID: 2564728507328778062}
   canHoverMat: {fileID: 2100000, guid: e4762d9a0dec29d489d72ab14b0b6847, type: 2}
   cantHoverMat: {fileID: 2100000, guid: a7cc3ff560271fa44abb956d822a4113, type: 2}
+  puzzleObject: {fileID: 2564728507328778062}
 --- !u!23 &9065646401589041562
 MeshRenderer:
   m_ObjectHideFlags: 0

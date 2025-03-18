@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 public class Puzzle2DSocketFeature : PuzzleSocket
 {
-    private bool[] isPieceCorrect;
+
     private Sprite originalSprite;
 
     // Start is called before the first frame update
@@ -21,14 +21,17 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         originalSprite = puzzlePiecesScript.GetOriginalSprite();
         nRows = puzzlePiecesScript.GetNRows();
         nCols = puzzlePiecesScript.GetNCols();
-        titleToSet = puzzlePiecesScript.GetTitle();
+        titleStr = puzzlePiecesScript.GetTitle();
         pieceScale = puzzlePiecesScript.GetPieceScale();
     }
     protected override void CalculateBounds()
     {
-        bounds.x = originalSprite.bounds.size.x / nCols;
-        bounds.y = originalSprite.bounds.size.y / nRows;
-        bounds.z = originalSprite.bounds.size.z;
+        bounds = new()
+        {
+            x = originalSprite.bounds.size.x / nCols,
+            y = originalSprite.bounds.size.y / nRows,
+            z = originalSprite.bounds.size.z,
+        };
     }
     //================SOCKETS===================
     public override void GenerateAndPlaceSockets()
@@ -40,7 +43,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         Vector3 size = new(bounds.x * nCols, bounds.y * nRows, transform.localScale.z);
         SetPuzzleSize(size * pieceScale);
         //configure title
-        SetTitle(titleToSet);
+        SetTitle(titleStr);
         PositionTitle(new Vector3(0, -bounds.y * 0.75f * nRows, 0) * pieceScale);
         //define bool matrix to evaluate win conditions
         isPieceCorrect = new bool[nRows * nCols];
@@ -65,7 +68,6 @@ public class Puzzle2DSocketFeature : PuzzleSocket
     {
         socket.transform.Translate(offsetVec);
     }
-
     protected override GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index)
     {
         GameObject socket = new(puzzlePiece.name + "-tile" + index);
@@ -88,6 +90,10 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         {
             //PlayOnStarted();
             CheckPieceCorrect(xRSocketInteractor, index);
+        });
+        xRSocketInteractor.selectExited.AddListener((s) =>
+        {
+            UpdateMatrix(xRSocketInteractor, index);
         });
         //socket back
         var back = Instantiate(socketBack);
@@ -113,18 +119,8 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         attachPoint.transform.parent = socket.transform;
     }
     //================CHECK AND HANDLE WIN===================
-    private void CheckPieceCorrect(XRSocketInteractor socket, int index)
-    {
-        isPieceCorrect[index] = socket.isSelectActive && socket.name == socket.interactablesSelected[0].transform.name;
-        CheckWin();
-    }
-    private void CheckWin()
-    {
-        bool res = TestWin();
-        if (res)
-            OnWin();
-    }
-    private bool TestWin()
+
+    protected override bool TestWin()
     {
         for (int i = 0; i < nRows; i++)
             for (int j = 0; j < nCols; j++)
@@ -132,7 +128,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
                     return false;
         return true;
     }
-    private void OnWin()
+    protected override void OnWin()
     {
         PuzzleManager.Instance.PuzzleAdvancement();
         DisableAllSockets();
@@ -147,6 +143,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         s.transform.localScale = pieceScale * Vector3.one;
         s.transform.parent = transform;
     }
+
     protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
     {
         throw new System.NotImplementedException();

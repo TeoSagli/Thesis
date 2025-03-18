@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-public class Puzzle2DFeature : Puzzle
+public class Puzzle2DFeature : PuzzlePiece
 {
     [SerializeField, Header("Sprite params")]
     private Shader spriteShader;
@@ -20,23 +20,31 @@ public class Puzzle2DFeature : Puzzle
     }
     private void ExtractAndGeneratePieces()
     {
+        CalculateBounds();
         puzzlePiecesArr = new GameObject[nCols * nRows];
         for (int j = 0; j < nCols; j++)
         {
             for (int i = 0; i < nRows; i++)
             {
                 int contTiles = j * nRows + i;
-                Sprite puzzlePiece = SpriteExtractor(spriteToRender, nRows - 1 - i, j, contTiles);
+                Sprite puzzlePiece = SpriteExtractor(spriteToRender, nRows - 1 - i, j);
                 puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(puzzlePiece, spriteToRender.name + "-tile" + contTiles);
             }
         }
-
     }
     // EXTRACTION PROCESS
-    private Sprite SpriteExtractor(Sprite sprite, int i, int j, int pos)
+    protected override void CalculateBounds()
     {
-        float w = sprite.bounds.size.x / nCols * 100; //tot 1000
-        float h = sprite.bounds.size.y / nRows * 100; //tot 1330
+        bounds = new()
+        {
+            x = spriteToRender.bounds.size.x / nCols,
+            y = spriteToRender.bounds.size.y / nRows,
+        };
+    }
+    private Sprite SpriteExtractor(Sprite sprite, int i, int j)
+    {
+        float w = bounds.x * 100; //tot 1000
+        float h = bounds.y * 100; //tot 1330
         float x = j * w;
         float y = i * h;
 

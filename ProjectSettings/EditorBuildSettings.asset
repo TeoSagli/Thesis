@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/GameAbandonedSchool.unity
+    path: Assets/MyAssets/Scenes/GameAbandonedSchool.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 0
-    path: Assets/Scenes/Testing/ARTest.unity
+    path: Assets/MyAssets/Scenes/Testing/ARTest.unity
     guid: 73f5ae601a98e2f4a82824c27cd67b9c
   - enabled: 0
     path: Assets/Samples/Meta MR Utility Kit/71.0.0/Basic/MRUKBase.unity
@@ -47,9 +47,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Samples/Meta MR Utility Kit/71.0.0/Virtual Home/VirtualHome.unity
     guid: 89c9f2977ebcf294fabcd8a4b23e6858
-  - enabled: 1
-    path: Assets/Scenes/Testing/Chest Spawn/MRUKTest.unity
+  - enabled: 0
+    path: Assets/MyAssets/Scenes/Testing/Chest Spawn/MRUKTest.unity
     guid: 1850baca4aedf4348aa54931aa8ca21f
+  - enabled: 1
+    path: Assets/MyAssets/Scenes/OpenDay/OpenDayDemo.unity
+    guid: 8e93c360e6d2e4544accb226d6cf027d
+  - enabled: 1
+    path: Assets/MyAssets/Scenes/OpenDay/OpenDayPuzzleMap.unity
+    guid: 7a4c875800922ef41b7976662490e543
+  - enabled: 1
+    path: Assets/MyAssets/Scenes/OpenDay/OpenDayPuzzleObject.unity
+    guid: 7955582dfb619a84ba68a8d4427a7dda
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: fae563a6c2a346246a5e62dbabf47ed1, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}

@@ -4,20 +4,21 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
-public abstract class PuzzleSocket : BaseFeature
+public abstract class PuzzleSocket : Puzzle
 {
     [SerializeField, Header("Title")]
     protected TextMeshProUGUI title;
     [SerializeField, Header("Socket Background")]
     protected GameObject socketBack;
-    [SerializeField, Header("Puzzle Object Reference")]
+    [SerializeField]
+    protected Material canHoverMat;
+    [SerializeField]
+    protected Material cantHoverMat;
+    [SerializeField, Header("Reference to the pieces' spawner")]
     protected GameObject puzzleObject;
-    protected int nRows = 1;
-    protected int nCols = 1;
-    protected string titleToSet;
-    protected Vector3 bounds;
-    protected float pieceScale;
     protected GameObject[] sockets;
+    protected bool[] isPieceCorrect;
+    //title management
     protected void SetTitle(string titleToSet)
     {
         title.text = titleToSet;
@@ -30,25 +31,37 @@ public abstract class PuzzleSocket : BaseFeature
     {
         transform.localScale = s;
     }
-    protected float CalculateOffsetForSocketCenter(int tot, int i)
+    //test & handle win
+    protected void UpdateMatrix(XRSocketInteractor socket, int index)
     {
-        float pos = i < tot / 2 ? -(tot / 2 - i) : (i - tot / 2);
-        if (tot % 2 == 0)
-            pos = i >= tot / 2 ? _ = pos * 2 + 1 : _ = (pos + 1) * 2 - 1;
-        return tot % 2 != 0 ? pos / tot : pos / (tot * 2);
+        isPieceCorrect[index] = socket.hasSelection && socket.name == socket.interactablesSelected[0].transform.name;
     }
+    protected abstract bool TestWin();
+    protected abstract void OnWin();
+    protected void CheckPieceCorrect(XRSocketInteractor socket, int index)
+    {
+        UpdateMatrix(socket, index);
+        CheckWin();
+    }
+    private void CheckWin()
+    {
+        bool res = TestWin();
+        if (res)
+            OnWin();
+    }
+    //init
+    protected abstract void ImportParameters();
+    //sockets management
     protected void DisableAllSockets()
     {
         for (int i = 0; i < sockets.Length; i++)
         {
             XRSocketInteractor socketInteractor = sockets[i].GetComponent<XRSocketInteractor>();
-            GameObject imageToDel = socketInteractor.interactablesSelected[0].transform.gameObject;
-            imageToDel.SetActive(false);
+            GameObject toDel = socketInteractor.interactablesSelected[0].transform.gameObject;
+            toDel.SetActive(false);
             sockets[i].SetActive(false);
         }
     }
-    protected abstract void ImportParameters();
-    protected abstract void CalculateBounds();
     public abstract void GenerateAndPlaceSockets();
     protected abstract GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index);
     protected abstract GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index);
