@@ -2,8 +2,6 @@ using Meta.XR.MRUtilityKit;
 using UnityEngine;
 public abstract class Puzzle : BaseFeature
 {
-    [SerializeField, Header("MRUK object")]
-    private MRUK mruk;
     [SerializeField, Header("Scale of the pieces")]
     protected float pieceScale = 0.05f;
     [SerializeField, Header("Title")]
