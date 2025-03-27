@@ -50,15 +50,18 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/MyAssets/Scenes/Testing/Chest Spawn/MRUKTest.unity
     guid: 1850baca4aedf4348aa54931aa8ca21f
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyAssets/Scenes/OpenDay/OpenDayDemo.unity
     guid: 8e93c360e6d2e4544accb226d6cf027d
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyAssets/Scenes/OpenDay/OpenDayPuzzleMap.unity
     guid: 7a4c875800922ef41b7976662490e543
-  - enabled: 1
+  - enabled: 0
     path: Assets/MyAssets/Scenes/OpenDay/OpenDayPuzzleObject.unity
     guid: 7955582dfb619a84ba68a8d4427a7dda
+  - enabled: 1
+    path: Assets/MyAssets/Scenes/OpenDay/OpenDayTrotter.unity
+    guid: 2189c10f8b825244a89a2c4fdf031eb4
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: fae563a6c2a346246a5e62dbabf47ed1, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}

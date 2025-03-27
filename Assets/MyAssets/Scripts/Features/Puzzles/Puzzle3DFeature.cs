@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using Meta.XR.MRUtilityKit;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
@@ -12,8 +14,8 @@ public class Puzzle3DFeature : PuzzlePiece
     [SerializeField, Header("Object params")]
     private GameObject objectToRender;
     [SerializeField]
+    private GameObject[] objectMultipleMesh;
     private GameObject objectMesh;
-
     private void Start()
     {
         if (MRUK.Instance)
@@ -26,10 +28,12 @@ public class Puzzle3DFeature : PuzzlePiece
     // EXTRACTION PROCESS
     public void ExtractGridMesh()
     {
+        Mesh originalMesh;
+        objectMesh = GenerateCombinedMeshObject();
         CalculateBounds();
         puzzlePiecesArr = new GameObject[nCols * nRows * nDepth];
-        MeshFilter meshFilter = objectMesh.GetComponent<MeshFilter>();
-        Mesh originalMesh = meshFilter.sharedMesh;
+
+        originalMesh = objectMesh.GetComponent<MeshFilter>().mesh;
         // Get the mesh bounds
         Bounds bounds = originalMesh.bounds;
         Vector3 minBounds = bounds.min;
@@ -51,48 +55,53 @@ public class Puzzle3DFeature : PuzzlePiece
                     int contTiles = z * nCols * nRows + x * nRows + y;
                     Vector3 cubeMin = minBounds + new Vector3(x * stepSize.x, y * stepSize.y, z * stepSize.z);
                     Vector3 cubeMax = cubeMin + stepSize;
-                    Mesh tileMesh = ExtractCubeMesh(originalMesh.vertices, originalMesh.triangles, cubeMin, cubeMax);
+                    Mesh tileMesh = ExtractCubeMesh(cubeMin, cubeMax, originalMesh);
                     puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(tileMesh, objectToRender.name + $"-tile{contTiles}", CalculateOffsetVec(x, y, z), y, x);
                 }
             }
         }
     }
-    private Sprite SpriteExtractor(Sprite sprite, int i, int j)
+    private GameObject GenerateCombinedMeshObject()
     {
-        float w = bounds.x * 100; //tot 1000
-        float h = bounds.y * 100; //tot 1330
-        float x = j * w;
-        float y = i * h;
+        Mesh originalMesh = new();
+        GameObject combinedMeshObject = new(objectToRender.name);
+        MeshRenderer mr = combinedMeshObject.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
+        MeshFilter mf = combinedMeshObject.AddComponent(typeof(MeshFilter)) as MeshFilter;
 
-        // Define the portion of the sprite to extract (x, y, width, height)
-        Rect rect = new(x, y, w, h);
-        // Create the new sprite
-        Vector2 pivotDef = new(0.5f, 0.5f); //center
-        Sprite s = Sprite.Create(sprite.texture, rect, pivotDef);
-        return s;
+        CombineInstance[] combine = new CombineInstance[objectMultipleMesh.Length];
+        originalMesh.indexFormat = IndexFormat.UInt32;
+        if (objectMultipleMesh.Length > 1)
+        {
+            for (int i = 0; i < objectMultipleMesh.Length; i++)
+            {
+                MeshFilter mFilter = objectMultipleMesh[i].GetComponent<MeshFilter>();
+                combine[i].mesh = mFilter.sharedMesh;
+                combine[i].transform = mFilter.transform.localToWorldMatrix;
+            }
+
+            originalMesh.CombineMeshes(combine, true, true);
+            mf.mesh = originalMesh;
+        }
+        else
+        {
+            MeshFilter mFilter = objectMultipleMesh[0].GetComponent<MeshFilter>();
+            mf.mesh = mFilter.mesh;
+        }
+        MeshRenderer mRenderer = objectMultipleMesh[0].GetComponent<MeshRenderer>();
+        mr.material.shader = mRenderer.material.shader;
+        mr.material = mRenderer.material;
+        combinedMeshObject.SetActive(false);
+        return combinedMeshObject;
     }
-    private Texture2D ExtractTexture(Sprite sprite)
+    private Mesh ExtractCubeMesh(Vector3 cubeMin, Vector3 cubeMax, Mesh originalMesh)
     {
-        var croppedTexture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
-
-        // var pixels = sprite.texture.GetPixels32();
-        //   croppedTexture.SetPixels32(pixels);
-        var pixels = sprite.texture.GetPixels((int)sprite.textureRect.x,
-                                           (int)sprite.textureRect.y,
-                                           (int)sprite.textureRect.width,
-                                           (int)sprite.textureRect.height);
-
-        croppedTexture.SetPixels(pixels);
-        croppedTexture.Apply();
-        return croppedTexture;
-    }
-    private Mesh ExtractCubeMesh(Vector3[] originalVertices, int[] originalTriangles, Vector3 cubeMin, Vector3 cubeMax)
-    {
+        Vector3[] originalVertices = originalMesh.vertices;
+        int[] originalTriangles = originalMesh.triangles;
+        Vector2[] originalUVs = originalMesh.uv;
         List<Vector3> newVertices = new();
         List<int> newTriangles = new();
         Dictionary<int, int> vertexMap = new();
         List<Vector2> newUVs = new();
-        Vector2[] originalUVs = objectMesh.GetComponent<MeshFilter>().mesh.uv;
 
         // Find vertices inside the cube
         for (int i = 0; i < originalTriangles.Length; i += 3)
@@ -140,16 +149,6 @@ public class Puzzle3DFeature : PuzzlePiece
         newMesh.RecalculateBounds();
         return newMesh;
     }
-    private Vector2[] GenerateDefaultUVs(Mesh mesh)
-    {
-        Vector2[] uvs = new Vector2[mesh.vertices.Length];
-        for (int i = 0; i < uvs.Length; i++)
-        {
-            Vector3 vertex = mesh.vertices[i];
-            uvs[i] = new Vector2(vertex.x, vertex.z); // Basic planar UV mapping
-        }
-        return uvs;
-    }
     // PUZZLE PIECES' GENERATION PROCESS
     private GameObject GeneratePuzzlePiece(Mesh mesh, string name, Vector3 toTrans, int i, int j)
     {
@@ -163,7 +162,6 @@ public class Puzzle3DFeature : PuzzlePiece
         //mesh
         MeshRenderer mrOriginal = objectMesh.GetComponent<MeshRenderer>();
         mf.mesh = mesh;
-        Material meshMat = new(mrOriginal.material);
         float w = bounds.x * 100; //tot 1000
         float h = bounds.y * 100; //tot 1330
         Vector2 offset = new()

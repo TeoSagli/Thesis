@@ -1,3 +1,4 @@
+using Meta.XR.MRUtilityKit;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -11,8 +12,12 @@ public class Puzzle2DSocketFeature : PuzzleSocket
     // Start is called before the first frame update
     private void Start()
     {
-        SetVolume(0.2f);
-        GenerateAndPlaceSockets();
+        if (MRUK.Instance)
+            MRUK.Instance.RegisterSceneLoadedCallback(() =>
+            {
+                SetVolume(0.2f);
+                GenerateAndPlaceSockets();
+            });
     }
     //================CONFIGURATION===================
     protected override void ImportParameters()

@@ -9,7 +9,7 @@ using static Enums;
 
 public class UIManager : Singleton<UIManager>
 {
-    private const string GAME_SCENE_NAME = "MRUKTest";
+    private const string GAME_SCENE_NAME = "OpenDayTrotter";
 
     [Header("UI configuration")]
     [SerializeField]
