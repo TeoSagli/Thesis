@@ -18,7 +18,11 @@ public abstract class PuzzleSocket : Puzzle
     protected GameObject puzzleObject;
     protected GameObject[] sockets;
     protected bool[] isPieceCorrect;
-    //title management
+    protected void SetPuzzleSize(Vector3 s)
+    {
+        transform.localScale = s;
+    }
+    //================TITLE MANAGEMENT===================
     protected void SetTitle(string titleToSet)
     {
         title.text = titleToSet;
@@ -27,17 +31,11 @@ public abstract class PuzzleSocket : Puzzle
     {
         title.transform.Translate(vector);
     }
-    protected void SetPuzzleSize(Vector3 s)
-    {
-        transform.localScale = s;
-    }
-    //test & handle win
+    //================EVALUATE PUZZLE COMPLETION===================
     protected void UpdateMatrix(XRSocketInteractor socket, int index)
     {
         isPieceCorrect[index] = socket.hasSelection && socket.name == socket.interactablesSelected[0].transform.name;
     }
-    protected abstract bool TestWin();
-    protected abstract void OnWin();
     protected void CheckPieceCorrect(XRSocketInteractor socket, int index)
     {
         UpdateMatrix(socket, index);
@@ -49,9 +47,6 @@ public abstract class PuzzleSocket : Puzzle
         if (res)
             OnWin();
     }
-    //init
-    protected abstract void ImportParameters();
-    //sockets management
     protected void DisableAllSockets()
     {
         for (int i = 0; i < sockets.Length; i++)
@@ -62,7 +57,11 @@ public abstract class PuzzleSocket : Puzzle
             sockets[i].SetActive(false);
         }
     }
+    //================ABSTRACT METHODS===================
+    protected abstract bool TestWin();
+    protected abstract void OnWin();
     public abstract void GenerateAndPlaceSockets();
+    protected abstract void ImportParameters();
     protected abstract GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index);
     protected abstract GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index);
     protected abstract void PlaceSocketAt(ref GameObject socket, Vector3 offsetVec);

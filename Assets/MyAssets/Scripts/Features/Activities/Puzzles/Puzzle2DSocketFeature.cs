@@ -38,7 +38,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
             z = originalSprite.bounds.size.z,
         };
     }
-    //================SOCKETS===================
+    //================GENERATE SOCKET===================
     public override void GenerateAndPlaceSockets()
     {
         ImportParameters();
@@ -123,8 +123,7 @@ public class Puzzle2DSocketFeature : PuzzleSocket
         attachPoint.transform.Translate(offset);
         attachPoint.transform.parent = socket.transform;
     }
-    //================CHECK AND HANDLE WIN===================
-
+    //================EVALUATE PUZZLE COMPLETION===================
     protected override bool TestWin()
     {
         for (int i = 0; i < nRows; i++)

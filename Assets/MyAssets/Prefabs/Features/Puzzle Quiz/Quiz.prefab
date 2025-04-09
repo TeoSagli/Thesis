@@ -45,33 +45,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c75f2a07940deef42892539475a9e9c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  videoButton: {fileID: 1823416490759449021}
-  videoQuestion: {fileID: 5503088435157376728}
-  textQuestion: {fileID: 5732073237111240936}
-  imageQuestion: {fileID: 4593568813793435935}
   options: {fileID: 8974553835440741536}
-  objectAnswer: {fileID: 1634187909754016331}
-  placeHolderVideo: {fileID: 7714178335882992415}
-  textTitle: {fileID: 831178583497777976}
-  textTitleToShow: "Qual \xE8 l'animale simbolo di NoLo?"
-  questionType: 1
-  videoToShow: {fileID: 32900000, guid: 713987e4e33c6c54490d06ff9a9a2d7f, type: 3}
-  textToShow: "Qual \xE8 la capitale d'Italia?"
-  imageToShow: {fileID: 21300000, guid: 7f5f270db08fc404e8278a489b09592a, type: 3}
+  questionType: 2
+  quizTextQuestion:
+    textTitle: {fileID: 831178583497777976}
+    textTitleToShow: 
+    textQuestion: {fileID: 5732073237111240936}
+    textToShow: 'prova '
+  quizVideoQuestion:
+    textTitle: {fileID: 831178583497777976}
+    textTitleToShow: videoooo
+    videoToShow: {fileID: 32900000, guid: 713987e4e33c6c54490d06ff9a9a2d7f, type: 3}
+    videoButton: {fileID: 1823416490759449021}
+    videoQuestion: {fileID: 5503088435157376728}
+    placeHolderVideo: {fileID: 7714178335882992415}
+  quizImageQuestion:
+    textTitle: {fileID: 831178583497777976}
+    textTitleToShow: dgfgdfgdfghf
+    imageToShow: {fileID: 21300000, guid: acb91f4366ead694fb31630b63b83e70, type: 3}
+    imageQuestion: {fileID: 4593568813793435935}
   answersType: 0
-  answerOne: Capodoglio
-  answerTwo: Balena
-  answerA: 
-  answerB: 
-  answerC: 
-  answer1: Torino
-  answer2: Roma
-  answer3: Milano
-  answer4: Firenze
-  rightAnswersOf4: 1
-  rightAnswersOf3: 0
-  rightAnswersOf2: 1
-  rightObjectTag: 
+  quizTwoAnswers:
+    correctAnswer: 0
+    answerOne: Roma
+    answerTwo: Milano
+  quizThreeAnswers:
+    correctAnswer: 0
+    answerOne: 
+    answerTwo: 
+    answerThree: 
+  quizFourAnswers:
+    correctAnswer: 2
+    answerOne: aaaa
+    answerTwo: bbbb
+    answerThree: ccccc
+    answerFour: ddddd
+  quizObjectAnswer:
+    correctAnswer: 0
+    objectAnswer: {fileID: 0}
+    rightObjectTag: 
 --- !u!1 &977631420985400240
 GameObject:
   m_ObjectHideFlags: 0

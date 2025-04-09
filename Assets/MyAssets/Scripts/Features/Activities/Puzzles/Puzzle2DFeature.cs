@@ -18,6 +18,15 @@ public class Puzzle2DFeature : PuzzlePiece
                 SpawnRndPuzzlePieces();
             });
     }
+    //================CONFIGURATION===================
+    protected override void CalculateBounds()
+    {
+        bounds = new()
+        {
+            x = spriteToRender.bounds.size.x / nCols,
+            y = spriteToRender.bounds.size.y / nRows,
+        };
+    }
     private void ExtractAndGeneratePieces()
     {
         CalculateBounds();
@@ -32,15 +41,8 @@ public class Puzzle2DFeature : PuzzlePiece
             }
         }
     }
-    // EXTRACTION PROCESS
-    protected override void CalculateBounds()
-    {
-        bounds = new()
-        {
-            x = spriteToRender.bounds.size.x / nCols,
-            y = spriteToRender.bounds.size.y / nRows,
-        };
-    }
+
+    //================EXTRACT PIECES===================
     private Sprite SpriteExtractor(Sprite sprite, int i, int j)
     {
         float w = bounds.x * 100; //tot 1000
@@ -55,7 +57,7 @@ public class Puzzle2DFeature : PuzzlePiece
         Sprite s = Sprite.Create(sprite.texture, rect, pivotDef);
         return s;
     }
-    // PUZZLE PIECES' GENERATION PROCESS
+    //================GENERATE PIECE===================
     private GameObject GeneratePuzzlePiece(Sprite puzzlePiece, string name)
     {
         GameObject piece = new(name);
@@ -92,7 +94,7 @@ public class Puzzle2DFeature : PuzzlePiece
         attachPoint.transform.Translate(0, offset, 0);
         attachPoint.transform.parent = obj.transform;
     }
-    // GETTERS
+    //================GETTERS===================
     public Sprite GetOriginalSprite()
     {
         return spriteToRender;

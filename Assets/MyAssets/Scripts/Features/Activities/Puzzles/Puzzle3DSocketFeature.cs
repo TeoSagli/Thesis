@@ -44,7 +44,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
             z = m.bounds.size.z / nDepth
         };
     }
-    //================SOCKETS===================
+    //================GENERATE SOCKET===================
     public override void GenerateAndPlaceSockets()
     {
         ImportParameters();
@@ -125,7 +125,7 @@ public class Puzzle3DSocketFeature : PuzzleSocket
         attachPoint.transform.position = new(0, -bounds.y / nRows, 0);
         attachPoint.transform.parent = socket.transform;
     }
-    //================CHECK AND HANDLE WIN===================
+    //================EVALUATE PUZZLE COMPLETION===================
     protected override bool TestWin()
     {
         for (int k = 0; k < nDepth; k++)

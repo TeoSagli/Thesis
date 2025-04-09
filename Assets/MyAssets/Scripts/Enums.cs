@@ -21,18 +21,18 @@ public class Enums : MonoBehaviour
         PuzzleSolved,
         ShowProgress
     }
-    public enum QuizQuestion
+    public enum QuizQuestionType
     {
         Text,
         Video,
         Image,
 
     }
-    public enum QuizAnswers
+    public enum QuizAnswersType
     {
-        FourAnswers,
         TwoAnswers,
         ThreeAnswers,
+        FourAnswers,
         Object,
         Text
     }

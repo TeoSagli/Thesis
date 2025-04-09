@@ -25,7 +25,7 @@ public class Puzzle3DFeature : PuzzlePiece
                 SpawnRndPuzzlePieces();
             });
     }
-    // EXTRACTION PROCESS
+    //================EXTRACT PIECES===================
     public void ExtractGridMesh()
     {
         Mesh originalMesh;
@@ -149,7 +149,7 @@ public class Puzzle3DFeature : PuzzlePiece
         newMesh.RecalculateBounds();
         return newMesh;
     }
-    // PUZZLE PIECES' GENERATION PROCESS
+    //================GENERATE PIECE===================
     private GameObject GeneratePuzzlePiece(Mesh mesh, string name, Vector3 toTrans, int i, int j)
     {
         GameObject piece = new(name);
@@ -224,7 +224,7 @@ public class Puzzle3DFeature : PuzzlePiece
         attachPoint.transform.position += centerObj;
         attachPoint.transform.parent = obj.transform;
     }
-    // GETTERS
+    //================GETTERS===================
     public GameObject GetOriginalObject()
     {
         return objectToRender;

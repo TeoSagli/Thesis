@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="QuizFeature">
+    <Position X="12" Y="2.25" Width="1.5" />
+    <AssociationLine Name="quizTwoAnswers" Type="Assets.MyAssets.Scripts.Features.Activities.QuizTwoFeature" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.188" Y="6.434" />
+        <Point X="12.188" Y="7.021" />
+        <Point X="8.375" Y="7.021" />
+        <Point X="8.375" Y="6.771" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="quizThreeAnswers" Type="Assets.MyAssets.Scripts.Features.Activities.QuizThreeFeature" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.312" Y="6.434" />
+        <Point X="12.312" Y="7.53" />
+        <Point X="6.312" Y="7.53" />
+        <Point X="6.312" Y="7.155" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="quizFourAnswers" Type="Assets.MyAssets.Scripts.Features.Activities.QuizFourFeature" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.5" Y="6.434" />
+        <Point X="12.5" Y="8.844" />
+        <Point X="3.188" Y="8.844" />
+        <Point X="3.188" Y="7.54" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="quizTextQuestion" Type="Assets.MyAssets.Scripts.Features.Activities.QuizTextFeature" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.875" Y="6.434" />
+        <Point X="12.875" Y="6.809" />
+        <Point X="17.75" Y="6.809" />
+        <Point X="17.75" Y="6.319" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="quizVideoQuestion" Type="Assets.MyAssets.Scripts.Features.Activities.QuizVideoFeature" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.688" Y="6.434" />
+        <Point X="12.688" Y="7.562" />
+        <Point X="19" Y="7.562" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AEAACABLCKAAABCAAIAAKIAAAAAIwAgAAAgAQAAAgAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizFeature.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="quizTwoAnswers" />
+      <Field Name="quizThreeAnswers" />
+      <Field Name="quizFourAnswers" />
+      <Field Name="quizTextQuestion" />
+      <Field Name="quizImageQuestion" />
+      <Field Name="quizObjectAnswer" />
+      <Field Name="quizVideoQuestion" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizAnswer">
+    <Position X="7.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAABAAAAAAAAAAAAEAAAABAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizAnswer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizFourFeature">
+    <Position X="3" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAgAQEAAAAAAAEAAAAAAAAAAAAAACABAQAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizFourFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizThreeFeature">
+    <Position X="5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAgAQAAAAAAAAEAAAAAAAAAAAAAACABAAAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizThreeFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizTwoFeature">
+    <Position X="7" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQAAAAAAAAEAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizTwoFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizQuestion">
+    <Position X="17.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAIAIAAAAAAAAAAAAAAAAAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizImageFeature">
+    <Position X="14.75" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAABAACAAAAAgAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizImageFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizTextFeature">
+    <Position X="17" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABIAAAAQAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizTextFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizObjectFeature">
+    <Position X="9.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAQAAAAAAAAAAAAAAAQAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizObjectFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizVideoFeature">
+    <Position X="19" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAABGgAgAQAAAAAAACAAAAAgAAAAAAEAEBAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizVideoFeature.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
