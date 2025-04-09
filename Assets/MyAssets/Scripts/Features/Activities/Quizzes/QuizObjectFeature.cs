@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TMPro;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
 namespace Assets.MyAssets.Scripts.Features.Activities
 {
@@ -19,5 +21,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
 
         public GameObject ObjectAnswer { get => objectAnswer; set => objectAnswer = value; }
         public string RightObjectTag { get => rightObjectTag; set => rightObjectTag = value; }
+
+        public override void SetUI(TextMeshProUGUI[] t, GameObject[] o)
+        {
+            
+        }
     }
 }

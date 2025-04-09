@@ -46,26 +46,14 @@ public class QuizFeature : MonoBehaviour
 
     private void InitQuestion()
     {
-
-        QuizQuestion q;
-        switch (questionType)
+        QuizQuestion q = questionType switch
         {
-            case QuizQuestionType.Text:
-                q = quizTextQuestion;
-                quizTextQuestion.TextQuestion.text = quizTextQuestion.TextToShow;
-                break;
-            case QuizQuestionType.Image:
-                q = quizImageQuestion;
-                quizImageQuestion.ImageQuestion.sprite = quizImageQuestion.ImageToShow;
-                break;
-            case QuizQuestionType.Video:
-                q = quizVideoQuestion;
-                quizVideoQuestion.HandleVideo();
-                break;
-            default:
-                q=null;
-                break;
-        }
+            QuizQuestionType.Text => quizTextQuestion,
+            QuizQuestionType.Image => quizImageQuestion,
+            QuizQuestionType.Video => quizVideoQuestion,
+            _ => null,
+        };
+        q.Init();
         SetTitleWithMax(q.TextTitle, q.TextTitleToShow, 77);
     }
 
@@ -78,7 +66,6 @@ public class QuizFeature : MonoBehaviour
 
         ActivateHandleButtons(noptions,  o, b);
         FillTextByOptions(noptions, t, o);
-        FillOthersTypeByOptions();
     }
     private void ActivateHandleButtons(int noptions,  GameObject[] o, Button[] b)
     {
@@ -96,52 +83,34 @@ public class QuizFeature : MonoBehaviour
             });
         }
     }
-    private void FillOthersTypeByOptions()
-    {
-        switch (answersType)
-        {
-            case QuizAnswersType.Text:
-                //todo
-                break;
-            case QuizAnswersType.Object:
-                quizObjectAnswer.ObjectAnswer.SetActive(true);
-                quizObjectAnswer.ObjectAnswer.GetComponent<XRSocketInteractor>().selectEntered.AddListener((s) =>
-                {
-                    if (CheckWin(0))
-                    {
-                        PuzzleManager.Instance.PuzzleAdvancement();
-                        DisableAllBtns();
-                    }
-                    else
-                        PuzzleManager.Instance.PlayFailAudio();
-                });
-                break;
-        }
-    }
     private void FillTextByOptions(int noptions, TextMeshProUGUI[] t, GameObject[] o)
     {
-        if (noptions >= 2)
+        QuizAnswer qAnswer = answersType switch
         {
-            t[0] = o[0].GetNamedChild("Text").GetComponent<TextMeshProUGUI>();
-            t[1] = o[1].GetNamedChild("Text").GetComponent<TextMeshProUGUI>();
-            SetOptionText(t[0], quizTwoAnswers.AnswerOne);
-            SetOptionText(t[1], quizTwoAnswers.AnswerTwo);
-        }
-        if (noptions >= 3)
+            QuizAnswersType.TwoAnswers => quizTwoAnswers,
+            QuizAnswersType.ThreeAnswers => quizThreeAnswers,
+            QuizAnswersType.FourAnswers => quizFourAnswers,
+            QuizAnswersType.Object => quizObjectAnswer,
+            QuizAnswersType.Text => null,
+            _ => null,
+        };
+        qAnswer.SetUI(t, o);
+        if (qAnswer == quizObjectAnswer) HandleQuizObject();
+
+    }
+    private void HandleQuizObject()
+    {
+        quizObjectAnswer.ObjectAnswer.SetActive(true);
+        quizObjectAnswer.ObjectAnswer.GetComponent<XRSocketInteractor>().selectEntered.AddListener((s) =>
         {
-            t[2] = o[2].GetNamedChild("Text").GetComponent<TextMeshProUGUI>();
-            SetOptionText(t[0], quizThreeAnswers.AnswerOne);
-            SetOptionText(t[1], quizThreeAnswers.AnswerTwo);
-            SetOptionText(t[2], quizThreeAnswers.AnswerThree);
-        }
-        if (noptions >= 4)
+        if (CheckWin(0))
         {
-            t[3] = o[3].GetNamedChild("Text").GetComponent<TextMeshProUGUI>();
-            SetOptionText(t[0], quizFourAnswers.AnswerOne);
-            SetOptionText(t[1], quizFourAnswers.AnswerTwo);
-            SetOptionText(t[2], quizFourAnswers.AnswerThree);
-            SetOptionText(t[3], quizFourAnswers.AnswerFour);
+            PuzzleManager.Instance.PuzzleAdvancement();
+            DisableAllBtns();
         }
+        else
+            PuzzleManager.Instance.PlayFailAudio();
+        });
     }
     private void OnButtonClicked(ref Button button, int text, Image img)
     {
@@ -206,10 +175,7 @@ public class QuizFeature : MonoBehaviour
             title = title[..max];
         textObj.text = title;
     }
-    private void SetOptionText(TextMeshProUGUI option, string text)
-    {
-        option.text = text;
-    }
+
 
 }
 

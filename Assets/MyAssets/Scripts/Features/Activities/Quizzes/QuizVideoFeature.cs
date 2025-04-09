@@ -21,9 +21,8 @@ namespace Assets.MyAssets.Scripts.Features.Activities
         public VideoPlayer VideoQuestion { get => videoQuestion; set => videoQuestion = value; }
         public VideoClip VideoToShow { get => videoToShow; set => videoToShow = value; }
         public GameObject PlaceHolderVideo { get => placeHolderVideo; set => placeHolderVideo = value; }
-        public void HandleVideo()
+        public override void Init()
         {
-
             videoQuestion.gameObject.SetActive(true);
             placeHolderVideo.SetActive(true);
             float videoHeight = videoToShow.height;
@@ -59,5 +58,7 @@ namespace Assets.MyAssets.Scripts.Features.Activities
             else
                 videoPlayer.Pause();
         }
+
+
     }
 }

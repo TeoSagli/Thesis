@@ -16,6 +16,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
       
       public SpriteRenderer ImageQuestion { get => imageQuestion; set => imageQuestion = value; }
       public Sprite ImageToShow { get => imageToShow; set => imageToShow = value; }
-        
+
+        public override void Init()
+        {
+            imageQuestion.sprite = imageToShow;
+        }
     }
 }

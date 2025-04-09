@@ -16,5 +16,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
 
         public TextMeshProUGUI TextQuestion { get => textQuestion; set => textQuestion = value; }
         public string TextToShow { get => textToShow; set => textToShow = value; }
+
+        public override void Init()
+        {
+            textQuestion.text = textToShow;
+        }
     }
 }

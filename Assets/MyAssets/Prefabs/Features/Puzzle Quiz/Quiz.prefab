@@ -64,16 +64,16 @@ MonoBehaviour:
     textTitleToShow: dgfgdfgdfghf
     imageToShow: {fileID: 21300000, guid: acb91f4366ead694fb31630b63b83e70, type: 3}
     imageQuestion: {fileID: 4593568813793435935}
-  answersType: 0
+  answersType: 1
   quizTwoAnswers:
     correctAnswer: 0
     answerOne: Roma
     answerTwo: Milano
   quizThreeAnswers:
     correctAnswer: 0
-    answerOne: 
-    answerTwo: 
-    answerThree: 
+    answerOne: yjg
+    answerTwo: dgdh
+    answerThree: hdhdh
   quizFourAnswers:
     correctAnswer: 2
     answerOne: aaaa

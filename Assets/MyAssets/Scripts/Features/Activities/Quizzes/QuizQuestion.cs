@@ -14,7 +14,7 @@ namespace Assets.MyAssets.Scripts.Features.Activities
         private TextMeshProUGUI textTitle;
         [SerializeField]
         private string textTitleToShow;
-
+        public abstract void Init();
         public TextMeshProUGUI TextTitle { get => textTitle; set => textTitle = value; }
         public string TextTitleToShow { get => textTitleToShow; set => textTitleToShow = value; }
     }
