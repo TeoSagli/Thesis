@@ -118,5 +118,57 @@
       <FileName>Assets\MyAssets\Scripts\Features\Activities\Quizzes\QuizVideoFeature.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Enums" Collapsed="true">
+    <Position X="14.5" Y="0.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="Enums.FeatureUsage" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.FeatureDirection" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.GameState" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.QuizQuestionType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.QuizAnswersType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.SelectFourAnswers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.SelectThreeAnswers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Enums.SelectTwoAnswers" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Assets\MyAssets\Scripts\Enums.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Enums.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
