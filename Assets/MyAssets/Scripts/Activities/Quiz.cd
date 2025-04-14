@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizAnswer">
+    <Position X="5.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABEAAAABAQAAAAkAAAAIAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizAnswer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="quizDataAnswer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizFourAnswers">
+    <Position X="4.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizFourAnswers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizObjectAnswer">
+    <Position X="6.75" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizObjectAnswer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizTwoAnswers">
+    <Position X="0.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizTwoAnswers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizQuestion">
+    <Position X="15.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAgAAAAIAAAAAAAAAACAAAAAgAAAACAABAAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizQuestion.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="quizDataQuestion" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizImageQuestion">
+    <Position X="14.5" Y="4.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACSAAAAgAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizImageQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizTextQuestion">
+    <Position X="17" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCAAAAQAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizTextQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizThreeAnswers">
+    <Position X="2.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizThreeAnswers.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizVideoQuestion">
+    <Position X="19" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAEgggAAAIAAAAACAAAAAgAAAAACEAABAAA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizVideoQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuizDataAnswer">
+    <Position X="3" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAgAQEAAAAAAAEAAAAEAQAABAAAACABAQABA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizDataAnswer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="QuizDataQuestion">
+    <Position X="18.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAgBAAIIAAAAAAAAAAAAAgAAAAIAAAAAAg=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizDataQuestion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Quiz">
+    <Position X="11" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEgAAAAJQKAAABIAAAACAIAASAAIwAgAAAACQABAAgA=</HashCode>
+      <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\Quiz.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="quizAnswerFeature" />
+      <Field Name="quizQuestionFeature" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

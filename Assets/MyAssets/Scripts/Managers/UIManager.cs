@@ -9,9 +9,10 @@ using static Enums;
 
 public class UIManager : Singleton<UIManager>
 {
-    private const string GAME_SCENE_NAME = "OpenDayTrotter";
 
     [Header("UI configuration")]
+    [SerializeField]
+    string gameSceneName;
     [SerializeField]
     private float offsetPositionFromPlayer = 1.0f;
     [SerializeField]
@@ -33,7 +34,7 @@ public class UIManager : Singleton<UIManager>
         });
         menu.restartButton.onClick.AddListener(() =>
         {
-            SceneManager.LoadScene(GAME_SCENE_NAME);
+            SceneManager.LoadScene(gameSceneName);
             onGameResumeActionExecuted?.Invoke();
         });
         menu.editButton.onClick.AddListener(() =>

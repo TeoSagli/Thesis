@@ -19,6 +19,7 @@
  */
 
 using Meta.XR.MRUtilityKit;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Serialization;
 using static EnumsMRUK;
@@ -34,7 +35,7 @@ public class SpawnPuzzlePieces : Spawn
     public MRUK.RoomFilter SpawnOnStart = MRUK.RoomFilter.CurrentRoomOnly;
 
     [SerializeField, Tooltip("Prefab to be placed into the scene, or object in the scene to be moved around.")]
-    private GameObject[] SpawnObjectArr;
+    private GameObject[] objectArr;
 
     [SerializeField, Tooltip("Maximum number of times to attempt spawning/moving an object before giving up.")]
     public int MaxIterations = 1000;
@@ -43,27 +44,48 @@ public class SpawnPuzzlePieces : Spawn
     /// Defines possible locations where objects can be spawned.
     /// </summary>
 
-    [FormerlySerializedAs("selectedSnapOption")]
-    [SerializeField, Tooltip("Attach content to scene surfaces.")]
-    public SpawnLocation SpawnLocations = SpawnLocation.Floating;
+    // Attach content to scene surfaces.
+    private SpawnLocation SpawnLocations = SpawnLocation.OnTopOfSurfaces;
 
-    [SerializeField, Tooltip("When using surface spawning, use this to filter which anchor labels should be included. Eg, spawn only on TABLE or OTHER.")]
-    public MRUKAnchor.SceneLabels Labels = ~(MRUKAnchor.SceneLabels)0;
+    // When using surface spawning, use this to filter which anchor labels should be included. Eg, spawn only on TABLE or OTHER.
+   // private MRUKAnchor.SceneLabels Labels = ~(MRUKAnchor.SceneLabels)0;
+    private MRUKAnchor.SceneLabels Labels = MRUKAnchor.SceneLabels.COUCH | MRUKAnchor.SceneLabels.TABLE | MRUKAnchor.SceneLabels.FLOOR | MRUKAnchor.SceneLabels.OTHER | MRUKAnchor.SceneLabels.STORAGE;
 
-    [SerializeField, Tooltip("If enabled then the spawn position will be checked to make sure there is no overlap with physics colliders including themselves.")]
-    public bool CheckOverlaps = true;
+    // If enabled then the spawn position will be checked to make sure there is no overlap with physics colliders including themselves.
+    private bool CheckOverlaps = true;
 
-    [SerializeField, Tooltip("Required free space for the object (Set negative to auto-detect using GetPrefabBounds)")]
-    public float OverrideBounds = -1; // default to auto-detect. This value represents the extents of the bounding box
+    // Required free space for the object (Set negative to auto-detect using GetPrefabBounds)
+    private float OverrideBounds = -1; // default to auto-detect. This value represents the extents of the bounding box
 
     [FormerlySerializedAs("layerMask")]
-    [SerializeField, Tooltip("Set the layer(s) for the physics bounding box checks, collisions will be avoided with these layers.")]
-    public LayerMask LayerMask = -1;
+    // Set the layer(s) for the physics bounding box checks, collisions will be avoided with these layers.
+    private LayerMask LayerMask = -1;
 
-    [SerializeField, Tooltip("The clearance distance required in front of the surface in order for it to be considered a valid spawn position")]
-    public float SurfaceClearanceDistance = 0.1f;
+    // The clearance distance required in front of the surface in order for it to be considered a valid spawn position"
+    private float SurfaceClearanceDistance = 0.1f;
     //const
     const string PATH_TO_MESH_RENDERER = "Flashlight_LOD0";
+
+    public GameObject[] ObjectArr { get => objectArr; set => objectArr = value; }
+
+    public SpawnPuzzlePieces(MRUK.RoomFilter spawnOnStart, GameObject[] objectArr, int maxIterations, SpawnLocation spawnLocations, MRUKAnchor.SceneLabels labels, bool checkOverlaps, float overrideBounds, LayerMask layerMask, float surfaceClearanceDistance)
+    {
+        ObjectArr = objectArr;
+        SpawnOnStart = spawnOnStart;
+        MaxIterations = maxIterations;
+        SpawnLocations = spawnLocations;
+        Labels = labels;
+        CheckOverlaps = checkOverlaps;
+        OverrideBounds = overrideBounds;
+        LayerMask = layerMask;
+        SurfaceClearanceDistance = surfaceClearanceDistance;
+    }
+
+    public SpawnPuzzlePieces()
+
+    {
+    }
+
     private void Start()
     {
         if (MRUK.Instance && SpawnOnStart != MRUK.RoomFilter.None)
@@ -82,16 +104,24 @@ public class SpawnPuzzlePieces : Spawn
             });
         }
     }
+    private IEnumerator WaitForMRUK()
+    {
+        yield return new WaitUntil(() => MRUK.Instance != null);
 
+        MRUK.Instance.RegisterSceneLoadedCallback(() =>
+        {
+            foreach (var room in MRUK.Instance.Rooms)
+            {
+                StartSpawn(room);
+            }
+        });
+    }
     /// <summary>
     /// Starts the spawning process for all rooms.
     /// </summary>
     public void StartSpawn()
     {
-        foreach (var room in MRUK.Instance.Rooms)
-        {
-            StartSpawn(room);
-        }
+        StartCoroutine(WaitForMRUK());
     }
 
     /// <summary>
@@ -101,7 +131,7 @@ public class SpawnPuzzlePieces : Spawn
     public void StartSpawn(MRUKRoom room)
     {
         //to retrieve child mesh
-        GameObject obj = SpawnObjectArr[0];
+        GameObject obj = ObjectArr[0];
         Bounds? prefabBounds = Utilities.GetPrefabBounds(obj);
         float minRadius = 0.0f;
         const float clearanceDistance = 0.01f;
@@ -129,7 +159,7 @@ public class SpawnPuzzlePieces : Spawn
     {
         float baseOffset = -prefabBounds?.min.y ?? 0.0f;
         float centerOffset = prefabBounds?.center.y ?? 0.0f;
-        foreach (var spawnObject in SpawnObjectArr)
+        foreach (var spawnObject in ObjectArr)
         {
             bool foundValidSpawnPosition = false;
             for (int j = 0; j < MaxIterations; ++j)
@@ -181,6 +211,7 @@ public class SpawnPuzzlePieces : Spawn
                 //Quaternion spawnRotation = Quaternion.identity;
 
                 foundValidSpawnPosition = true;
+                PrintToLogger($"Spawned");
                 spawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
                 if (!room.GetRoomBounds().Contains(spawnPosition))
                     continue;
@@ -194,10 +225,6 @@ public class SpawnPuzzlePieces : Spawn
                 break;
             }
         }
-    }
-    public void SetObjectsArr(GameObject[] arr)
-    {
-        SpawnObjectArr = arr;
     }
 }
 
