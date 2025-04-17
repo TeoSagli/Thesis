@@ -11,7 +11,7 @@ namespace Assets.MyAssets.Scripts.Features.Activities
         
       private SpriteRenderer imageQuestion;
 
-        public QuizImageQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle, SpriteRenderer imageQuestion):base(quizDataQuestion, textTitle)
+        public QuizImageQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle, SpriteRenderer imageQuestion, string questionType):base(quizDataQuestion, textTitle, questionType)
         {
             this.imageQuestion = imageQuestion;
             QuestionType = QuizQuestionType.Image;
@@ -21,7 +21,7 @@ namespace Assets.MyAssets.Scripts.Features.Activities
       
         public override void Init()
         {
-            imageQuestion.sprite = LoadFromPath(QuizDataQuestion.ImageToShowPath,"quizImage");
+            imageQuestion.sprite = LoadFromPath(QuizDataQuestion.Path,"quizImage");
         }
         protected Sprite LoadFromPath(string path, string name)
         {

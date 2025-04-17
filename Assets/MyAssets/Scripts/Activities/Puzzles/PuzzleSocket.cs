@@ -69,7 +69,7 @@ public abstract class PuzzleSocket : Puzzle
     protected abstract void OnWin();
     public abstract void GenerateAndPlaceSockets();
     protected abstract GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index);
-    protected abstract GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index);
+    protected abstract GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index, int i, int j, int k);
     protected abstract void PlaceSocketAt(ref GameObject socket, Vector3 offsetVec);
     protected abstract Vector3 CalculateOffsetVec(int i, int j, int k);
 }

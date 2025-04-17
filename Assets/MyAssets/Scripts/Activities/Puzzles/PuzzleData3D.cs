@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class PuzzleData3D : MonoBehaviour
 {
     private string meshPath;
     private string meshName;
-
+    [JsonConstructor]
     public PuzzleData3D(string meshPath, string meshName)
     {
       MeshPath = meshPath;

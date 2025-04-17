@@ -9,11 +9,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
     public class QuizTwoAnswers : QuizAnswer
     {
  
-        public QuizTwoAnswers(string answerOne, string answerTwo, int correctAnswer)
+        public QuizTwoAnswers(string answerOne, string answerTwo, int correctAnswer, string answerType): base (answerType)
         {
             NAnswers = 2;
-            QuizDataAnswer = new (answerOne, answerTwo, correctAnswer);
-            QuizAnswerType = QuizAnswersType.TwoAnswers;
+            QuizDataAnswer = new (answerOne, answerTwo, correctAnswer, answerType);
         }
 
         public override void SetUI(TextMeshProUGUI[] t, GameObject[] o)

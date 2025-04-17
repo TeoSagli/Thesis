@@ -13,11 +13,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
     [System.Serializable]
     public class QuizObjectAnswer : QuizAnswer
     {
-        public QuizObjectAnswer(GameObject objectAnswer, string rightObjectTag)
+        public QuizObjectAnswer(GameObject objectAnswer, string rightObjectTag, string answerType) :base(answerType)
         {
             NAnswers = 0;
-            QuizDataAnswer = new(objectAnswer, rightObjectTag);
-            QuizAnswerType = QuizAnswersType.Object;
+            QuizDataAnswer = new(objectAnswer, rightObjectTag, answerType);
         }
 
         public override void SetUI(TextMeshProUGUI[] t, GameObject[] o)

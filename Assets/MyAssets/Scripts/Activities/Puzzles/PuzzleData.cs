@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,8 +14,8 @@ using System.Threading.Tasks;
         private int nCols = 1;
         private int nRows = 1;
         private int nDepth = 1;
-
-        public PuzzleData(float pieceScale, string titleStr, int nCols, int nRows, int nDepth)
+    [JsonConstructor]
+    public PuzzleData(float pieceScale, string titleStr, int nCols, int nRows, int nDepth)
         {
             PieceScale = pieceScale;
             TitleStr = titleStr;

@@ -1,4 +1,6 @@
+using GLTFast;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEngine;
 public abstract class Puzzle : MonoBehaviour
 {
@@ -38,6 +40,32 @@ public abstract class Puzzle : MonoBehaviour
         else
         {
             Debug.Log("File not found!");
+            return null;
+        }
+    }
+    protected async Task<GameObject> LoadGLBFromBytes(string path, string name)
+    {
+        GltfImport gltf = new ();
+        bool success = await gltf.Load(File.ReadAllBytes(path));
+
+        if (success)
+        {
+            GameObject model = new (name);
+            await gltf.InstantiateMainSceneAsync(model.transform); 
+            foreach( var gameObj in Resources.FindObjectsOfTypeAll<GameObject>())
+            {
+                if(gameObj.name == name && !gameObj.TryGetComponent<MeshFilter>(out _))
+                {
+                    Destroy(gameObj);
+                }
+            }
+       
+            model.SetActive(false);
+            return model;
+        }
+        else
+        {
+            Debug.LogError("Failed to load GLTF from bytes.");
             return null;
         }
     }

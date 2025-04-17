@@ -1,5 +1,3 @@
-using Meta.XR.MRUtilityKit;
-using System.IO;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Interactors;
 
@@ -13,13 +11,12 @@ public class Puzzle2DSocket : PuzzleSocket
 
     public Puzzle2DSocket(float pieceScale, string titleStr, int nCols, int nRows, string path,string name) : base(pieceScale, titleStr, nCols, nRows)
     {
-        puzzleData2D = new(path,name);
     }
     public void Initialize(Puzzle2D feat)
     {
         PuzzleData = feat.PuzzleData;
         PuzzleData2D = feat.PuzzleData2D;
-        spriteToRender = LoadFromPath(PuzzleData2D.SpritePath, PuzzleData2D.SpriteName);
+        spriteToRender = feat.SpriteToRender;
         GenerateAndPlaceSockets();
     }
     //================CONFIGURATION===================
@@ -71,41 +68,37 @@ public class Puzzle2DSocket : PuzzleSocket
     }
     protected override GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index)
     {
-        GameObject socket = new(puzzlePiece.name + "-tile" + index);
-        BoxCollider box = socket.AddComponent(typeof(BoxCollider)) as BoxCollider;
-        XRSocketInteractor xRSocketInteractor = socket.AddComponent(typeof(XRSocketInteractor)) as XRSocketInteractor;
+        // 1. Create the socket GameObject
+        var socket = new GameObject($"{puzzlePiece.name}-tile{index}");
 
-        //setup box collider
-        Vector3 reduceVec = new(2, 2, 1);
-        box.size = new Vector3(Bounds.x / reduceVec.x, Bounds.y / reduceVec.y, Bounds.z / reduceVec.z);
+        // 2. Add and configure BoxCollider
+        var box = socket.AddComponent<BoxCollider>();
+        box.size = new Vector3(Bounds.x / 2, Bounds.y / 2, Bounds.z); // reduced size
         box.isTrigger = true;
 
-        //setup attachPoint
-        GameObject attachPoint = new("Attach Point");
+        // 3. Add and configure XRSocketInteractor
+        var interactor = socket.AddComponent<XRSocketInteractor>();
+        interactor.hoverSocketSnapping = true;
+        interactor.interactionLayers = LayerMask.GetMask("Puzzle2D");
+
+        // 4. Create attach point and assign
+        var attachPoint = new GameObject("Attach Point");
         AddAttachPoint(socket, ref attachPoint);
-        //socket interactor
-        xRSocketInteractor.hoverSocketSnapping = true;
-        xRSocketInteractor.interactionLayers = LayerMask.GetMask("Puzzle2D");
-        xRSocketInteractor.attachTransform = attachPoint.transform;
-        xRSocketInteractor.selectEntered.AddListener((s) =>
-        {
-            //PlayOnStarted();
-            CheckPieceCorrect(xRSocketInteractor, index);
-        });
-        xRSocketInteractor.selectExited.AddListener((s) =>
-        {
-            UpdateMatrix(xRSocketInteractor, index);
-        });
-        //socket back
-        var back = Instantiate(socketBack);
-        back.transform.position = socket.transform.position;
+        interactor.attachTransform = attachPoint.transform;
+
+        // 5. Register interaction events
+        interactor.selectEntered.AddListener(_ => CheckPieceCorrect(interactor, index));
+        interactor.selectExited.AddListener(_ => UpdateMatrix(interactor, index));
+
+        // 6. Create and attach socket back visual
+        var back = Instantiate(socketBack, socket.transform.position, Quaternion.identity, socket.transform);
         back.transform.localScale = Bounds;
-        back.transform.parent = socket.transform;
-        //change transform and attach to parent
+
+        // 7. Finalize transform and hierarchy
         socket.transform.position += transform.position;
         socket.transform.localScale = PuzzleData.PieceScale * Vector3.one;
         socket.transform.parent = transform;
-        //create child game object to show
+
         return socket;
     }
     void AddAttachPoint(GameObject socket, ref GameObject attachPoint)
@@ -144,7 +137,7 @@ public class Puzzle2DSocket : PuzzleSocket
         s.transform.parent = transform;
     }
 
-    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
+    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index, int i, int j, int k)
     {
         throw new System.NotImplementedException();
     }

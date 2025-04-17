@@ -13,12 +13,11 @@ namespace Assets.MyAssets.Scripts.Features.Activities
         private VideoPlayer videoPlayer;
         private GameObject placeHolderVideo;
 
-        public QuizVideoQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle, GameObject videoButton, VideoPlayer videoPlayer, GameObject placeHolderVideo):base(quizDataQuestion, textTitle)
+        public QuizVideoQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle, GameObject videoButton, VideoPlayer videoPlayer, GameObject placeHolderVideo, string questionType):base(quizDataQuestion, textTitle, questionType)
         {
             VideoButton = videoButton;
             VideoPlayer = videoPlayer;
             PlaceHolderVideo = placeHolderVideo;
-            QuestionType = QuizQuestionType.Video;
         }
 
         public GameObject VideoButton { get => videoButton; set => videoButton = value; }
@@ -28,7 +27,7 @@ namespace Assets.MyAssets.Scripts.Features.Activities
         public override void Init()
         {
             videoPlayer.source = VideoSource.Url;
-            videoPlayer.url = QuizDataQuestion.VideoToShowPath;
+            videoPlayer.url = QuizDataQuestion.Path;
             videoPlayer.prepareCompleted += OnVideoPrepared;
             videoPlayer.Prepare(); 
         }

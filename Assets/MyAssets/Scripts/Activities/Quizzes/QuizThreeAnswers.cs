@@ -8,11 +8,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
     [System.Serializable]
     public class QuizThreeAnswers : QuizAnswer
     {
-        public QuizThreeAnswers(string answerOne, string answerTwo, string answerThree, int correctAnswer)
+        public QuizThreeAnswers(string answerOne, string answerTwo, string answerThree, int correctAnswer, string answerType): base(answerType)
         {
             NAnswers = 3;
-            QuizDataAnswer = new(answerOne, answerTwo, answerThree, correctAnswer);
-            QuizAnswerType = QuizAnswersType.ThreeAnswers;
+            QuizDataAnswer = new(answerOne, answerTwo, answerThree, correctAnswer, answerType);
         }
         public override void SetUI(TextMeshProUGUI[] t, GameObject[] o)
         {

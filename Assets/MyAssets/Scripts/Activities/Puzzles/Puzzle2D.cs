@@ -1,5 +1,3 @@
-using Meta.XR.MRUtilityKit;
-using System.IO;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -12,15 +10,15 @@ public class Puzzle2D : PuzzlePiece
     public PuzzleData2D PuzzleData2D { get => puzzleData2D; set => puzzleData2D = value; }
     public Sprite SpriteToRender { get => spriteToRender; set => spriteToRender = value; }
 
-    public Puzzle2D(float pieceScale, string titleStr, int nCols, int nRows, string  path, string name) : base(pieceScale, titleStr, nCols, nRows)
+    public Puzzle2D(float pieceScale, string titleStr, int nCols, int nRows, string path, string name) : base(pieceScale, titleStr, nCols, nRows)
+    {
+
+    }
+    public void Init(float pieceScale, string titleStr, int nCols, int nRows, string path, string name)
     {
         PuzzleData = new(pieceScale, titleStr, nCols, nRows);
         PuzzleData2D = new(path, name);
-        SpriteToRender = LoadFromPath(path, name);
-        Init();
-    }
-    private void Init()
-    {
+        SpriteToRender = LoadFromPath(PuzzleData2D.SpritePath, PuzzleData2D.SpriteName);
         ExtractAndGeneratePieces();
         SpawnRndPuzzlePieces();
     }
@@ -44,7 +42,7 @@ public class Puzzle2D : PuzzlePiece
             {
                 int contTiles = j * PuzzleData.NRows + i;
                 Sprite puzzlePiece = SpriteExtractor(SpriteToRender, PuzzleData.NRows - 1 - i, j);
-                puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(puzzlePiece, SpriteToRender.name + "-tile" + contTiles);
+                puzzlePiecesArr[contTiles] = GeneratePuzzlePiece(puzzlePiece, contTiles);
             }
         }
     }
@@ -65,9 +63,9 @@ public class Puzzle2D : PuzzlePiece
         return s;
     }
     //================GENERATE PIECE===================
-    private GameObject GeneratePuzzlePiece(Sprite puzzlePiece, string name)
+    private GameObject GeneratePuzzlePiece(Sprite puzzlePiece, int contTiles)
     {
-        GameObject piece = new(name);
+        GameObject piece = new($"{SpriteToRender.name}-tile{contTiles}");
         SpriteRenderer sr = piece.AddComponent(typeof(SpriteRenderer)) as SpriteRenderer;
         Rigidbody rb = piece.AddComponent(typeof(Rigidbody)) as Rigidbody;
         BoxCollider box = piece.AddComponent(typeof(BoxCollider)) as BoxCollider;
@@ -92,7 +90,7 @@ public class Puzzle2D : PuzzlePiece
         xrGrabInteractable.selectMode = InteractableSelectMode.Single;
         //change transform and attach to parent
         piece.transform.localScale = PuzzleData.PieceScale * Vector3.one;
-        //piece.transform.parent = transform;
+        piece.transform.parent = transform;
         return piece;
     }
     void AddAttachPoint(GameObject obj, ref GameObject attachPoint, Sprite puzzlePiece)

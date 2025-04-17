@@ -30,9 +30,9 @@ public class Enums : MonoBehaviour
     }
     public enum QuizAnswersType
     {
-        TwoAnswers,
-        ThreeAnswers,
-        FourAnswers,
+        Two,
+        Three,
+        Four,
         Object,
         Text
     }

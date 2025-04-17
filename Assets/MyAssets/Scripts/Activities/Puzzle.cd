@@ -24,7 +24,7 @@
   <Class Name="Puzzle">
     <Position X="10.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAASACBAAgA=</HashCode>
+      <HashCode>AQAAAAAAAAAAAAAAAAAAABAAAAAAAAAAIAASACBAAgA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\Puzzle.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -33,13 +33,6 @@
   </Class>
   <Class Name="PuzzlePiece">
     <Position X="4.75" Y="3.75" Width="1.5" />
-    <InheritanceLine Type="Puzzle" FixedToPoint="true">
-      <Path>
-        <Point X="11.25" Y="3.655" />
-        <Point X="11.25" Y="4.312" />
-        <Point X="6.25" Y="4.312" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAgAAAAAEAAAAAAAAAAAAAAAABAAA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\PuzzlePiece.cs</FileName>
@@ -47,13 +40,6 @@
   </Class>
   <Class Name="PuzzleSocket">
     <Position X="13" Y="4.25" Width="1.5" />
-    <InheritanceLine Type="Puzzle" FixedToPoint="true">
-      <Path>
-        <Point X="11.25" Y="3.655" />
-        <Point X="11.25" Y="4.312" />
-        <Point X="13" Y="4.312" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAMMBAAAABIAIAAAMEAgAgAAAAACIAAEAAAEAEQ=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\PuzzleSocket.cs</FileName>
@@ -95,13 +81,13 @@
     </InheritanceLine>
     <AssociationLine Name="puzzleData3D" Type="PuzzleData3D" FixedFromPoint="true" FixedToPoint="true">
       <Path>
-        <Point X="16.75" Y="8.944" />
+        <Point X="16.75" Y="9.136" />
         <Point X="16.75" Y="10.438" />
         <Point X="9.5" Y="10.438" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAAEAACAAAQIAIAAAMAACIAAAAAEAAAABACBAAEA=</HashCode>
+      <HashCode>AAAAIAEAACAAAQIAIAAAMAACIAAAAgEAAAABACBAAEA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\Puzzle3DSocket.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -110,19 +96,10 @@
   </Class>
   <Class Name="Puzzle3D">
     <Position X="2" Y="6.25" Width="1.5" />
-    <AssociationLine Name="puzzleData3D" Type="PuzzleData3D" FixedToPoint="true">
-      <Path>
-        <Point X="3.5" Y="10.438" />
-        <Point X="8" Y="10.438" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAAABAAAAIAAAAAEAAIEAAAAAAAgUAIBADACBAAAI=</HashCode>
+      <HashCode>AAAAAABAAgAAAAAAAUAAIEBAAAAAAAUAAQADACBAAAI=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\Puzzle3D.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Field Name="puzzleData3D" />
-    </ShowAsAssociation>
   </Class>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

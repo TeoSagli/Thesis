@@ -13,15 +13,18 @@ namespace Assets.MyAssets.Scripts.Features.Activities
     {
         private QuizDataQuestion quizDataQuestion;
         private TextMeshProUGUI textTitle;
-        
         private QuizQuestionType questionType;
 
-        public QuizQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle)
+        public QuizQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle, string type)
         {
-            this.quizDataQuestion = quizDataQuestion;
-            this.textTitle = textTitle;
+            QuizDataQuestion = quizDataQuestion;
+            TextTitle = textTitle;
+            QuestionType = GetQuizQuestionType(type);
         }
-
+        private QuizQuestionType GetQuizQuestionType(string type)
+        {
+            return (QuizQuestionType)System.Enum.Parse(typeof(QuizQuestionType), type);
+        }
         public abstract void Init();
         public TextMeshProUGUI TextTitle { get => textTitle; set => textTitle = value; }
         public QuizDataQuestion QuizDataQuestion { get => quizDataQuestion; set => quizDataQuestion = value; }

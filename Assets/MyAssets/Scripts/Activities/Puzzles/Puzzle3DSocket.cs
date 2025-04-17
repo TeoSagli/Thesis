@@ -1,7 +1,3 @@
-using System;
-using System.Linq;
-using Meta.XR.MRUtilityKit;
-using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Attachment;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
@@ -10,10 +6,9 @@ using UnityEngine.XR.Interaction.Toolkit.Interactors;
 public class Puzzle3DSocket : PuzzleSocket
 {
     private PuzzleData3D puzzleData3D;
-    private GameObject originalObject;
-    private GameObject originalMeshObject;
-
+    private GameObject objectToRender;
     public PuzzleData3D PuzzleData3D { get => puzzleData3D; set => puzzleData3D = value; }
+    public GameObject ObjectToRender { get => objectToRender; set => objectToRender = value; }
 
     public Puzzle3DSocket(float pieceScale, string titleStr, int nCols, int nRows, int nDepth) : base(pieceScale, titleStr, nCols, nRows, nDepth)
     {
@@ -22,22 +17,14 @@ public class Puzzle3DSocket : PuzzleSocket
     {
         PuzzleData = feat.PuzzleData;
         PuzzleData3D = feat.PuzzleData3D;
-        
+        ObjectToRender = feat.ObjectToRender;
         GenerateAndPlaceSockets();
     }
-    // Start is called before the first frame update
-    private void Start()
-    {
-        if (MRUK.Instance)
-            MRUK.Instance.RegisterSceneLoadedCallback(() =>
-            {
-                GenerateAndPlaceSockets();
-            });
-    }
+
     //================CONFIGURATION===================
     protected override void CalculateBounds()
     {
-        Mesh m = originalMeshObject.GetComponent<MeshFilter>().mesh;
+        Mesh m = ObjectToRender.GetComponent<MeshFilter>().mesh;
         Bounds = new()
         {
             x = m.bounds.size.x / PuzzleData.NCols,
@@ -67,7 +54,7 @@ public class Puzzle3DSocket : PuzzleSocket
                 for (int j = 0; j < PuzzleData.NRows; j++)
                 {
                     int index = PuzzleData.NCols * PuzzleData.NRows * k + PuzzleData.NRows * i + j;
-                    GameObject socket = GeneratePuzzleSocket(originalObject, index);
+                    GameObject socket = GeneratePuzzleSocket(ObjectToRender, index, i, j, k);
                     PlaceSocketAt(ref socket, CalculateOffsetVec(i, j, k));
                     sockets[index] = socket;
                 }
@@ -82,45 +69,48 @@ public class Puzzle3DSocket : PuzzleSocket
     {
         socket.transform.Translate(offsetVec);
     }
-    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index)
+    protected override GameObject GeneratePuzzleSocket(GameObject puzzlePiece, int index, int i, int j, int k)
     {
-        GameObject socket = new(puzzlePiece.name + "-tile" + index);
-        BoxCollider box = socket.AddComponent(typeof(BoxCollider)) as BoxCollider;
-        XRSocketInteractor xRSocketInteractor = socket.AddComponent(typeof(XRSocketInteractor)) as XRSocketInteractor;
+        // 1. Create the socket game object.
+        GameObject socket = new ($"{puzzlePiece.name}-tile{index}");
 
-        //setup box collider
-        Vector3 reduceVec = new(4, 4, 4);
-        box.size = new Vector3(Bounds.x / reduceVec.x, Bounds.y / reduceVec.y, Bounds.z / reduceVec.z);
+        // 2. Add required components.
+        BoxCollider box = socket.AddComponent<BoxCollider>();
+        XRSocketInteractor xRSocketInteractor = socket.AddComponent<XRSocketInteractor>();
+
+        // 3. Configure the BoxCollider.
+        box.size = new Vector3(Bounds.x / 4f, Bounds.y / 4f, Bounds.z / 4f);
         box.isTrigger = true;
-        //setup attachPoint
-        GameObject attachPoint = new("Attach Point");
-        AddAttachPoint(socket, ref attachPoint);
-        //socket interactor
+
+        // 4. Create and configure attach point at the center of cell (i, j, k).
+        GameObject attachPoint = new ("Attach Point");
+        AddAttachPoint(socket, attachPoint, i, j, k);
+
+        // 5. Set up the XRSocketInteractor to attach to that point.
         xRSocketInteractor.hoverSocketSnapping = true;
         xRSocketInteractor.interactionLayers = LayerMask.GetMask("Puzzle3D");
         xRSocketInteractor.interactableCantHoverMeshMaterial = cantHoverMat;
         xRSocketInteractor.interactableHoverMeshMaterial = canHoverMat;
         xRSocketInteractor.attachTransform = attachPoint.transform;
-        xRSocketInteractor.selectEntered.AddListener((s) =>
-        {
-            CheckPieceCorrect(xRSocketInteractor, index);
-        });
-        xRSocketInteractor.selectExited.AddListener((s) =>
-        {
-            UpdateMatrix(xRSocketInteractor, index);
-        });
-        //socket back
-        var back = Instantiate(socketBack);
-        back.transform.position = socket.transform.position;
+
+        // 6. Add listeners for puzzle-logic events.
+        xRSocketInteractor.selectEntered.AddListener((s) => CheckPieceCorrect(xRSocketInteractor, index));
+        xRSocketInteractor.selectExited.AddListener((s) => UpdateMatrix(xRSocketInteractor, index));
+
+        // 7. (Optional) Add a visible "back" to your puzzle socket.
+        var back = Instantiate(socketBack, socket.transform);
         back.transform.localScale = Bounds;
         back.transform.parent = socket.transform;
-        //change transform and attach to parent
+
+        // 8. Scale & position the entire socket, then parent it.
         socket.transform.localScale = PuzzleData.PieceScale * Vector3.one;
         socket.transform.position += transform.position;
         socket.transform.parent = transform;
+
         return socket;
     }
-    void AddAttachPoint(GameObject socket, ref GameObject attachPoint)
+
+    private void AddAttachPoint(GameObject socket, GameObject attachPoint, int i, int j, int k)
     {
         attachPoint.transform.position = new(0, -Bounds.y / PuzzleData.NRows, 0);
         attachPoint.transform.parent = socket.transform;
@@ -143,36 +133,41 @@ public class Puzzle3DSocket : PuzzleSocket
     }
     private void ReplaceWithObject()
     {
-        GameObject o = new(originalObject.name);
-        var m = originalMeshObject.GetComponent<MeshFilter>().mesh;
-        var mf = o.AddComponent<MeshFilter>();
-        var mr = o.AddComponent<MeshRenderer>();
+        // 1. Create object and get mesh
+        GameObject o = new(ObjectToRender.name);
+        var mesh = ObjectToRender.GetComponent<MeshFilter>().mesh;
+
+        // 2. Add components
+        var mf = o.AddComponent<MeshFilter>(); mf.mesh = mesh;
+        var mr = o.AddComponent<MeshRenderer>(); mr.material = ObjectToRender.GetComponent<MeshRenderer>().material;
         var rb = o.AddComponent<Rigidbody>();
         var box = o.AddComponent<BoxCollider>();
         var grab = o.AddComponent<XRGrabInteractable>();
         o.AddComponent<DontFallUnderFloor>();
 
+        // 3. Configure XRGrabInteractable
         grab.interactionLayers = LayerMask.GetMask("Grabbable");
         grab.farAttachMode = InteractableFarAttachMode.Near;
-        GameObject attachPoint = new("Attach Point");
-        Vector3 offset = new()
-        {
-            y = m.bounds.center.y - m.bounds.extents.y,
-        };
-        attachPoint.transform.position = offset;
+        grab.selectMode = InteractableSelectMode.Single;
+
+        // 4. Set attach point
+        var attachPoint = new GameObject("Attach Point");
+        attachPoint.transform.position = new Vector3(0, mesh.bounds.center.y - mesh.bounds.extents.y, 0);
         attachPoint.transform.parent = o.transform;
         grab.attachTransform = attachPoint.transform;
-        grab.selectMode = InteractableSelectMode.Single;
+
+        // 5. Rigidbody & collider setup
         rb.useGravity = true;
         rb.interpolation = RigidbodyInterpolation.None;
         rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-        box.size = m.bounds.size * 0.9f;
-        box.center = m.bounds.center;
-        mf.mesh = m;
-        mr.material = originalMeshObject.GetComponent<MeshRenderer>().material;
+        box.size = mesh.bounds.size * 0.9f;
+        box.center = mesh.bounds.center;
+
+        // 6. Position and scale
         o.transform.position = transform.position;
         o.transform.localScale = PuzzleData.PieceScale * Vector3.one;
     }
+
     protected override GameObject GeneratePuzzleSocket(Sprite puzzlePiece, int index)
     {
         throw new System.NotImplementedException();

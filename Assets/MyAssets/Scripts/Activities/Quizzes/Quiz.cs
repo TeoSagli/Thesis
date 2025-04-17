@@ -120,9 +120,9 @@ public class Quiz : MonoBehaviour
     {
         return AnswersType switch
         {
-            QuizAnswersType.TwoAnswers => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
-            QuizAnswersType.ThreeAnswers => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
-            QuizAnswersType.FourAnswers => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
+            QuizAnswersType.Two => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
+            QuizAnswersType.Three => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
+            QuizAnswersType.Four => correctAnswer == quizAnswerFeature.QuizDataAnswer.CorrectAnswer,
             QuizAnswersType.Object => quizAnswerFeature.QuizDataAnswer.ObjectAnswer.GetComponent<XRSocketInteractor>().interactablesSelected[0].transform.CompareTag(quizAnswerFeature.QuizDataAnswer.RightObjectTag),
             _ => false,
         };

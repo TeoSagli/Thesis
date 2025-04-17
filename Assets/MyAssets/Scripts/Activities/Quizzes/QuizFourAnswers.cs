@@ -8,11 +8,10 @@ namespace Assets.MyAssets.Scripts.Features.Activities
     [System.Serializable]
     public  class QuizFourAnswers : QuizAnswer
     {
-        public QuizFourAnswers(string answerOne, string answerTwo, string answerThree, string answerFour, int correctAnswer)
+        public QuizFourAnswers(string answerOne, string answerTwo, string answerThree, string answerFour, int correctAnswer, string answerType) :base( answerType)
         {
             NAnswers = 4;
-            QuizAnswerType=QuizAnswersType.FourAnswers;
-            QuizDataAnswer = new(answerOne, answerTwo, answerThree, answerFour, correctAnswer);
+            QuizDataAnswer = new(answerOne, answerTwo, answerThree, answerFour, correctAnswer, answerType);
         }
 
         public override void SetUI(TextMeshProUGUI[] t, GameObject[] o)

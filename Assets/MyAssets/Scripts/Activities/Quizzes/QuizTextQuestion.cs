@@ -16,9 +16,9 @@ namespace Assets.MyAssets.Scripts.Features.Activities
          
         public TextMeshProUGUI TextQuestion { get => textQuestion; set => textQuestion = value; }
 
-        public QuizTextQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle,TextMeshProUGUI textQuestion): base(quizDataQuestion, textTitle)
+        public QuizTextQuestion(QuizDataQuestion quizDataQuestion, TextMeshProUGUI textTitle,TextMeshProUGUI textQuestion, string questionType): base(quizDataQuestion, textTitle, questionType)
         {
-            this.textQuestion = textQuestion;
+            TextQuestion = textQuestion;
             QuestionType = QuizQuestionType.Text;
         }
 

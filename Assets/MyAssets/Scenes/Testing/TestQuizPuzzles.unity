@@ -3452,6 +3452,7 @@ MonoBehaviour:
   socket2DObject: {fileID: 5348539574664715723, guid: b0e413d78e63c9444b51762c8a8eeca2, type: 3}
   socket3DObject: {fileID: 4551326874158863504, guid: 72bcfb70176dc2e42b1d1d70756d3fff, type: 3}
   quizObject: {fileID: 583848828856784710, guid: 7385eb5873bdf1f4b91603bcd1194b12, type: 3}
+  noCullShader: {fileID: 4800000, guid: eab54a5e5240609418ca83dbbf8a0969, type: 3}
 --- !u!1 &244145905
 GameObject:
   m_ObjectHideFlags: 0
@@ -18616,10 +18617,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0398b2e5980db64983592b81ac9fbf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToRender: {fileID: 4869898122972622095, guid: 1f3470eff739b954290c1a5a8478d751, type: 3}
-  objectMultipleMesh:
-  - {fileID: 5444594897187816145}
-  - {fileID: 7805383137766483409}
 --- !u!4 &1513315878
 Transform:
   m_ObjectHideFlags: 0
@@ -27079,16 +27076,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f3470eff739b954290c1a5a8478d751, type: 3}
---- !u!1 &5444594897187816145 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1471226152176482152, guid: 1f3470eff739b954290c1a5a8478d751, type: 3}
-  m_PrefabInstance: {fileID: 3412696286121322840}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &7805383137766483409 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2347176525478440688, guid: 1f3470eff739b954290c1a5a8478d751, type: 3}
-  m_PrefabInstance: {fileID: 3412696286121322840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8258650180470214859
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,35 +6,36 @@ using UnityEngine.Video;
 [System.Serializable]
 public class QuizDataQuestion 
 {
-    private string videoToShowPath;
-    private string imageToShowPath;
+    private string path;
     private string textToShow;
     private string textTitleToShow;
+    private string questionType;
 
-    public QuizDataQuestion(string textTitleToShow)
+    public QuizDataQuestion(string textTitleToShow, string questionType)
     {
-        this.textTitleToShow = textTitleToShow;
+        TextTitleToShow = textTitleToShow;
+        QuestionType = questionType;
     }
 
 
-    public QuizDataQuestion(string text, string textTitleToShow)
+    public QuizDataQuestion(string text, string textTitleToShow, string questionType)
     {
-        ImageToShowPath = text;
-        VideoToShowPath = text;
+        Path = text;
         TextToShow = text;
         TextTitleToShow = textTitleToShow;
+        QuestionType = questionType;
     }
-
-    public QuizDataQuestion(string videoToShowPath, string imageToShowPath, string textToShow, string textTitleToShow)
+    [JsonConstructor]
+    public QuizDataQuestion(string path, string textToShow, string textTitleToShow, string questionType)
     {
-        VideoToShowPath = videoToShowPath;
-        ImageToShowPath = imageToShowPath;
+        Path = path;
         TextToShow = textToShow;
         TextTitleToShow = textTitleToShow;
+        QuestionType = questionType;
     }
 
-    public string VideoToShowPath { get => videoToShowPath; set => videoToShowPath = value; }
-    public string ImageToShowPath { get => imageToShowPath; set => imageToShowPath = value; }
+    public string Path { get => path; set => path = value; }
     public string TextToShow { get => textToShow; set => textToShow = value; }
     public string TextTitleToShow { get => textTitleToShow; set => textTitleToShow = value; }
+    public string QuestionType { get => questionType; set => questionType = value; }
 }

@@ -2,6 +2,12 @@
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizAnswer">
     <Position X="5.75" Y="1" Width="1.5" />
+    <AssociationLine Name="quizDataAnswer" Type="QuizDataAnswer" FixedToPoint="true">
+      <Path>
+        <Point X="5.75" Y="2.75" />
+        <Point X="4.5" Y="2.75" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AAAAAABEAAAABAQAAAAkAAAAIAAAAAAAAAAAAAAAAQA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizAnswer.cs</FileName>
@@ -33,6 +39,12 @@
   </Class>
   <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizQuestion">
     <Position X="15.25" Y="0.75" Width="1.5" />
+    <AssociationLine Name="quizDataQuestion" Type="QuizDataQuestion" FixedToPoint="true">
+      <Path>
+        <Point X="16.75" Y="2.476" />
+        <Point X="18.25" Y="2.476" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
       <HashCode>AEAAAAAAgAAAAIAAAAAAAAAACAAAAAgAAAACAABAAAA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizQuestion.cs</FileName>
@@ -63,7 +75,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Assets.MyAssets.Scripts.Features.Activities.QuizVideoQuestion">
-    <Position X="19" Y="4.25" Width="1.5" />
+    <Position X="19" Y="4.25" Width="1.75" />
     <TypeIdentifier>
       <HashCode>ACAAAAAAAAEgggAAAIAAAAACAAAAAgAAAAACEAABAAA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizVideoQuestion.cs</FileName>
@@ -79,14 +91,20 @@
   <Class Name="QuizDataQuestion">
     <Position X="18.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAEAAAgBAAIIAAAAAAAAAAAAAgAAAAIAAAAAAg=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAIIAAACAAAAAAAAAAgAAAAIAAAAAAg=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\QuizDataQuestion.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Quiz">
     <Position X="11" Y="2" Width="1.5" />
+    <AssociationLine Name="quizAnswerFeature" Type="Assets.MyAssets.Scripts.Features.Activities.QuizAnswer" FixedFromPoint="true">
+      <Path>
+        <Point X="11" Y="2.75" />
+        <Point X="7.25" Y="2.75" />
+      </Path>
+    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AEgAAAAJQKAAABIAAAACAIAASAAIwAgAAAACQABAAgA=</HashCode>
+      <HashCode>AEgAAAAJQIAAABIAAAACAIAASAAIwAgAAAACQABAAgA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Quizzes\Quiz.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
