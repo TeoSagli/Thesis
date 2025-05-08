@@ -1,0 +1,98 @@
+{
+    "puzzleData1": {
+      "PieceScale": 0.09,
+      "TitleStr": "SCHOOL LESSON",
+      "NCols": 3,
+      "NRows": 3,
+    },
+    "puzzleData2": {
+      "PieceScale": 0.4,
+      "TitleStr": "HYPPODROME",
+      "NCols": 2,
+      "NRows": 2,
+      "NDepth": 1
+    },
+    "puzzleData3": {
+      "PieceScale": 0.085,
+      "TitleStr": "TROTTER PARK MAP",	
+      "NCols": 4,
+      "NRows": 3,
+    },
+    "puzzleData2D1": {
+      "SpritePath": "",
+      "SpriteName": "Scuola"
+    },
+    "puzzleData2D2": {
+      "SpritePath": "",
+      "SpriteName": "Mappa Trotter"
+    },
+    "puzzleData3D": {
+      "MeshPath": "",
+      "MeshName": "Cavallo"
+    },
+    "quizDataAnswer1": {
+      	"AnswerOne": "Open air school",
+      	"AnswerTwo": "Public library",
+      	"AnswerThree": "Soup kitchen",
+      	"AnswerFour": "444444444444444",
+      	"ObjectAnswer": null,
+      	"RightObjectTag": null,
+      	"CorrectAnswer": 0,
+	"AnswerType" :"Three"
+    },
+    	"quizDataQuestion1": {
+      	"Path": "",
+      	"TextToShow": "What was the original objective of Casa del Sole when it was founded in 1922?",
+      	"TextTitleToShow": "",
+	"QuestionType" :"Text"
+    },
+    "quizDataAnswer2": {
+      	"AnswerOne": "Heliotherapy",
+      	"AnswerTwo": "Swimming",
+      	"AnswerThree": "Theatre",
+      	"AnswerFour": "Basketball",
+      	"ObjectAnswer": null,
+      	"RightObjectTag": null,
+      	"CorrectAnswer": 3,
+	"AnswerType" :"Four"
+    },
+    	"quizDataQuestion2": {
+      	"Path": "",
+      	"TextToShow": "Which of the following activities was NOT part of the program that contributed to children's physical and mental well-being in the 1920s and 1930s?",
+      	"TextTitleToShow": "",
+	"QuestionType" :"Text"
+    },
+    "quizDataAnswer3": {
+      	"AnswerOne": "Sports field",
+      	"AnswerTwo": "Public Park",
+      	"AnswerThree": "Hippodrome",
+      	"AnswerFour": "None of the above",
+      	"ObjectAnswer": null,
+      	"RightObjectTag": null,
+      	"CorrectAnswer": 2,
+	"AnswerType" :"Four"
+    },
+    	"quizDataQuestion3": {
+      	"Path": "",
+      	"TextToShow": "What were the original functions of Parco Trotter before its transformation into a school park?",
+      	"TextTitleToShow": "",
+	"QuestionType" :"Text"
+    },
+    "quizDataAnswer4": {
+      	"AnswerOne": "Abandonment of park areas",
+      	"AnswerTwo": "War damaged the park",
+      	"AnswerThree": "Illegal occupation of public land",
+      	"AnswerFour": "Fascism led to structural changes of the area",
+      	"ObjectAnswer": null,
+      	"RightObjectTag": null,
+      	"CorrectAnswer": 2,
+	"AnswerType" :"Four"
+    },
+    	"quizDataQuestion4": {
+      	"Path": "",
+      	"TextToShow": "Which of these challenges did Parco Trotter NOT face over the years?",
+      	"TextTitleToShow": "",
+	"QuestionType" :"Text"
+    }
+}
+

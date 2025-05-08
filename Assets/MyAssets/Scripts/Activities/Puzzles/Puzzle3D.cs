@@ -22,15 +22,20 @@ public class Puzzle3D : PuzzlePiece
         
     }
 
-    public async void  Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, Shader noCullShader)
+    public  void Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, Shader noCullShader)
     {
        PuzzleData = new(pieceScale, titleStr, nCols, nRows, nDepth);
        PuzzleData3D = new(path, name);
        NoCullShader = noCullShader;
-       ObjectToRender = await LoadGLBFromBytes(PuzzleData3D.MeshPath, PuzzleData3D.MeshName);
-       ExtractGridMesh();
-       SpawnRndPuzzlePieces();
-       OnLoaded?.Invoke(this);
+        // ObjectToRender = await LoadGLBFromBytes(PuzzleData3D.MeshPath, PuzzleData3D.MeshName);
+       ObjectToRender = ToDelete.Instance.Horse;
+       if(ObjectToRender != null)
+        {
+            ExtractGridMesh();
+            SpawnRndPuzzlePieces();
+        }
+
+       //OnLoaded?.Invoke(this);
     }
     private void CollectMeshes(Transform parent, List<MeshFilter> meshes)
     {
@@ -223,32 +228,22 @@ public class Puzzle3D : PuzzlePiece
     {
         Vector3 centerObj = puzzleMesh.bounds.center;
         Vector3 mismatch = Bounds / 2 - puzzleMesh.bounds.extents;
+        Debug.Log($"mismatch: {mismatch}");
+
         Vector3 offset = new()
         {
             x = toTrans.x > 0 ? mismatch.x : -mismatch.x,
-            y = (toTrans.y < 0 ? -mismatch.y : mismatch.y) - Bounds.y / PuzzleData.NRows,
+            y = (toTrans.y > 0 ? mismatch.y : -mismatch.y) - Bounds.y / PuzzleData.NRows,
             z = toTrans.z > 0 ? mismatch.z : -mismatch.z,
         };
-        if (toTrans.x == 0) offset.x = 0;
-        if (toTrans.y == 0) offset.y = -Bounds.y / PuzzleData.NRows;
-        if (toTrans.z == 0) offset.z = 0;
+        offset += centerObj;
+
+        if (PuzzleData.NCols == 1) offset.x = +mismatch.x / 2 -centerObj.x;
+        if (PuzzleData.NRows == 1) offset.y -= mismatch.y / 2;
+        if (PuzzleData.NDepth == 1) offset.z = +mismatch.z / 2 -centerObj.z;
 
         attachPoint.transform.parent = obj.transform;
-        attachPoint.transform.localPosition = centerObj + offset;
-    }
-    private Vector3 ComputePieceCellPosition(int i, int j, int k)
-    {
-        Vector3 cellSize = new Vector3(
-            Bounds.x / PuzzleData.NCols,
-            Bounds.y / PuzzleData.NRows,
-            Bounds.z / PuzzleData.NDepth
-        );
-
-        return new Vector3(
-            (i + 0.5f) * cellSize.x - Bounds.x / 2f,
-            (j + 0.5f) * cellSize.y - Bounds.y / 2f,
-            (k + 0.5f) * cellSize.z - Bounds.z / 2f
-        );
+        attachPoint.transform.localPosition = offset;
     }
     protected override void CalculateBounds()
     {

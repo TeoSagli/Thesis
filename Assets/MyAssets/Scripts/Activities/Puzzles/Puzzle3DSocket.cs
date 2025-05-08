@@ -18,7 +18,8 @@ public class Puzzle3DSocket : PuzzleSocket
         PuzzleData = feat.PuzzleData;
         PuzzleData3D = feat.PuzzleData3D;
         ObjectToRender = feat.ObjectToRender;
-        GenerateAndPlaceSockets();
+        if(objectToRender != null) 
+            GenerateAndPlaceSockets();
     }
 
     //================CONFIGURATION===================

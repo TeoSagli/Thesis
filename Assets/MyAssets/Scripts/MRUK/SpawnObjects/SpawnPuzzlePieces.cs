@@ -210,8 +210,7 @@ public class SpawnPuzzlePieces : Spawn
                 Quaternion spawnRotation = Quaternion.FromToRotation(Vector3.back, spawnNormal);
                 //Quaternion spawnRotation = Quaternion.identity;
 
-                foundValidSpawnPosition = true;
-                PrintToLogger($"Spawned");
+                foundValidSpawnPosition = true; 
                 spawnObject.transform.SetPositionAndRotation(spawnPosition, spawnRotation);
                 if (!room.GetRoomBounds().Contains(spawnPosition))
                     continue;
