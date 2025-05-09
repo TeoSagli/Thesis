@@ -18,11 +18,7 @@ public class Puzzle2D : PuzzlePiece
     {
         PuzzleData = new(pieceScale, titleStr, nCols, nRows);
         PuzzleData2D = new(path, name);
-        //SpriteToRender = LoadFromPath(PuzzleData2D.SpritePath, PuzzleData2D.SpriteName);
-        if (name == "Scuola")
-            SpriteToRender = ToDelete.Instance.S1;
-        else
-            SpriteToRender = ToDelete.Instance.S2;
+        SpriteToRender = LoadFromPath(PuzzleData2D.SpritePath, PuzzleData2D.SpriteName);
         ExtractAndGeneratePieces();
         SpawnRndPuzzlePieces();
     }

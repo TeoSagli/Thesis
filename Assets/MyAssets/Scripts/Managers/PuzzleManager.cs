@@ -2,6 +2,10 @@ using System;
 using System.IO;
 using Assets.MyAssets.Scripts.Features.Activities;
 using DilmerGames.Core.Singletons;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
+using OVRSimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Video;
@@ -34,13 +38,35 @@ public class PuzzleManager : Singleton<PuzzleManager>
 
     private void Start()
     {
-        LoadPuzzles();
+        StartCoroutine(ApiManager.GetJson(callback: ((b, s) => LoadPuzzles(b, s)),"1978"));
     }
-    private void LoadPuzzles()
+    private void LoadPuzzles(bool success, string jsonData)
     {
-       // string jsonData = File.ReadAllText("C:/Users/matte/Desktop/Media/data.txt");
-        string jsonData = ToDelete.Instance.Data.text;
-        DataRoot rootData = Serializer.Instance.DeserializeFromJSON(jsonData);
+        if (!success) { Debug.LogError("Error api");return; }
+        DataRoot rootData = null;
+        try
+        {
+            JObject obj = JObject.Parse(jsonData);
+            if (obj["customParameters"] == null)
+            {
+                Debug.Log("Error not parsed");
+                return;
+            }
+
+            rootData = obj["customParameters"].ToObject<DataRoot>(new JsonSerializer()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            });
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Parse error"+e);
+        }
+       if(rootData == null)
+        {
+            Debug.LogError("Root data null, json not parsed");
+            return;
+        }
         /* PuzzleData puzzleData = new(0.1f, "Title to show", 2, 2, 2);
          PuzzleData2D puzzleData2D=new("C:/Users/matte/Desktop/Media/scuola.jpg","Scuola");*/
         PuzzleData puzzleData1 = rootData.puzzleData1;
@@ -50,9 +76,6 @@ public class PuzzleManager : Singleton<PuzzleManager>
         PuzzleData2D puzzleData2D2 = rootData.puzzleData2D2;
         PuzzleData3D puzzleData3D = rootData.puzzleData3D;
 
-        puzzleData2D1.SpritePath = Application.streamingAssetsPath + "/scuola.jpg";
-        puzzleData2D2.SpritePath = Application.streamingAssetsPath + "/map.jpg";
-        puzzleData3D.MeshPath = Application.streamingAssetsPath + "/Horse1.glb";
         Generate3DPuzzle(puzzleData2, puzzleData3D, new Vector3(-0.9f, 1.3f, 1.2f), Quaternion.identity);
         Generate2DPuzzle(puzzleData1, puzzleData2D1,  new Vector3(0.3f, 1.3f, 1.2f), Quaternion.identity);
         Generate2DPuzzle(puzzleData3, puzzleData2D2,  new Vector3(1.56f, 1.3f, 1.2f), Quaternion.identity);
@@ -100,8 +123,7 @@ public class PuzzleManager : Singleton<PuzzleManager>
         script3D.Init(data.PieceScale, data.TitleStr, data.NCols, data.NRows, data.NDepth, data3D.MeshPath, data3D.MeshName, noCullShader);
         GameObject socket3D = Instantiate(socket3DObject, socketPos, socketRot);
         Puzzle3DSocket scriptSocket3D = socket3D.GetComponent<Puzzle3DSocket>();
-       // script3D.OnLoaded += (puzzle) => scriptSocket3D.Initialize(script3D);
-        scriptSocket3D.Initialize(script3D);
+        script3D.OnLoaded += (puzzle) => scriptSocket3D.Initialize(script3D);
     }
     //===================QUIZ=========================
     private void GenerateQuiz( QuizDataQuestion quizDataQuestion, QuizDataAnswer quizDataAnswer, Vector3 pos, Quaternion rot) {
