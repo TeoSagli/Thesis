@@ -22,12 +22,14 @@ public class Puzzle3D : PuzzlePiece
         
     }
 
-    public async void Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, Shader noCullShader)
+    public async void Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, int id, Shader noCullShader)
     {
        PuzzleData = new(pieceScale, titleStr, nCols, nRows, nDepth);
-       PuzzleData3D = new(path, name);
+       PuzzleData3D = new(path, name, id);
        NoCullShader = noCullShader;
        ObjectToRender = await LoadGLBFromBytes(path, name);
+       ExtractGridMesh();
+       SpawnRndPuzzlePieces();
        OnLoaded?.Invoke(this);
     }
     private void CollectMeshes(Transform parent, List<MeshFilter> meshes)

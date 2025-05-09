@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.IO;
 using Assets.MyAssets.Scripts.Features.Activities;
 using DilmerGames.Core.Singletons;
@@ -38,11 +39,11 @@ public class PuzzleManager : Singleton<PuzzleManager>
 
     private void Start()
     {
-        StartCoroutine(ApiManager.GetJson(callback: ((b, s) => LoadPuzzles(b, s)),"1978"));
+        StartCoroutine(ApiManager.GetJson(callback: ((b, s) => StartCoroutine(LoadPuzzles(b, s))),"1978"));
     }
-    private void LoadPuzzles(bool success, string jsonData)
+    private IEnumerator LoadPuzzles(bool success, string jsonData)
     {
-        if (!success) { Debug.LogError("Error api");return; }
+        if (!success) { Debug.LogError("Error api"); yield break; }
         DataRoot rootData = null;
         try
         {
@@ -50,7 +51,7 @@ public class PuzzleManager : Singleton<PuzzleManager>
             if (obj["customParameters"] == null)
             {
                 Debug.Log("Error not parsed");
-                return;
+                yield break;
             }
 
             rootData = obj["customParameters"].ToObject<DataRoot>(new JsonSerializer()
@@ -65,20 +66,58 @@ public class PuzzleManager : Singleton<PuzzleManager>
        if(rootData == null)
         {
             Debug.LogError("Root data null, json not parsed");
-            return;
+            yield break;
         }
-        /* PuzzleData puzzleData = new(0.1f, "Title to show", 2, 2, 2);
-         PuzzleData2D puzzleData2D=new("C:/Users/matte/Desktop/Media/scuola.jpg","Scuola");*/
+
         PuzzleData puzzleData1 = rootData.puzzleData1;
         PuzzleData puzzleData2 = rootData.puzzleData2;
         PuzzleData puzzleData3 = rootData.puzzleData3;
+
         PuzzleData2D puzzleData2D1 = rootData.puzzleData2D1;
         PuzzleData2D puzzleData2D2 = rootData.puzzleData2D2;
         PuzzleData3D puzzleData3D = rootData.puzzleData3D;
 
-        Generate3DPuzzle(puzzleData2, puzzleData3D, new Vector3(-0.9f, 1.3f, 1.2f), Quaternion.identity);
-        Generate2DPuzzle(puzzleData1, puzzleData2D1,  new Vector3(0.3f, 1.3f, 1.2f), Quaternion.identity);
-        Generate2DPuzzle(puzzleData3, puzzleData2D2,  new Vector3(1.56f, 1.3f, 1.2f), Quaternion.identity);
+        Debug.Log("Download p2d1 started");
+        if (!File.Exists(DownloadManager.GetLoacalPath(puzzleData2D1.SpriteId.ToString(), "jpg")))
+        {
+            StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(rootData.puzzleData2D1.SpriteId, (s) =>
+            {
+                if(s == null)
+                {
+                    Debug.LogError("Puzzle not instantiated");
+                    return;
+                }
+
+                Debug.Log("Download p2d1 ended");
+                puzzleData2D1.SpritePath = s;
+                Generate2DPuzzle(puzzleData1, puzzleData2D1, new Vector3(0.3f, 1.3f, 1.2f), Quaternion.identity);
+            }, "jpg"));
+        }
+        else
+        {
+            puzzleData2D1.SpritePath = DownloadManager.GetLoacalPath(puzzleData2D1.SpriteId.ToString(), "jpg");
+            Generate2DPuzzle(puzzleData1, puzzleData2D1, new Vector3(0.3f, 1.3f, 1.2f), Quaternion.identity);
+        }
+        
+        yield return null;
+
+        Debug.Log("Download p2d2 started");
+        StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(rootData.puzzleData2D2.SpriteId, (s) =>
+        {
+            Debug.Log("Download p2d2 ended");
+            puzzleData2D2.SpritePath = s;
+            Generate2DPuzzle(puzzleData3, puzzleData2D2, new Vector3(1.56f, 1.3f, 1.2f), Quaternion.identity);
+        }, "jpg"));
+
+        /* PuzzleData puzzleData = new(0.1f, "Title to show", 2, 2, 2);
+         PuzzleData2D puzzleData2D=new("C:/Users/matte/Desktop/Media/scuola.jpg","Scuola");*/
+
+        StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(rootData.puzzleData3D.MeshId, (s) =>
+        {
+            Debug.Log("Download p2d2 ended");
+            puzzleData3D.MeshPath = s;
+            Generate3DPuzzle(puzzleData2, puzzleData3D, new Vector3(-0.9f, 1.3f, 1.2f), Quaternion.identity);
+        }, "glb"));
         
         //==============================================
         /*  QuizDataAnswer quizDataAnswer = new("11111111111111111","2222222222","33333333333333333","444444444444444",2);
@@ -111,7 +150,7 @@ public class PuzzleManager : Singleton<PuzzleManager>
     {
         GameObject puzzle2D = new("PuzzlePiecesSpawner2D-" + data2D.SpriteName);
         Puzzle2D script2D = puzzle2D.AddComponent<Puzzle2D>();
-        script2D.Init(data.PieceScale,data.TitleStr,data.NCols,data.NRows,data2D.SpritePath,data2D.SpriteName);
+        script2D.Init(data.PieceScale,data.TitleStr,data.NCols,data.NRows,data2D.SpritePath,data2D.SpriteName,data2D.SpriteId);
         GameObject socket2D = Instantiate(socket2DObject,socketPos,socketRot);
         Puzzle2DSocket scriptSocket2D = socket2D.GetComponent<Puzzle2DSocket>();
         scriptSocket2D.Initialize(script2D);
@@ -120,7 +159,7 @@ public class PuzzleManager : Singleton<PuzzleManager>
     {
         GameObject puzzle3D = new ("PuzzlePiecesSpawner3D-" + data3D.MeshName);
         Puzzle3D script3D = puzzle3D.AddComponent<Puzzle3D>();
-        script3D.Init(data.PieceScale, data.TitleStr, data.NCols, data.NRows, data.NDepth, data3D.MeshPath, data3D.MeshName, noCullShader);
+        script3D.Init(data.PieceScale, data.TitleStr, data.NCols, data.NRows, data.NDepth, data3D.MeshPath, data3D.MeshName, data3D.MeshId, noCullShader);
         GameObject socket3D = Instantiate(socket3DObject, socketPos, socketRot);
         Puzzle3DSocket scriptSocket3D = socket3D.GetComponent<Puzzle3DSocket>();
         script3D.OnLoaded += (puzzle) => scriptSocket3D.Initialize(script3D);

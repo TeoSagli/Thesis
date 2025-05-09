@@ -14,11 +14,11 @@ public class Puzzle2D : PuzzlePiece
     {
 
     }
-    public void Init(float pieceScale, string titleStr, int nCols, int nRows, string path, string name)
+    public void Init(float pieceScale, string titleStr, int nCols, int nRows, string path, string name,int id)
     {
         PuzzleData = new(pieceScale, titleStr, nCols, nRows);
-        PuzzleData2D = new(path, name);
-        SpriteToRender = LoadFromPath(PuzzleData2D.SpritePath, PuzzleData2D.SpriteName);
+        PuzzleData2D = new(path, name, id);
+        SpriteToRender = LoadFromPath(path, name);
         ExtractAndGeneratePieces();
         SpawnRndPuzzlePieces();
     }
