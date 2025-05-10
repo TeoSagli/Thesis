@@ -9,15 +9,10 @@ public class Puzzle2D : PuzzlePiece
     private Sprite spriteToRender;
     public PuzzleData2D PuzzleData2D { get => puzzleData2D; set => puzzleData2D = value; }
     public Sprite SpriteToRender { get => spriteToRender; set => spriteToRender = value; }
-
-    public Puzzle2D(float pieceScale, string titleStr, int nCols, int nRows, string path, string name) : base(pieceScale, titleStr, nCols, nRows)
-    {
-
-    }
-    public void Init(float pieceScale, string titleStr, int nCols, int nRows, string path, string name,int id)
+    public void Init(float pieceScale, string titleStr, int nCols, int nRows, string path, string name, int id, string ext)
     {
         PuzzleData = new(pieceScale, titleStr, nCols, nRows);
-        PuzzleData2D = new(path, name, id);
+        PuzzleData2D = new(path, name, id, ext);
         SpriteToRender = LoadFromPath(path, name);
         ExtractAndGeneratePieces();
         SpawnRndPuzzlePieces();

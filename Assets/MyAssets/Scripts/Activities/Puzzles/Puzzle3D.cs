@@ -16,16 +16,11 @@ public class Puzzle3D : PuzzlePiece
     public Shader NoCullShader { get => noCullShader; set => noCullShader = value; }
 
     public event Action<Puzzle3D> OnLoaded;
-    public Puzzle3D(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, Shader noCullShader) : base(pieceScale, titleStr, nCols, nRows, nDepth)
-    {
-        
-        
-    }
 
-    public async void Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, int id, Shader noCullShader)
+    public async void Init(float pieceScale, string titleStr, int nCols, int nRows, int nDepth, string path, string name, int id, string ext, Shader noCullShader)
     {
        PuzzleData = new(pieceScale, titleStr, nCols, nRows, nDepth);
-       PuzzleData3D = new(path, name, id);
+       PuzzleData3D = new(path, name, id, ext);
        NoCullShader = noCullShader;
        ObjectToRender = await LoadGLBFromBytes(path, name);
        ExtractGridMesh();

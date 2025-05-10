@@ -9,10 +9,6 @@ public class Puzzle3DSocket : PuzzleSocket
     private GameObject objectToRender;
     public PuzzleData3D PuzzleData3D { get => puzzleData3D; set => puzzleData3D = value; }
     public GameObject ObjectToRender { get => objectToRender; set => objectToRender = value; }
-
-    public Puzzle3DSocket(float pieceScale, string titleStr, int nCols, int nRows, int nDepth) : base(pieceScale, titleStr, nCols, nRows, nDepth)
-    {
-    }
     public void Initialize(Puzzle3D feat)
     {
         PuzzleData = feat.PuzzleData;

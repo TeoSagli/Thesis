@@ -5,10 +5,6 @@ using UnityEngine;
 public abstract class PuzzlePiece : Puzzle
 {
     protected GameObject[] puzzlePiecesArr;
-
-    protected PuzzlePiece(float pieceScale, string titleStr, int nCols, int nRows, int nDepth) : base(pieceScale, titleStr, nCols, nRows, nDepth) { }
-
-    protected PuzzlePiece(float pieceScale, string titleStr, int nCols, int nRows) : base(pieceScale, titleStr, nCols, nRows) { }
     protected void SpawnRndPuzzlePieces()
     {
         GameObject g = new ("PuzzlePiecesSpawner");

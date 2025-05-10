@@ -11,14 +11,6 @@ public abstract class Puzzle : MonoBehaviour
     public PuzzleData PuzzleData { get => puzzleData; set => puzzleData = value; }
     public Vector3 Bounds { get => bounds; set => bounds = value; }
 
-    protected Puzzle(float pieceScale, string titleStr, int nCols, int nRows, int nDepth)
-    {
-        PuzzleData=new PuzzleData(pieceScale, titleStr, nCols, nRows, nDepth);
-    }
-    protected Puzzle(float pieceScale, string titleStr, int nCols, int nRows)
-    {
-        PuzzleData = new PuzzleData(pieceScale, titleStr, nCols, nRows);
-    }
     protected float CalculateOffsetForSocketCenter(int tot, int i)
     {
         float pos = i < tot / 2 ? -(tot / 2 - i) : (i - tot / 2);

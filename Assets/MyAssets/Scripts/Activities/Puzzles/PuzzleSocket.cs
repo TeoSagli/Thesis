@@ -18,13 +18,6 @@ public abstract class PuzzleSocket : Puzzle
     
     protected GameObject[] sockets;
     protected bool[] isPieceCorrect;
-
-    protected PuzzleSocket(float pieceScale, string titleStr, int nCols, int nRows, int nDepth) : base(pieceScale, titleStr, nCols, nRows, nDepth)
-    {
-    }
-    protected PuzzleSocket(float pieceScale, string titleStr, int nCols, int nRows) : base(pieceScale, titleStr, nCols, nRows)
-    {
-    }
     protected void SetPuzzleSize(Vector3 s)
     {
         transform.localScale = s;

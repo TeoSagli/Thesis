@@ -8,10 +8,6 @@ public class Puzzle2DSocket : PuzzleSocket
     private Sprite spriteToRender;
     public Sprite SpriteToRender { get => spriteToRender; set => spriteToRender = value; }
     public PuzzleData2D PuzzleData2D { get => puzzleData2D; set => puzzleData2D = value; }
-
-    public Puzzle2DSocket(float pieceScale, string titleStr, int nCols, int nRows, string path,string name) : base(pieceScale, titleStr, nCols, nRows)
-    {
-    }
     public void Initialize(Puzzle2D feat)
     {
         PuzzleData = feat.PuzzleData;
