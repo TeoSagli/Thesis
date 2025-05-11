@@ -12,6 +12,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Video;
 using static Enums;
+using static OVRPlugin;
 
 public class PuzzleManager : Singleton<PuzzleManager>
 {
@@ -36,6 +37,7 @@ public class PuzzleManager : Singleton<PuzzleManager>
     private GameObject quizObject;
     [SerializeField]
     private Shader noCullShader;
+
     public Action<GameState> onPuzzleSolved;
 
     private void Start()
@@ -44,35 +46,12 @@ public class PuzzleManager : Singleton<PuzzleManager>
     }
     private IEnumerator LoadPuzzles(bool success, string jsonData)
     {
-        int contPuzzles = 0;
-
-
         if (!success) { Debug.LogError("Error api"); yield break; }
-        DataRoot rootData = null;
-        try
-        {
-            JObject obj = JObject.Parse(jsonData);
-            if (obj["customParameters"] == null)
-            {
-                Debug.Log("Error not parsed");
-                yield break;
-            }
-
-            rootData = obj["customParameters"].ToObject<DataRoot>(new JsonSerializer()
-            {
-                ContractResolver = new CamelCasePropertyNamesContractResolver(),
-            });
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Parse error"+e);
-        }
-        if(rootData == null)
-        {
-            Debug.LogError("Root data null, json not parsed");
-            yield break;
-        }
-
+        
+        DataRoot rootData = LoadJson(jsonData);
+        if (rootData == null) { Debug.LogError("Root data null, json not parsed"); yield break; }
+    
+        int contPuzzles = 0;
         List<PuzzleData> puzzleData = new(rootData.puzzleData.Count);
 
         foreach (var puzzle in rootData.puzzleData)
@@ -83,25 +62,10 @@ public class PuzzleManager : Singleton<PuzzleManager>
         float startPos = 0.3f;
         float shift = 1.26f;
         //===== ACTIVITY: PUZZLE 2D======
-        foreach (var puzzle in rootData.puzzleData2D)
+        foreach (var puzzle2D in rootData.puzzleData2D)
         {
-            if (!File.Exists(DownloadManager.GetLoacalPath(puzzle.SpriteId.ToString(), puzzle.Ext)))
-            {
-                StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(puzzle.SpriteId, (s) =>
-                {
-                    if (s == null)
-                    {
-                        Debug.LogError("Puzzle 2D not instantiated");
-                        return;
-                    }
-                    puzzle.SpritePath = s;
-                }, puzzle.Ext));
-            }
-            else
-            {
-                puzzle.SpritePath = DownloadManager.GetLoacalPath(puzzle.SpriteId.ToString(), puzzle.Ext);
-            }
-            Generate2DPuzzle(puzzleData[contPuzzles], puzzle, new Vector3(startPos, 1.3f, 1.2f), Quaternion.identity);
+            puzzle2D.SpritePath = LoadMedia(puzzle2D.SpriteId, puzzle2D.Ext);
+            Generate2DPuzzle(puzzleData[contPuzzles], puzzle2D, new Vector3(startPos, 1.3f, 1.2f), Quaternion.identity);
             startPos += shift;
             contPuzzles++;
             yield return null;
@@ -109,26 +73,10 @@ public class PuzzleManager : Singleton<PuzzleManager>
          startPos = -0.9f;
          shift = 1.26f;
         //===== ACTIVITY: PUZZLE 3D======
-        foreach (var puzzle in rootData.puzzleData3D)
+        foreach (var puzzle3D in rootData.puzzleData3D)
         {
-            if (!File.Exists(DownloadManager.GetLoacalPath(puzzle.MeshId.ToString(), puzzle.Ext)))
-            {
-                StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(puzzle.MeshId, (s) =>
-                {
-                    if (s == null)
-                    {
-                        Debug.LogError("Puzzle 3D not instantiated");
-                        return;
-                    }
-                    puzzle.MeshPath = s;
-                    
-                }, puzzle.Ext));
-            }
-            else
-            {
-                puzzle.MeshPath = DownloadManager.GetLoacalPath(puzzle.MeshId.ToString(), puzzle.Ext);
-            }
-            Generate3DPuzzle(puzzleData[contPuzzles], puzzle, new Vector3(startPos, 1.3f, 1.2f), Quaternion.identity);
+            puzzle3D.MeshPath = LoadMedia(puzzle3D.MeshId, puzzle3D.Ext);
+            Generate3DPuzzle(puzzleData[contPuzzles], puzzle3D, new Vector3(startPos, 1.3f, 1.2f), Quaternion.identity);
             startPos += shift;
             contPuzzles++;
             yield return null;
@@ -142,28 +90,59 @@ public class PuzzleManager : Singleton<PuzzleManager>
             QuizDataAnswer quizDataAnswer = quiz.QuizDataAnswer;
             if (quizDataQuestion.QuestionType == "Video" || quizDataQuestion.QuestionType == "Image")
             {
-                if (!File.Exists(DownloadManager.GetLoacalPath(quizDataQuestion.Id.ToString(), quizDataQuestion.Ext)))
-                {
-                    StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(quizDataQuestion.Id, (s) =>
-                    {
-                        if (s == null)
-                        {
-                            Debug.LogError("Quiz not instantiated");
-                            return;
-                        }
-                        quizDataQuestion.Path = s;
-                    }, quizDataQuestion.Ext));
-                }
-                else
-                {
-                    quizDataQuestion.Path = DownloadManager.GetLoacalPath(quizDataQuestion.Id.ToString(), quizDataQuestion.Ext);
-                }
+                quizDataQuestion.Path = LoadMedia(quizDataQuestion.Id, quizDataQuestion.Ext);
             }
             GenerateQuiz(quiz, new Vector3(startPos, 1.3f, -0.2f), Quaternion.Euler(0, 180, 0));
             startPos += shift;
             yield return null;
         }
     }
+    //===================LOAD JSON======================
+    public DataRoot LoadJson(string jsonData)
+    {
+        DataRoot rootData = null;
+        try
+        {
+            JObject obj = JObject.Parse(jsonData);
+            if (obj["customParameters"] == null)
+            {
+                Debug.Log("Error not parsed");
+            }
+            rootData = obj["customParameters"].ToObject<DataRoot>(new JsonSerializer()
+            {
+                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            });
+            
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Parse error" + e);
+        }
+        return rootData;
+    }
+    //===================LOAD MEDIA======================
+    public string LoadMedia(int mediaId, string mediaExt)
+    {
+        string path = "";
+        if (!File.Exists(DownloadManager.GetLocalPath(mediaId.ToString(), mediaExt)))
+        {
+            StartCoroutine(DownloadManager.DownloadAndSaveMediaElement(mediaId, (s) =>
+            {
+                if (s == null)
+                {
+                    Debug.LogError("Media not instantiated");
+                    return;
+                }
+                path = s;
+            }, mediaExt));
+        }
+        else
+        {
+            path = DownloadManager.GetLocalPath(mediaId.ToString(), mediaExt);
+        }
+        return path;
+    }
+
     //===================PUZZLES=========================
     private void Generate2DPuzzle(PuzzleData data,PuzzleData2D data2D, Vector3 socketPos,Quaternion socketRot)
     {

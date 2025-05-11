@@ -8,16 +8,16 @@
     </TypeIdentifier>
   </Class>
   <Class Name="PuzzleData2D">
-    <Position X="8" Y="5.5" Width="1.5" />
+    <Position X="8" Y="5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAQAAAAAACAAAAAAAAAAAAAAAAAABAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AAASAAAAAgCAAAAAAAAAAAAAAAAAABAAAAACAIAAAgA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\PuzzleData2D.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="PuzzleData3D">
     <Position X="8" Y="8.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAEBAAABAAAAA=</HashCode>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAgAAAAMAAAEBAAABAAAgA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\PuzzleData3D.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -59,8 +59,8 @@
     <Position X="10.25" Y="4.75" Width="1.5" />
     <AssociationLine Name="puzzleData2D" Type="PuzzleData2D" FixedToPoint="true">
       <Path>
-        <Point X="10.25" Y="7.062" />
-        <Point X="9.5" Y="7.062" />
+        <Point X="10.25" Y="6.562" />
+        <Point X="9.5" Y="6.562" />
       </Path>
     </AssociationLine>
     <TypeIdentifier>
@@ -79,15 +79,8 @@
         <Point X="16" Y="6.812" />
       </Path>
     </InheritanceLine>
-    <AssociationLine Name="puzzleData3D" Type="PuzzleData3D" FixedFromPoint="true" FixedToPoint="true">
-      <Path>
-        <Point X="16.75" Y="9.136" />
-        <Point X="16.75" Y="10.438" />
-        <Point X="9.5" Y="10.438" />
-      </Path>
-    </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAAAIAEAACAAAQIAIAAAMAACIAAAAgEAAAABACBAAEA=</HashCode>
+      <HashCode>AAAAAAFAAAAAAQIAIAAAMABAIAAAAAEAAAABACBAAEA=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\Puzzle3DSocket.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -97,7 +90,7 @@
   <Class Name="Puzzle3D">
     <Position X="2" Y="6.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAABAAgAAAAAAAUAAIEBAAAAAAAUAAQADACBAAAI=</HashCode>
+      <HashCode>AAAAAABAAQAAAAAAQUAAIEBAAAAAAAUAAQIDACBAAAI=</HashCode>
       <FileName>Assets\MyAssets\Scripts\Activities\Puzzles\Puzzle3D.cs</FileName>
     </TypeIdentifier>
   </Class>

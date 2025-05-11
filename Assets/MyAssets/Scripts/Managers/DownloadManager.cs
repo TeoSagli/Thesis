@@ -52,7 +52,7 @@ using static OVRPlugin;
         return path;
     }
 
-    public static string GetLoacalPath(string fileName, string extension)
+    public static string GetLocalPath(string fileName, string extension)
     {
         return Path.Combine(AppBaseDirectory, $"{fileName}.{extension}");
     }
