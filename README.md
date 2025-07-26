@@ -1,3 +1,5 @@
+**Making Memories Stick: Designing MR Activities to Reinforce Learning**
+
 Mixed Reality (MR) is showing significant potential in the educational domain; however, existing applications remain largely limited to the reproduction of specific entities—such as objects that are difficult or hazardous to handle in real-life contexts—and to fixed content that cannot be easily adapted. This thesis proposes a novel approach to MR, not merely as a representational tool, but as a means to design customizable, activity-based learning experiences.
 
 This thesis adopts a novel perspective in which MR is not used merely to represent elements of the real world, but rather to create activity-based learning experiences that can be customized according to the users’ desired content. Specifically, it aims to support the memorization and consolidation of knowledge acquired during a pedagogically significant event in students’ educational experience: the school field trip.
